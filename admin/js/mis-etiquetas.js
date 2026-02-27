@@ -1,7 +1,7 @@
 class Cabecera extends HTMLElement {
     constructor() {
         super()
-        this.innerHTML = `<header><h1>Logo Tienda - Nombre Tienda Virtual</h1></header>`
+        this.innerHTML = `<header><h1>Logo Tienda - CTRL Studio</h1></header>`
     }
 }
 window.customElements.define('mi-cabecera', Cabecera);
@@ -9,7 +9,7 @@ window.customElements.define('mi-cabecera', Cabecera);
 class Pie extends HTMLElement {
     constructor() {
         super()
-        this.innerHTML = `<footer>&copy; 2025 - Autor/a - Información de redes sociales</footer>    
+        this.innerHTML = `<footer>&copy; 2026 - CTRL Studio - @ctrlstudio.co</footer>    
         `
     }
 }

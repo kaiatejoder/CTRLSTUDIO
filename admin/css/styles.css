@@ -1,0 +1,101 @@
+@font-face {
+    font-family: 'Helvetica Now Display';
+    /*a name to be used later*/
+    src: URL("https://db.onlinewebfonts.com/c/0976a2619014c5855690b7509fab4c6e?family=Helvetica+Now+Display");
+    /*URL to font*/
+}
+
+@font-face {
+    font-family: 'PP Editorial New';
+    /*a name to be used later*/
+    src: URL("https://db.onlinewebfonts.com/c/926fcaaa8b66e0df67e176f329259711?family=PP+Editorial+New");
+    /*URL to font*/
+}
+
+/*DECLARAR VARIABLES */
+
+:root {
+    --main-bg-color: #FAFAFA;
+    --gris-claro: #ebebe8;
+    --gris-oscuro: #d1cece;
+    --oscuro: #29274c;
+    --acento-azul: #989fcb;
+    --acento-azul-2:#4e5174;
+    --rosa-oscuro: #710632;
+    --rosa:#990b45;
+    --rojo:#a50136;
+    background-color: var(--main-bg-color);
+}
+
+* {
+    font-family: 'Helvetica Now Display';
+
+}
+h1{
+    color:var(--oscuro);
+}
+
+td {
+    font-family: 'Helvetica Now Display';
+    font-weight: bold;
+    font-size: 1.1em;
+    line-height: 1.2em;
+    padding-bottom: 0.2em;
+    padding-inline-end: 3%;
+    overflow: none;
+}
+
+input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+    border: 0.1em solid var(--green);
+    background-color: #ECF0F1;
+    color: #495057;
+    padding: 1% 2%;
+    text-decoration: none;
+    display: inline;
+    font-size: 1em;
+    margin: 1% 2%;
+    cursor: pointer;
+}
+ textarea:focus {
+    border: 0.25em solid var(--green);
+    padding: 1% 2%;
+    height: 200px;
+    text-decoration: none;
+    display: inline;
+    font-size: 1em;
+    margin: 1% 2%;
+    cursor: pointer;
+}
+
+input:focus {
+    border: 0.25em solid var(--green);
+    color: var(--green);
+}
+
+input[type="radio"]:checked + label {
+    border: 0.25em solid var(--green);
+    background-color: var(--green);
+    border-radius: 0.5em;
+    color:#fff;
+    padding: 0.2em 0.5em;
+    text-align: center;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 1em;
+    margin: 0.5%;
+    cursor: pointer;
+}
+
+input[type="reset"], input[type="submit"] {
+    border: 0.1em solid var(--green);
+    background-color: var(--green);
+    color: #fff;
+    padding: 0.3em 1.5em;
+    border-radius: 1em;
+    text-align: center;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 1em;
+    margin: 1%;
+    cursor: pointer;
+}
