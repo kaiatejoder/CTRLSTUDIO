@@ -88,7 +88,7 @@
 body {
   font-family: 'Helvetica Now Display';
   background-color: var(--main-bg-color);
-  overflow-x: hidden;
+
 }
 /* Centrado real */
 .nav-center {
@@ -261,4 +261,19 @@ body {
   .about-text {
     max-width: 100%;
   }
+}
+
+html,
+body {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#background-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
 }
