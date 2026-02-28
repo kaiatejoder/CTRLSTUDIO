@@ -28,43 +28,111 @@
     --rojo:#a50136;
     background-color: var(--main-bg-color);
 }
+/* ===== BACKGROUND BASE ===== */
+
+#background-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -100000;
+  pointer-events: none;
+
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+
+  /* CAPA BASE (siempre visible, suave) */
+  background-image: radial-gradient(
+    circle,
+    rgba(0,0,0,0.12) 0.07rem,
+    transparent 0.07rem
+  );
+
+  background-size: 1.4rem 1.4rem;
+}
 
 
+/* CAPA DENSA ENCIMA */
+#background-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: radial-gradient(
+    circle,
+    rgba(0,0,0,0.35) 0.07rem,
+    transparent 0.07rem
+  );
+
+  background-size: 0.5rem 0.5rem;
+
+  mask-image: radial-gradient(
+    circle 14rem at var(--mouse-x) var(--mouse-y),
+    black 0%,
+    rgba(0,0,0,0.6) 40%,
+    transparent 100%
+  );
+
+  -webkit-mask-image: radial-gradient(
+    circle 14rem at var(--mouse-x) var(--mouse-y),
+    black 0%,
+    rgba(0,0,0,0.6) 40%,
+    transparent 100%
+  );
+
+  transition: mask-image 0.15s ease-out;
+}
+/* Para que las secciones no tengan fondo propio */
+.hero-section,
+.about-section {
+  background: transparent !important;
+}
 body {
   font-family: 'Helvetica Now Display';
   background-color: var(--main-bg-color);
   overflow-x: hidden;
 }
-.logo-svg {
-  height: auto;
-  width: 30%;
-  fill: var(--rojo);
-  transition: 0.3s ease;
+/* Centrado real */
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.navbar-brand:hover .logo-svg {
-  transform: scale(1.05);
-}
-/* NAV */
-.nav-pill-custom {
-  background: var(--gris-claro);
-  border-radius: 50px;
+/* Estilo cápsula */
+.nav-pill {
+  background: #f1f1f1;
+  border-radius: 999rem;
 }
 
+/* Links */
 .nav-link {
-  font-size: 0.8em;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: var(--oscuro) !important;
+  color: black !important;
 }
 
+/* Logo */
+.logo-svg {
+  height: 2.5rem;
+  width: auto;
+}
+
+/* Botón */
 .btn-login {
-  background:var(--acento-azul);
-  color: var(--main-bg-color);
-  border-radius: 50px;
-  padding: 8px 20px;
-  font-size: 0.8em;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999rem;
+  font-size: 0.875rem;
+  background: #b4b8d6;
+  color: white;
 }
-
+.navbar {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90%, 80rem);
+  border-radius: 999rem;
+  backdrop-filter: blur(1.5rem);
+}
 /* HERO */
 .hero-section {
   padding: 80px 0;
