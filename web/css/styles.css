@@ -36,9 +36,9 @@ body {
   overflow-x: hidden;
 }
 .logo-svg {
-  height: 50%;
-  width: auto;
-  fill: var(--oscuro);
+  height: auto;
+  width: 30%;
+  fill: var(--rojo);
   transition: 0.3s ease;
 }
 
@@ -52,7 +52,7 @@ body {
 }
 
 .nav-link {
-  font-size: 14px;
+  font-size: 0.8em;
   font-weight: 500;
   color: var(--oscuro) !important;
 }
@@ -62,7 +62,7 @@ body {
   color: var(--main-bg-color);
   border-radius: 50px;
   padding: 8px 20px;
-  font-size: 14px;
+  font-size: 0.8em;
 }
 
 /* HERO */
@@ -82,17 +82,20 @@ body {
 .marca {
   font-family: 'PP Editorial New', serif;
   font-style: italic;
-  font-weight: 600;
+  font-size: 2em;
+  font-weight: 400;
+  font-kerning: -2;
 }
 
 .small-link {
-  font-size: 14px;
-  letter-spacing: 1px;
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
 }
 
 /* MOCKUP */
 .phone-mockup {
   width: 360px;
+  height: 420px;
   background:var(--gris-oscuro);
   border-radius: 40px;
   padding: 20px;
@@ -104,7 +107,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  font-size: 0.8em;
   margin-bottom: 10px;
 }
 
