@@ -3,33 +3,42 @@ class MiMenu extends HTMLElement {
         super();
         this.innerHTML = `
 <nav class="navbar navbar-expand-lg ctrl-navbar">
-  <div class="container position-relative d-flex align-items-center justify-content-between">
-     <a class="navbar-brand" href="index.html"> <img src="img/LOGO.svg" class="logo-svg" alt="CTRL Studio"></a>
+  <div class="container-fluid px-0">
+    <a class="navbar-brand ps-3" href="index.html"><img src="img/LOGO.svg" class="logo-svg" alt="CTRL Studio"></a>
 
-    <button class="navbar-toggler border-0 shadow-none d-lg-none" type="button"
-      data-bs-toggle="collapse" data-bs-target="#mobileNav" aria-controls="mobileNav"
-      aria-expanded="false" aria-label="Abrir menú">
+    <button class="navbar-toggler border-0 shadow-none me-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Abrir menú">
       <span class="toggler-bar"></span>
       <span class="toggler-bar"></span>
     </button>
-    <div class="menu-pill d-none d-lg-flex align-items-center px-4 py-2">
-      <ul class="navbar-nav flex-row gap-4 mb-0">
-        <li class="nav-item"><a class="nav-link" href="index.html">INICIO</a></li>
-        <li class="nav-item"><a class="nav-link" href="empresa.html">EMPRESA</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">SERVICIOS</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="productos.html">Todos los servicios</a></li>
-            <li><a class="dropdown-item" href="productos.html#branding">Branding</a></li>
-            <li><a class="dropdown-item" href="productos.html#plantillas">Plantillas</a></li>
-            <li><a class="dropdown-item" href="productos.html#planes">Planes</a></li>
-          </ul>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="contacto.html">CONTACTO</a></li>
-      </ul>
+
+    <div class="collapse navbar-collapse" id="mobileNav">
+      <div class="navbar-nav flex-column gap-2 p-3">
+        <a class="nav-link" href="index.html">INICIO</a>
+        <a class="nav-link" href="empresa.html">EMPRESA</a>
+        <a class="nav-link" href="productos.html">SERVICIOS</a>
+        <a class="nav-link" href="contacto.html">CONTACTO</a>
+        <a class="nav-link" href="carrito.html">CARRITO</a>
+        <a class="nav-link" href="usuario.html">MI CUENTA</a>
+      </div>
     </div>
-    <div class="d-none d-lg-flex align-items-center gap-3">
+
+    <div class="d-none d-lg-flex align-items-center gap-2 pe-3">
+      <div class="menu-pill d-flex align-items-center px-3 py-2">
+        <ul class="navbar-nav flex-row gap-3 mb-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">INICIO</a></li>
+          <li class="nav-item"><a class="nav-link" href="empresa.html">EMPRESA</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">SERVICIOS</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="productos.html">Todos los servicios</a></li>
+              <li><a class="dropdown-item" href="productos.html#branding">Branding</a></li>
+              <li><a class="dropdown-item" href="productos.html#plantillas">Plantillas</a></li>
+              <li><a class="dropdown-item" href="productos.html#planes">Planes</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">CONTACTO</a></li>
+        </ul>
+      </div>
       <a href="carrito.html" class="btn-carrito" aria-label="Carrito">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
@@ -38,16 +47,6 @@ class MiMenu extends HTMLElement {
         <span class="carrito-count" id="cart-count">0</span>
       </a>
       <a href="usuario.html" class="btn btn-login">LOG IN ↗</a>
-    </div>
-    <div class="collapse navbar-collapse d-lg-none" id="mobileNav">
-      <ul class="navbar-nav mt-3 mb-2 gap-2">
-        <li class="nav-item"><a class="nav-link" href="index.html">INICIO</a></li>
-        <li class="nav-item"><a class="nav-link" href="empresa.html">EMPRESA</a></li>
-        <li class="nav-item"><a class="nav-link" href="productos.html">SERVICIOS</a></li>
-        <li class="nav-item"><a class="nav-link" href="contacto.html">CONTACTO</a></li>
-        <li class="nav-item"><a class="nav-link" href="carrito.html">CARRITO</a></li>
-        <li class="nav-item"><a class="nav-link" href="usuario.html">MI CUENTA</a></li>
-      </ul>
     </div>
   </div>
 </nav>`;
@@ -63,8 +62,8 @@ class MiPie extends HTMLElement {
   <div class="container">
     <div class="row gy-4">
       <div class="col-lg-4">
-        <img src="img/LOGO.svg" class="logo-svg" alt="CTRL Studio" style="height: 2rem; width: auto;">
-        <p class="footer-tagline mt-3">Diseño que habla.<br>Identidades que permanecen.</p>
+        <img src="img/LOGO.svg" class="logo-svg" alt="CTRL Studio" style="height: 2rem; width: auto; color: var(--azul);">
+        <p class="footer-tagline mt-3">Purpose beyond px</p>
         <div class="footer-socials mt-3">
           <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
           <a href="https://www.behance.net" target="_blank" rel="noopener" aria-label="Behance">BE</a>
@@ -73,7 +72,7 @@ class MiPie extends HTMLElement {
         </div>
       </div>
       <div class="col-lg-2 col-6">
-        <p class="footer-heading">Estudio</p>
+        <p class="footer-heading">Nosotros</p>
         <ul class="footer-links">
           <li><a href="empresa.html">Nosotros</a></li>
           <li><a href="empresa.html#equipo">Equipo</a></li>
@@ -91,10 +90,10 @@ class MiPie extends HTMLElement {
       </div>
       <div class="col-lg-4">
         <p class="footer-heading">Horario de atención</p>
-        <p class="footer-schedule">Lun – Vie: 09:00 – 18:00<br>Sáb: 10:00 – 14:00<br>Dom: Cerrado</p>
+        <p class="footer-schedule">Lun – Dom: Activos 24/7</p>
         <p class="footer-contact mt-3">
-          <a href="mailto:hola@ctrlstudio.co">hola@ctrlstudio.co</a><br>
-          <a href="tel:+34600000000">+34 600 000 000</a>
+          <a href="mailto:hi@ctrlstudio.es">hi@ctrlstudio.es</a><br>
+          
         </p>
       </div>
     </div>

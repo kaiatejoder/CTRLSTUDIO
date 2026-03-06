@@ -50,6 +50,11 @@
   );
 
   background-size: 1.4rem 1.4rem;
+  transition: opacity 0.3s ease;
+}
+
+#background-layer.dense {
+  opacity: 0.15;
 }
 
 

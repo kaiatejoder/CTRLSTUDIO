@@ -83,7 +83,7 @@ img {
 italic {
     font-family: 'PP Editorial New';
     font-style: italic;
-    font-transform: uppercase;
+    text-transform: uppercase;
 }
 
 /* ============================================================
@@ -96,6 +96,11 @@ italic {
     pointer-events: none;
     background-image: radial-gradient(circle, rgba(0, 0, 0, 0.10) 0.07rem, transparent 0.07rem);
     background-size: 1.4rem 1.4rem;
+    transition: opacity 0.3s ease;
+}
+
+.bg-dots.dense {
+    opacity: 0.15;
 }
 
 .bg-dots::after {
@@ -104,8 +109,8 @@ italic {
     inset: 0;
     background-image: radial-gradient(circle, rgba(0, 0, 0, 0.30) 0.07rem, transparent 0.07rem);
     background-size: 0.5rem 0.5rem;
-    mask-image: radial-gradient(circle 14rem at var(--mx, 50%) var(--my, 50%), black 0%, rgba(0, 0, 0, 0.5) 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle 14rem at var(--mx, 50%) var(--my, 50%), black 0%, rgba(0, 0, 0, 0.5) 40%, transparent 100%);
+    mask-image: radial-gradient(circle 14rem at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, rgba(0, 0, 0, 0.5) 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle 14rem at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, rgba(0, 0, 0, 0.5) 40%, transparent 100%);
 }
 
 /* ============================================================
@@ -187,8 +192,22 @@ italic {
     transition: color 0.2s;
 }
 
-.btn-carrito:hover {
-    color: var(--rojo);
+.ctrl-navbar .navbar-toggler {
+    display: block;
+}
+
+.ctrl-navbar .collapse.navbar-collapse {
+    display: none !important;
+}
+
+@media (min-width: 992px) {
+    .ctrl-navbar .navbar-toggler {
+        display: none !important;
+    }
+
+    .ctrl-navbar .collapse.navbar-collapse {
+        display: none !important;
+    }
 }
 
 .carrito-count {
@@ -534,8 +553,8 @@ italic {
 .hero-title .marca {
     font-style: italic;
     font-family: 'PP Editorial New';
-    font-weight: 300;
-    color: var(--rojo);
+    font-weight: 400;
+    text-transform:uppercase;
 }
 
 .hero-subtitle {
@@ -637,6 +656,7 @@ italic {
     border-radius: 999rem;
 }
 
+
 /* ===== ABOUT PREVIEW ===== */
 .about-section {
     padding: 7rem 0;
@@ -652,8 +672,9 @@ italic {
 .about-title em {
     font-style: italic;
     font-family: 'PP Editorial New';
-    font-weight: 300;
-    color: var(--rojo);
+    text-transform:uppercase;
+    font-weight: 400;
+  
 }
 
 .stats-row {
