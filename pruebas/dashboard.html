@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard — CTRL Admin</title>
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="admin-sidebar">
+    <div class="sidebar-logo">
+        <img src="img/LOGO.svg" alt="CTRL Studio" style="height: 1.5rem; width: auto;">
+        <div class="sidebar-label-admin">Administración</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="sidebar-section">Principal</div>
+        <a href="dashboard.html" class="sidebar-link active">
+            <span class="icon">◈</span> Dashboard
+        </a>
+        <div class="sidebar-section">Gestión</div>
+        <a href="usuarios.html" class="sidebar-link">
+            <span class="icon">◎</span> Usuarios
+        </a>
+        <a href="productos.html" class="sidebar-link">
+            <span class="icon">◻</span> Productos
+        </a>
+        <a href="pedidos.html" class="sidebar-link">
+            <span class="icon">◑</span> Pedidos
+        </a>
+        <div class="sidebar-section">Sistema</div>
+        <a href="index.html" class="sidebar-link">
+            <span class="icon">←</span> Cerrar sesión
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="admin-user">
+            <div class="admin-avatar">A</div>
+            <div>
+                <div class="admin-user-name">admin</div>
+                <div class="admin-user-role">Administrador</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="admin-main">
+    <div class="admin-topbar">
+        <span class="topbar-title">Dashboard</span>
+        <div class="topbar-right">
+            <span style="font-size:0.78rem; color:var(--txt-muted)">Hoy: <strong id="fecha-hoy"></strong></span>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <!-- STATS -->
+        <div class="row gy-3 mb-4">
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-card-num">42</div>
+                    <div class="stat-card-label">Usuarios registrados</div>
+                    <div class="stat-card-delta delta-up">↑ 8 este mes</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-card-num">9</div>
+                    <div class="stat-card-label">Productos activos</div>
+                    <div class="stat-card-delta delta-up">↑ 2 nuevos</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-card-num">17</div>
+                    <div class="stat-card-label">Pedidos este mes</div>
+                    <div class="stat-card-delta delta-up">↑ 5 vs mes anterior</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-card-num">12.840€</div>
+                    <div class="stat-card-label">Facturación mensual</div>
+                    <div class="stat-card-delta delta-up">↑ +18%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PEDIDOS RECIENTES -->
+        <div class="admin-table-wrap mb-4">
+            <div class="admin-table-header">
+                <span class="admin-table-title">Pedidos recientes</span>
+                <a href="pedidos.html" style="font-size:0.78rem; font-weight:700; color:var(--azul-dark)">Ver todos →</a>
+            </div>
+            <table class="ctrl-table">
+                <thead>
+                    <tr>
+                        <th>ID Pedido</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Importe</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#CTR-00141</td>
+                        <td>Laura Martínez</td>
+                        <td>Identidad de Marca</td>
+                        <td>1.077,90€</td>
+                        <td><span class="badge-estado badge-pendiente">EN CURSO</span></td>
+                        <td>03/03/2026</td>
+                    </tr>
+                    <tr>
+                        <td>#CTR-00140</td>
+                        <td>Carlos Vidal</td>
+                        <td>Plan Pro — Mensual</td>
+                        <td>543,29€</td>
+                        <td><span class="badge-estado badge-completado">COMPLETADO</span></td>
+                        <td>01/03/2026</td>
+                    </tr>
+                    <tr>
+                        <td>#CTR-00139</td>
+                        <td>Ana Soler</td>
+                        <td>Kit Social Media</td>
+                        <td>35,09€</td>
+                        <td><span class="badge-estado badge-completado">COMPLETADO</span></td>
+                        <td>28/02/2026</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ACCESOS RÁPIDOS -->
+        <div class="row gy-3">
+            <div class="col-md-4">
+                <a href="usuarios.html" style="display:block; text-decoration:none">
+                    <div class="stat-card" style="cursor:pointer; transition:box-shadow 0.2s" onmouseover="this.style.boxShadow='0 0.5rem 1.5rem rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow=''">
+                        <div style="font-size:1.5rem; margin-bottom:0.5rem">◎</div>
+                        <div style="font-weight:700; font-size:0.9rem">Gestionar usuarios</div>
+                        <div style="font-size:0.78rem; color:var(--txt-muted); margin-top:0.3rem">Activar, desactivar, editar</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="productos.html" style="display:block; text-decoration:none">
+                    <div class="stat-card" style="cursor:pointer; transition:box-shadow 0.2s" onmouseover="this.style.boxShadow='0 0.5rem 1.5rem rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow=''">
+                        <div style="font-size:1.5rem; margin-bottom:0.5rem">◻</div>
+                        <div style="font-weight:700; font-size:0.9rem">Gestionar productos</div>
+                        <div style="font-size:0.78rem; color:var(--txt-muted); margin-top:0.3rem">Añadir, editar, eliminar</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="pedidos.html" style="display:block; text-decoration:none">
+                    <div class="stat-card" style="cursor:pointer; transition:box-shadow 0.2s" onmouseover="this.style.boxShadow='0 0.5rem 1.5rem rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow=''">
+                        <div style="font-size:1.5rem; margin-bottom:0.5rem">◑</div>
+                        <div style="font-weight:700; font-size:0.9rem">Gestionar pedidos</div>
+                        <div style="font-size:0.78rem; color:var(--txt-muted); margin-top:0.3rem">Ver, buscar, actualizar estado</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script>
+// Mostrar fecha
+document.getElementById("fecha-hoy").textContent = new Date().toLocaleDateString("es-ES", {day:"2-digit", month:"long", year:"numeric"});
+
+// Proteger página
+if (sessionStorage.getItem("ctrl_admin") !== "true") {
+    window.location.href = "index.html";
+}
+</script>
+</body>
+</html>

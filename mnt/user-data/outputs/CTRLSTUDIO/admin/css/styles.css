@@ -1,0 +1,284 @@
+/* ============================================================
+   CTRL STUDIO ADMIN — ESTILOS
+   ============================================================ */
+
+@font-face {
+    font-family: 'Helvetica Now Display';
+    src: url('https://db.onlinewebfonts.com/c/0976a2619014c5855690b7509fab4c6e?family=Helvetica+Now+Display');
+}
+
+:root {
+    --bg:        #f4f4f2;
+    --sidebar:   #29274c;
+    --oscuro:    #1e1c3a;
+    --azul:      #989fcb;
+    --azul-dark: #4e5174;
+    --rojo:      #a50136;
+    --rojo-dark: #710632;
+    --txt:       #1a1a1a;
+    --txt-muted: #888;
+    --white:     #ffffff;
+    --gris-claro:#ebebe8;
+    --gris-mid:  #d1cece;
+    --radius:    0.875rem;
+    --radius-pill: 999rem;
+    --sidebar-w: 15rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+    font-family: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--txt);
+    display: flex;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ===== SIDEBAR ===== */
+.admin-sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--sidebar);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+    transition: transform 0.3s;
+}
+.sidebar-logo {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-logo .logo-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.02em;
+}
+.logo-dot { color: var(--azul); }
+.sidebar-label-admin {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    margin-top: 0.2rem;
+}
+.sidebar-nav { flex: 1; padding: 1.5rem 0; }
+.sidebar-section {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+    padding: 0.5rem 1.5rem;
+    margin-top: 1rem;
+}
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.65);
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+}
+.sidebar-link:hover { color: white; background: rgba(255,255,255,0.05); }
+.sidebar-link.active { color: white; background: rgba(255,255,255,0.08); border-left-color: var(--azul); font-weight: 600; }
+.sidebar-link .icon { font-size: 1rem; width: 1.2rem; text-align: center; }
+.sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+.admin-user { display: flex; align-items: center; gap: 0.75rem; }
+.admin-avatar {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rojo), var(--azul));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+.admin-user-name { font-size: 0.82rem; font-weight: 600; color: white; }
+.admin-user-role { font-size: 0.68rem; color: rgba(255,255,255,0.4); }
+
+/* ===== MAIN CONTENT ===== */
+.admin-main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.admin-topbar {
+    background: white;
+    border-bottom: 1px solid var(--gris-mid);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+.topbar-title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--txt-muted); }
+.topbar-right { display: flex; align-items: center; gap: 1rem; }
+.topbar-btn {
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.topbar-btn-primary { background: var(--rojo); color: white; }
+.topbar-btn-primary:hover { background: var(--rojo-dark); }
+.topbar-btn-ghost { background: var(--gris-claro); color: var(--txt); }
+.topbar-btn-ghost:hover { background: var(--gris-mid); }
+
+.admin-content { padding: 2rem; flex: 1; }
+
+/* ===== STAT CARDS ===== */
+.stat-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    border: 1px solid var(--gris-mid);
+}
+.stat-card-num { font-size: 2rem; font-weight: 700; line-height: 1; }
+.stat-card-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-muted); margin-top: 0.3rem; }
+.stat-card-delta { font-size: 0.75rem; font-weight: 600; margin-top: 0.5rem; }
+.delta-up { color: #4caf50; }
+.delta-down { color: var(--rojo); }
+
+/* ===== TABLA ADMIN ===== */
+.admin-table-wrap {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--gris-mid);
+    overflow: hidden;
+}
+.admin-table-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--gris-mid);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+.admin-table-title { font-size: 0.85rem; font-weight: 700; }
+.admin-search {
+    border: 1.5px solid var(--gris-mid);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 1rem;
+    font-size: 0.82rem;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    width: 14rem;
+}
+.admin-search:focus { border-color: var(--azul); }
+
+table.ctrl-table { width: 100%; border-collapse: collapse; }
+.ctrl-table th {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--txt-muted);
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--gris-mid);
+    background: var(--bg);
+    text-align: left;
+}
+.ctrl-table td {
+    padding: 0.9rem 1.25rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--gris-claro);
+    vertical-align: middle;
+}
+.ctrl-table tbody tr:last-child td { border-bottom: none; }
+.ctrl-table tbody tr:hover td { background: rgba(152,159,203,0.05); }
+
+/* BADGES */
+.badge-estado {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.badge-activo { background: rgba(76,175,80,0.12); color: #2e7d32; }
+.badge-inactivo { background: rgba(165,1,54,0.1); color: var(--rojo); }
+.badge-pendiente { background: rgba(255,152,0,0.12); color: #e65100; }
+.badge-completado { background: rgba(76,175,80,0.12); color: #2e7d32; }
+.badge-cancelado { background: rgba(165,1,54,0.1); color: var(--rojo); }
+
+/* ACCIONES TABLA */
+.tbl-action {
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.3rem 0.7rem;
+    border-radius: 0.4rem;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+.tbl-edit { color: var(--azul-dark); }
+.tbl-edit:hover { background: rgba(78,81,116,0.1); }
+.tbl-delete { color: var(--rojo); }
+.tbl-delete:hover { background: rgba(165,1,54,0.08); }
+.tbl-toggle { color: var(--txt-muted); }
+.tbl-toggle:hover { background: var(--gris-claro); }
+
+/* FORM ADMIN */
+.admin-form .form-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--txt-muted);
+    margin-bottom: 0.35rem;
+}
+.admin-form .form-control,
+.admin-form .form-select {
+    border: 1.5px solid var(--gris-mid);
+    border-radius: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.88rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+.admin-form .form-control:focus,
+.admin-form .form-select:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(152,159,203,0.2);
+    outline: none;
+}
+.admin-form .form-control:invalid:not(:placeholder-shown) { border-color: var(--rojo); }
+
+/* MODAL */
+.modal-content { border-radius: var(--radius); border: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .admin-sidebar { transform: translateX(-100%); }
+    .admin-sidebar.open { transform: translateX(0); }
+    .admin-main { margin-left: 0; }
+}
