@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi Cuenta — CTRL Studio</title>
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .usuario-hero { padding: 8rem 0 3rem; }
+        .usuario-hero-title {
+            font-size: clamp(2.5rem, 5vw, 3.8rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        /* TABS */
+        .form-tabs {
+            display: flex;
+            gap: 0;
+            border: 1.5px solid var(--gris-mid);
+            border-radius: 999rem;
+            overflow: hidden;
+            width: fit-content;
+            margin-bottom: 2rem;
+        }
+        .form-tab {
+            padding: 0.55rem 1.6rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .form-tab.active { background: var(--rojo); color: white; }
+
+        /* FORM CARD */
+        .form-card {
+            border-radius: var(--radius);
+            border: 1px solid var(--gris-mid);
+            background: white;
+            padding: 2.5rem;
+            max-width: 36rem;
+        }
+
+        /* PERFIL (cuando está logueado) */
+        .perfil-section { display: none; }
+        .perfil-header {
+            border-radius: var(--radius);
+            background: var(--oscuro);
+            color: white;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .perfil-avatar {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--rojo), var(--azul));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .perfil-nombre { font-size: 1.4rem; font-weight: 700; }
+        .perfil-email { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem; }
+
+        /* PEDIDOS */
+        .pedido-card {
+            border-radius: var(--radius);
+            border: 1px solid var(--gris-mid);
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .pedido-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+        .pedido-id { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--txt-muted); }
+        .pedido-fecha { font-size: 0.78rem; color: var(--txt-muted); }
+        .pedido-item { font-size: 0.88rem; padding: 0.4rem 0; border-bottom: 1px solid var(--gris-claro); display:flex; justify-content:space-between; }
+        .pedido-total { font-weight: 700; margin-top: 0.8rem; font-size:0.9rem; }
+
+        /* CAMBIO CLAVE */
+        .clave-section { margin-top: 2rem; }
+
+        /* RADIO TOGGLE (acceso / registro) */
+        .radio-group { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .radio-option { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.88rem; font-weight: 600; }
+        .radio-option input { accent-color: var(--rojo); }
+
+        /* CAMPOS REGISTRO (ocultos por defecto) */
+        #campos-registro { display: none; }
+    </style>
+</head>
+<body>
+<div class="bg-dots"></div>
+<mi-menu></mi-menu>
+
+<section class="usuario-hero">
+    <div class="container">
+        <p class="section-label">Mi cuenta</p>
+        <h1 class="usuario-hero-title">Bienvenido/a.</h1>
+    </div>
+</section>
+
+<section class="pb-5">
+    <div class="container">
+
+        <!-- FORMULARIO LOGIN / REGISTRO -->
+        <div id="login-section">
+            <!-- TABS -->
+            <div class="form-tabs mb-0">
+                <button class="form-tab active" onclick="switchTab('acceso')">ACCESO</button>
+                <button class="form-tab" onclick="switchTab('registro')">REGISTRO</button>
+            </div>
+
+            <div class="form-card ctrl-form mt-0" style="border-top-left-radius:0">
+
+                <!-- SELECTOR RADIO -->
+                <div class="radio-group" id="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="modo" value="acceso" checked onchange="toggleModo('acceso')">
+                        Acceso
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="modo" value="registro" onchange="toggleModo('registro')">
+                        Registro
+                    </label>
+                </div>
+
+                <form id="form-usuario" novalidate>
+                    <!-- CAMPOS COMUNES -->
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" class="form-control" id="email"
+                            placeholder="hola@tudominio.com" required autocomplete="email">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="password"
+                            placeholder="••••••••" required minlength="8" autocomplete="current-password">
+                    </div>
+
+                    <!-- CAMPOS SOLO REGISTRO -->
+                    <div id="campos-registro">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label" for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre"
+                                    placeholder="Ana" autocomplete="given-name">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label" for="apellidos">Apellidos</label>
+                                <input type="text" class="form-control" id="apellidos"
+                                    placeholder="García López" autocomplete="family-name">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="telefono">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono"
+                                placeholder="+34 600 000 000"
+                                pattern="[\+]?[0-9\s\-]{9,15}"
+                                autocomplete="tel">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="direccion">Dirección</label>
+                            <input type="text" class="form-control" id="direccion"
+                                placeholder="Calle Mayor 1, 46001 Valencia" autocomplete="street-address">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="password2">Confirmar contraseña</label>
+                            <input type="password" class="form-control" id="password2"
+                                placeholder="••••••••" minlength="8" autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-ctrl btn-ctrl-primary w-100 justify-content-center mt-2" id="btn-submit">
+                        ENTRAR ↗
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PERFIL (visible cuando está logueado) -->
+        <div id="perfil-section" class="perfil-section">
+            <div class="row gy-4">
+                <div class="col-lg-8">
+                    <!-- HEADER PERFIL -->
+                    <div class="perfil-header">
+                        <div class="perfil-avatar" id="perfil-avatar">?</div>
+                        <div class="perfil-nombre" id="perfil-nombre">—</div>
+                        <div class="perfil-email" id="perfil-email">—</div>
+                    </div>
+
+                    <!-- PEDIDOS -->
+                    <h2 style="font-size:1rem; font-weight:700; letter-spacing:0.05em; margin-bottom:1rem">MIS PEDIDOS</h2>
+                    <div class="pedido-card">
+                        <div class="pedido-header">
+                            <span class="pedido-id">#CTR-00124</span>
+                            <span class="badge-estado badge-completado">COMPLETADO</span>
+                            <span class="pedido-fecha">12 feb 2026</span>
+                        </div>
+                        <div class="pedido-item"><span>Identidad de Marca Completa</span><span>890,00€</span></div>
+                        <div class="pedido-total">Total: 1.077,90€ (IVA inc.)</div>
+                    </div>
+                    <div class="pedido-card">
+                        <div class="pedido-header">
+                            <span class="pedido-id">#CTR-00137</span>
+                            <span class="badge-estado badge-pendiente">EN CURSO</span>
+                            <span class="pedido-fecha">01 mar 2026</span>
+                        </div>
+                        <div class="pedido-item"><span>Plan Pro — Mensual</span><span>449,00€</span></div>
+                        <div class="pedido-total">Total: 543,29€ (IVA inc.)</div>
+                    </div>
+
+                    <!-- MODIFICAR DATOS -->
+                    <h2 style="font-size:1rem; font-weight:700; letter-spacing:0.05em; margin: 2rem 0 1rem">MODIFICAR DATOS</h2>
+                    <div class="form-card ctrl-form p-4">
+                        <form id="form-modificar" novalidate>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label class="form-label" for="mod-nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="mod-nombre" autocomplete="given-name">
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label" for="mod-apellidos">Apellidos</label>
+                                    <input type="text" class="form-control" id="mod-apellidos" autocomplete="family-name">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="mod-telefono">Teléfono</label>
+                                <input type="tel" class="form-control" id="mod-telefono"
+                                    pattern="[\+]?[0-9\s\-]{9,15}" autocomplete="tel">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="mod-direccion">Dirección</label>
+                                <input type="text" class="form-control" id="mod-direccion" autocomplete="street-address">
+                            </div>
+                            <button type="submit" class="btn-ctrl btn-ctrl-primary">GUARDAR CAMBIOS</button>
+                        </form>
+                    </div>
+
+                    <!-- CAMBIAR CLAVE -->
+                    <h2 style="font-size:1rem; font-weight:700; letter-spacing:0.05em; margin: 2rem 0 1rem">CAMBIAR CONTRASEÑA</h2>
+                    <div class="form-card ctrl-form p-4">
+                        <form id="form-clave" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label" for="clave-actual">Contraseña actual</label>
+                                <input type="password" class="form-control" id="clave-actual" required minlength="8" autocomplete="current-password">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="clave-nueva">Nueva contraseña</label>
+                                <input type="password" class="form-control" id="clave-nueva" required minlength="8" autocomplete="new-password">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="clave-nueva2">Confirmar nueva contraseña</label>
+                                <input type="password" class="form-control" id="clave-nueva2" required minlength="8" autocomplete="new-password">
+                            </div>
+                            <button type="submit" class="btn-ctrl btn-ctrl-outline">CAMBIAR CONTRASEÑA</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="resumen-card" style="border-radius:var(--radius); border:1px solid var(--gris-mid); background:white; padding:1.5rem; position:sticky; top:7rem">
+                        <p style="font-size:0.68rem; letter-spacing:0.12em; font-weight:700; text-transform:uppercase; color:var(--txt-muted); margin-bottom:1rem">Acciones</p>
+                        <a href="carrito.html" class="btn-ctrl btn-ctrl-outline w-100 justify-content-center mb-2">Ver carrito</a>
+                        <button class="btn-ctrl w-100 justify-content-center"
+                            style="background:rgba(165,1,54,0.08); color:var(--rojo); border:none"
+                            onclick="cerrarSesion()">
+                            CERRAR SESIÓN
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div class="ctrl-toast" id="toast"></div>
+<mi-pie></mi-pie>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/mis-etiquetas.js"></script>
+<script src="js/fondo.js"></script>
+<script src="js/carrito.js"></script>
+<script>
+// Modo acceso / registro
+let modoActual = 'acceso';
+
+function switchTab(modo) {
+    modoActual = modo;
+    document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    toggleModo(modo);
+}
+
+function toggleModo(modo) {
+    modoActual = modo;
+    const campos = document.getElementById('campos-registro');
+    const btn = document.getElementById('btn-submit');
+    const radios = document.querySelectorAll('input[name="modo"]');
+
+    if (modo === 'registro') {
+        campos.style.display = 'block';
+        btn.textContent = 'REGISTRARSE ↗';
+        radios[1].checked = true;
+        document.getElementById('nombre').required = true;
+        document.getElementById('apellidos').required = true;
+        document.getElementById('telefono').required = true;
+        document.getElementById('password2').required = true;
+    } else {
+        campos.style.display = 'none';
+        btn.textContent = 'ENTRAR ↗';
+        radios[0].checked = true;
+        document.getElementById('nombre').required = false;
+        document.getElementById('apellidos').required = false;
+        document.getElementById('telefono').required = false;
+        document.getElementById('password2').required = false;
+    }
+}
+
+// Submit formulario
+document.getElementById('form-usuario').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('password').value;
+
+    if (modoActual === 'registro') {
+        const pass2 = document.getElementById('password2').value;
+        if (pass !== pass2) {
+            showToast('Las contraseñas no coinciden');
+            return;
+        }
+        const nombre = document.getElementById('nombre').value;
+        sessionStorage.setItem('ctrl_logged', 'true');
+        sessionStorage.setItem('ctrl_user', JSON.stringify({ nombre, email }));
+        showToast('Cuenta creada correctamente');
+    } else {
+        sessionStorage.setItem('ctrl_logged', 'true');
+        sessionStorage.setItem('ctrl_user', JSON.stringify({ nombre: 'Usuario', email }));
+    }
+    mostrarPerfil();
+});
+
+function mostrarPerfil() {
+    const user = JSON.parse(sessionStorage.getItem('ctrl_user') || '{}');
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('perfil-section').style.display = 'block';
+    document.getElementById('perfil-nombre').textContent = user.nombre || 'Usuario';
+    document.getElementById('perfil-email').textContent = user.email || '';
+    document.getElementById('perfil-avatar').textContent = (user.nombre || 'U')[0].toUpperCase();
+    document.getElementById('mod-nombre').value = user.nombre || '';
+}
+
+function cerrarSesion() {
+    sessionStorage.removeItem('ctrl_logged');
+    sessionStorage.removeItem('ctrl_user');
+    document.getElementById('login-section').style.display = 'block';
+    document.getElementById('perfil-section').style.display = 'none';
+    showToast('Sesión cerrada');
+}
+
+// Comprobar si ya está logueado al cargar
+document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('ctrl_logged') === 'true') {
+        mostrarPerfil();
+    }
+    // Si viene del hash #registro, activar modo registro
+    if (window.location.hash === '#registro') {
+        switchTab('registro');
+    }
+});
+
+// Form modificar datos
+document.getElementById('form-modificar').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showToast('Datos actualizados correctamente');
+});
+
+// Form cambiar clave
+document.getElementById('form-clave').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const n = document.getElementById('clave-nueva').value;
+    const n2 = document.getElementById('clave-nueva2').value;
+    if (n !== n2) { showToast('Las contraseñas no coinciden'); return; }
+    showToast('Contraseña actualizada');
+    this.reset();
+});
+</script>
+</body>
+</html>

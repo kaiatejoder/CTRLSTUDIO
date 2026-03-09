@@ -1,19 +1,115 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
-	<head>
-		<title>CTRL STUDIO</title>
-		<link rel="icon" type="image/svg" href="img/icono.ico" sizes="64x64">
-		<link rel="stylesheet" href="css/estilo.css" type="text/css">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
-	<body>
-		<mi-cabecera></mi-cabecera>
-		<mi-menu></mi-menu>
-		<div class = "hero">
-			<h2>Contenido de Inicio</h2>
-		</div>
-		<mi-pie></mi-pie>
-		<script src="./js/mis-etiquetas.js"></script>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login — CTRL Admin</title>
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="admin-sidebar">
+    <div class="sidebar-logo">
+        <img src="img/LOGO.svg" alt="CTRL Studio" style="height: 1.5rem; width: auto;">
+        <div class="sidebar-label-admin">Administración</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="sidebar-section">Principal</div>
+        <a href="dashboard.html" class="sidebar-link">
+            <span class="icon">◈</span> Dashboard
+        </a>
+        <div class="sidebar-section">Gestión</div>
+        <a href="usuarios.html" class="sidebar-link">
+            <span class="icon">◎</span> Usuarios
+        </a>
+        <a href="productos.html" class="sidebar-link">
+            <span class="icon">◻</span> Productos
+        </a>
+        <a href="pedidos.html" class="sidebar-link">
+            <span class="icon">◑</span> Pedidos
+        </a>
+        <div class="sidebar-section">Sistema</div>
+        <a href="index.html" class="sidebar-link active">
+            <span class="icon">←</span> Iniciar sesión
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="admin-user">
+            <div class="admin-avatar">?</div>
+            <div>
+                <div class="admin-user-name">Invitado</div>
+                <div class="admin-user-role">No autenticado</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="admin-main">
+    <div class="admin-topbar">
+        <span class="topbar-title">Iniciar sesión</span>
+        <div class="topbar-right">
+            <span style="font-size:0.78rem; color:var(--txt-muted)">Panel de control</span>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <div style="display: flex; justify-content: center; align-items: center; min-height: 60vh;">
+            <div class="form-card" style="max-width: 28rem;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">◆</div>
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Acceso Admin</h3>
+                    <p style="font-size: 0.85rem; color: var(--txt-muted); margin: 0;">Ingresa tus credenciales para continuar</p>
+                </div>
+
+                <form id="login-form">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--txt);">Usuario o Email</label>
+                        <input type="text" id="usuario" placeholder="admin@ctrlstudio.es" required style="width: 100%; padding: 0.55rem 0.9rem; border: 1.5px solid var(--gris-mid); border-radius: var(--radius); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s;">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--txt);">Contraseña</label>
+                        <input type="password" id="password" placeholder="••••••••" required style="width: 100%; padding: 0.55rem 0.9rem; border: 1.5px solid var(--gris-mid); border-radius: var(--radius); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s;">
+                    </div>
+
+                    <button type="submit" style="width: 100%; padding: 0.6rem; background: var(--rojo); color: white; border: none; border-radius: var(--radius); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; cursor: pointer; transition: background 0.2s; margin-bottom: 1rem;">INICIAR SESIÓN</button>
+
+                    <div style="text-align: center; font-size: 0.75rem; color: var(--txt-muted);">
+                        ¿Olvidaste tu contraseña? <a href="#" style="color: var(--azul); text-decoration: none; font-weight: 700;">Recuperar acceso</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script>
+document.getElementById("login-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const usuario = document.getElementById("usuario").value;
+    const password = document.getElementById("password").value;
+    
+    // Validación simple (en producción usar backend)
+    if (usuario === "admin" && password === "admin123") {
+        sessionStorage.setItem("ctrl_admin", "true");
+        window.location.href = "dashboard.html";
+    } else {
+        alert("Usuario o contraseña incorrectos");
+    }
+});
+
+// Si ya está logueado, ir al dashboard
+if (sessionStorage.getItem("ctrl_admin") === "true") {
+    window.location.href = "dashboard.html";
+}
+</script>
+<script src="js/mis-etiquetas.js"></script>
+<script src="js/fondo.js"></script>
+</body>
 </html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ajustes — CTRL Admin</title>
+    <link rel="icon" type="image/png" href="img/favicon.png" sizes="64x64">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* ── GRID DE TEMAS ── */
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        /* TARJETA DE TEMA */
+        .theme-card {
+            border-radius: var(--radius);
+            border: 2px solid var(--frost-border);
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            background: var(--frost-bg);
+        }
+        .theme-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 1rem 2.5rem rgba(0,0,0,0.35);
+        }
+        .theme-card.active {
+            border-color: var(--azul);
+            box-shadow: 0 0 0 1px var(--azul), 0 1rem 2.5rem rgba(0,0,0,0.3);
+        }
+
+        /* CHECK de seleccionado */
+        .theme-card .check-badge {
+            position: absolute;
+            top: 0.7rem; right: 0.7rem;
+            width: 1.4rem; height: 1.4rem;
+            border-radius: 50%;
+            background: var(--azul);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.65rem;
+            color: white;
+            font-weight: 700;
+            opacity: 0;
+            transform: scale(0.6);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .theme-card.active .check-badge { opacity: 1; transform: scale(1); }
+
+        /* MINI PREVIEW dentro de la tarjeta */
+        .theme-preview {
+            width: 100%;
+            height: 10rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Preview CTRL (oscuro, actual) */
+        .prev-ctrl {
+            background: #0d0c1a;
+        }
+        .prev-ctrl::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 70% 55% at 15% 5%, rgba(78,81,116,0.4) 0%, transparent 60%),
+                radial-gradient(ellipse 55% 45% at 85% 85%, rgba(165,1,54,0.2) 0%, transparent 55%);
+        }
+
+        /* Preview MORPHEX (crema) */
+        .prev-morphex {
+            background: #f5f0e8;
+        }
+        .prev-morphex::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 70% 55% at 10% 0%, rgba(220,210,180,0.55) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 40% at 90% 90%, rgba(200,190,160,0.35) 0%, transparent 55%);
+        }
+
+        /* Preview VOID (negro) */
+        .prev-void {
+            background: #080808;
+        }
+        .prev-void::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
+        }
+
+        /* Sidebar mini */
+        .mini-sidebar {
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 2.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            padding: 0.6rem 0.45rem;
+            z-index: 1;
+        }
+        .mini-sidebar-dot {
+            width: 100%;
+            height: 0.35rem;
+            border-radius: 99px;
+            opacity: 0.25;
+        }
+        .mini-sidebar-dot.active-dot { opacity: 0.7; }
+
+        /* Cards mini */
+        .mini-cards {
+            position: absolute;
+            top: 0.5rem; left: 3.3rem; right: 0.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.35rem;
+        }
+        .mini-card {
+            height: 2.2rem;
+            border-radius: 0.4rem;
+            opacity: 0.5;
+        }
+        .mini-row {
+            position: absolute;
+            left: 3.3rem; right: 0.5rem;
+            height: 4rem;
+            border-radius: 0.4rem;
+            opacity: 0.3;
+            top: 3.1rem;
+        }
+        .mini-row2 {
+            position: absolute;
+            left: 3.3rem; right: 0.5rem;
+            height: 2.8rem;
+            border-radius: 0.4rem;
+            opacity: 0.2;
+            top: 7.3rem;
+        }
+
+        /* Colores según tema */
+        .prev-ctrl    .mini-sidebar   { background: rgba(255,255,255,0.04); border-right: 1px solid rgba(255,255,255,0.07); }
+        .prev-ctrl    .mini-sidebar-dot { background: #989fcb; }
+        .prev-ctrl    .mini-card        { background: rgba(255,255,255,0.08); }
+        .prev-ctrl    .mini-row         { background: rgba(255,255,255,0.06); }
+        .prev-ctrl    .mini-row2        { background: rgba(255,255,255,0.04); }
+
+        .prev-morphex .mini-sidebar   { background: rgba(245,240,232,0.9); border-right: 1px solid rgba(0,0,0,0.07); }
+        .prev-morphex .mini-sidebar-dot { background: #8a7a50; }
+        .prev-morphex .mini-card        { background: rgba(255,255,255,0.75); }
+        .prev-morphex .mini-row         { background: rgba(255,255,255,0.7); }
+        .prev-morphex .mini-row2        { background: rgba(255,255,255,0.55); }
+
+        .prev-void .mini-sidebar   { background: rgba(255,255,255,0.02); border-right: 1px solid rgba(255,255,255,0.05); }
+        .prev-void .mini-sidebar-dot { background: #e0e0e0; }
+        .prev-void .mini-card        { background: rgba(255,255,255,0.05); }
+        .prev-void .mini-row         { background: rgba(255,255,255,0.04); }
+        .prev-void .mini-row2        { background: rgba(255,255,255,0.025); }
+
+        /* Acento de color en tarjeta mini */
+        .mini-accent-bar {
+            position: absolute;
+            top: 0; left: 3.3rem; right: 0.5rem;
+            height: 2px;
+            border-radius: 0 0 2px 2px;
+            opacity: 0;
+        }
+
+        /* INFO DE TEMA */
+        .theme-info { padding: 1rem 1.1rem 1.1rem; }
+        .theme-name {
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+        .theme-desc {
+            font-size: 0.72rem;
+            color: var(--txt-muted);
+            line-height: 1.45;
+        }
+        .theme-chips {
+            display: flex;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+            margin-top: 0.6rem;
+        }
+        .theme-chip {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            padding: 0.18rem 0.55rem;
+            border-radius: 99px;
+            border: 1px solid var(--frost-border);
+            color: var(--txt-muted);
+            text-transform: uppercase;
+        }
+
+        /* ── SECCIÓN AJUSTES DE INTERFAZ ── */
+        .settings-group {
+            background: var(--frost-bg);
+            backdrop-filter: blur(var(--frost-blur));
+            -webkit-backdrop-filter: blur(var(--frost-blur));
+            border: 1px solid var(--frost-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .settings-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.4rem;
+            border-bottom: 1px solid var(--frost-border);
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .settings-row:last-child { border-bottom: none; }
+        .settings-label { font-size: 0.85rem; font-weight: 600; }
+        .settings-sub { font-size: 0.72rem; color: var(--txt-muted); margin-top: 0.1rem; }
+
+        /* Toggle switch */
+        .toggle-wrap { display: flex; align-items: center; gap: 0.6rem; }
+        .toggle {
+            position: relative;
+            width: 2.4rem;
+            height: 1.3rem;
+            flex-shrink: 0;
+        }
+        .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+        .toggle-track {
+            position: absolute; inset: 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--frost-border);
+            border-radius: 99px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .toggle input:checked + .toggle-track { background: var(--azul); border-color: var(--azul); }
+        .toggle-track::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px;
+            width: calc(1.3rem - 6px);
+            height: calc(1.3rem - 6px);
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+        .toggle input:checked + .toggle-track::after { transform: translateX(1.1rem); }
+
+        /* Selector radio con preview de color */
+        .color-radio-group { display: flex; gap: 0.5rem; }
+        .color-radio { position: relative; }
+        .color-radio input { position: absolute; opacity: 0; }
+        .color-radio-dot {
+            width: 1.5rem; height: 1.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+        .color-radio-dot:hover { transform: scale(1.15); }
+        .color-radio input:checked + .color-radio-dot {
+            border-color: var(--txt);
+            transform: scale(1.1);
+        }
+        .cr-azul    { background: #989fcb; }
+        .cr-rojo    { background: #a50136; }
+        .cr-verde   { background: #4caf50; }
+        .cr-naranja { background: #e65100; }
+
+        /* ── PERFIL ADMIN ── */
+        .admin-profile-card {
+            background: linear-gradient(135deg, rgba(41,39,76,0.55) 0%, rgba(78,81,116,0.25) 100%);
+            border: 1px solid rgba(152,159,203,0.2);
+            border-radius: var(--radius);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .profile-avatar-big {
+            width: 4rem; height: 4rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #29274c, #989fcb);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; font-weight: 700; color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+            flex-shrink: 0;
+        }
+        .profile-name { font-size: 1.1rem; font-weight: 700; }
+        .profile-role { font-size: 0.72rem; color: var(--txt-muted); margin-top: 0.15rem; }
+        .profile-since { font-size: 0.68rem; color: var(--txt-dim); margin-top: 0.3rem; }
+
+        /* TOAST */
+        #theme-toast {
+            position: fixed;
+            bottom: 1.5rem; right: 1.5rem;
+            background: var(--frost-bg);
+            backdrop-filter: blur(1rem);
+            border: 1px solid var(--frost-border);
+            color: var(--txt);
+            padding: 0.85rem 1.3rem;
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(0.5rem);
+            transition: all 0.25s;
+            pointer-events: none;
+        }
+        #theme-toast.show { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 700px) { .themes-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="admin-sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-text">CTRL<span class="logo-dot">.</span></div>
+        <div class="sidebar-label-admin">Administración</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="sidebar-section">Principal</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="icon">◈</span> Dashboard</a>
+        <div class="sidebar-section">Gestión</div>
+        <a href="usuarios.html" class="sidebar-link"><span class="icon">◎</span> Usuarios</a>
+        <a href="productos.html" class="sidebar-link"><span class="icon">◻</span> Productos</a>
+        <a href="pedidos.html" class="sidebar-link"><span class="icon">◑</span> Pedidos</a>
+        <div class="sidebar-section">Cuenta</div>
+        <a href="ajustes.html" class="sidebar-link active"><span class="icon">⊙</span> Ajustes</a>
+        <div class="sidebar-section">Sistema</div>
+        <a href="index.html" class="sidebar-link"><span class="icon">←</span> Cerrar sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="admin-user">
+            <div class="admin-avatar">A</div>
+            <div>
+                <div class="admin-user-name">admin</div>
+                <div class="admin-user-role">Administrador</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="admin-main">
+    <div class="admin-topbar">
+        <span class="topbar-title">Ajustes</span>
+        <div class="topbar-right">
+            <button class="topbar-btn topbar-btn-primary" onclick="guardarAjustes()">
+                GUARDAR CAMBIOS
+            </button>
+        </div>
+    </div>
+
+    <div class="admin-content">
+
+        <!-- PERFIL -->
+        <div class="section-sep">Perfil de administrador</div>
+        <div class="admin-profile-card">
+            <div class="profile-avatar-big">A</div>
+            <div>
+                <div class="profile-name">admin</div>
+                <div class="profile-role">Administrador del sistema</div>
+                <div class="profile-since">Cuenta creada en enero 2026</div>
+            </div>
+            <div style="margin-left:auto">
+                <button class="topbar-btn topbar-btn-ghost" onclick="showToast('Función disponible en P2')">
+                    Cambiar contraseña
+                </button>
+            </div>
+        </div>
+
+        <!-- SELECTOR DE TEMA -->
+        <div class="section-sep">Tema de la interfaz</div>
+        <p style="font-size:0.78rem; color:var(--txt-muted); margin-bottom:1rem; line-height:1.55">
+            El tema seleccionado se aplica a todo el panel de administración y se guarda en el navegador.
+        </p>
+
+        <div class="themes-grid" id="themes-grid">
+
+            <!-- TEMA 1: CTRL DARK -->
+            <div class="theme-card" id="card-ctrl" onclick="selectTheme('ctrl')" tabindex="0" role="button" aria-label="Tema CTRL Dark">
+                <div class="check-badge">✓</div>
+                <div class="theme-preview prev-ctrl">
+                    <div class="mini-sidebar">
+                        <div class="mini-sidebar-dot active-dot" style="width:50%"></div>
+                        <div class="mini-sidebar-dot"></div>
+                        <div class="mini-sidebar-dot"></div>
+                        <div class="mini-sidebar-dot"></div>
+                    </div>
+                    <div class="mini-cards">
+                        <div class="mini-card"></div>
+                        <div class="mini-card"></div>
+                        <div class="mini-card" style="opacity:0.7"></div>
+                    </div>
+                    <div class="mini-row"></div>
+                    <div class="mini-row2"></div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">CTRL Dark</div>
+                    <div class="theme-desc">Oscuro con acentos en azul lavanda y rojo. El tema original del estudio.</div>
+                    <div class="theme-chips">
+                        <span class="theme-chip">Oscuro</span>
+                        <span class="theme-chip">Frost</span>
+                        <span class="theme-chip">Bento</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 2: MORPHEX -->
+            <div class="theme-card" id="card-morphex" onclick="selectTheme('morphex')" tabindex="0" role="button" aria-label="Tema Morphex">
+                <div class="check-badge" style="background:#b5a26a">✓</div>
+                <div class="theme-preview prev-morphex">
+                    <div class="mini-sidebar">
+                        <div class="mini-sidebar-dot active-dot" style="width:50%"></div>
+                        <div class="mini-sidebar-dot"></div>
+                        <div class="mini-sidebar-dot"></div>
+                        <div class="mini-sidebar-dot"></div>
+                    </div>
+                    <div class="mini-cards">
+                        <div class="mini-card"></div>
+                        <div class="mini-card"></div>
+                        <div class="mini-card" style="opacity:0.5"></div>
+                    </div>
+                    <div class="mini-row"></div>
+                    <div class="mini-row2"></div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Morphex</div>
+                    <div class="theme-desc">Claro en tonos crema y beige cálido. Inspirado en interfaces editoriales.</div>
+                    <div class="theme-chips">
+                        <span class="theme-chip">Claro</span>
+                        <span class="theme-chip">Cálido</span>
+                        <span class="theme-chip">Suave</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMA 3: VOID -->
+            <div class="theme-card" id="card-void" onclick="selectTheme('void')" tabindex="0" role="button" aria-label="Tema Void">
+                <div class="check-badge" style="background:#555">✓</div>
+                <div class="theme-preview prev-void">
+                    <div class="mini-sidebar">
+                        <div class="mini-sidebar-dot active-dot" style="width:50%"></div>
+                        <div class="mini-sidebar-dot"></div>
+                        <div class="mini-sidebar-dot"></div>
+                        <div class="mini-sidebar-dot"></div>
+                    </div>
+                    <div class="mini-cards">
+                        <div class="mini-card"></div>
+                        <div class="mini-card"></div>
+                        <div class="mini-card" style="opacity:0.4"></div>
+                    </div>
+                    <div class="mini-row"></div>
+                    <div class="mini-row2"></div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Void</div>
+                    <div class="theme-desc">Negro puro con tipografía blanca. Máximo contraste, mínimo ruido visual.</div>
+                    <div class="theme-chips">
+                        <span class="theme-chip">Negro</span>
+                        <span class="theme-chip">Minimal</span>
+                        <span class="theme-chip">Alto contraste</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- AJUSTES DE INTERFAZ -->
+        <div class="section-sep" style="margin-top:2rem">Preferencias de interfaz</div>
+        <div class="settings-group">
+
+            <div class="settings-row">
+                <div>
+                    <div class="settings-label">Animaciones reducidas</div>
+                    <div class="settings-sub">Desactiva las transiciones y efectos de movimiento.</div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="pref-animations">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+
+            <div class="settings-row">
+                <div>
+                    <div class="settings-label">Sidebar compacto</div>
+                    <div class="settings-sub">Reduce el ancho del menú lateral solo a iconos.</div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="pref-compact">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+
+            <div class="settings-row">
+                <div>
+                    <div class="settings-label">Mostrar contador de pedidos en sidebar</div>
+                    <div class="settings-sub">Muestra un badge con pedidos pendientes en el menú.</div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="pref-badge" checked>
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+
+            <div class="settings-row">
+                <div>
+                    <div class="settings-label">Color de acento</div>
+                    <div class="settings-sub">Color principal de botones y elementos interactivos.</div>
+                </div>
+                <div class="color-radio-group">
+                    <label class="color-radio">
+                        <input type="radio" name="acento" value="azul" checked>
+                        <div class="color-radio-dot cr-azul"></div>
+                    </label>
+                    <label class="color-radio">
+                        <input type="radio" name="acento" value="rojo">
+                        <div class="color-radio-dot cr-rojo"></div>
+                    </label>
+                    <label class="color-radio">
+                        <input type="radio" name="acento" value="verde">
+                        <div class="color-radio-dot cr-verde"></div>
+                    </label>
+                    <label class="color-radio">
+                        <input type="radio" name="acento" value="naranja">
+                        <div class="color-radio-dot cr-naranja"></div>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ZONA PELIGROSA -->
+        <div class="section-sep" style="margin-top:2rem; color:rgba(235,87,87,0.5)">Zona peligrosa</div>
+        <div class="settings-group">
+            <div class="settings-row">
+                <div>
+                    <div class="settings-label">Restablecer ajustes</div>
+                    <div class="settings-sub">Vuelve a los ajustes por defecto de la interfaz.</div>
+                </div>
+                <button class="topbar-btn topbar-btn-danger" onclick="resetAjustes()">
+                    RESTABLECER
+                </button>
+            </div>
+        </div>
+
+    </div><!-- /admin-content -->
+</main>
+
+<div id="theme-toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script>
+// ============================================================
+// SISTEMA DE TEMAS
+// ============================================================
+const TEMAS = {
+    ctrl:    { label: 'CTRL Dark',  class: '' },
+    morphex: { label: 'Morphex',    class: 'theme-morphex' },
+    void:    { label: 'Void',       class: 'theme-void' }
+};
+
+let temaActual = localStorage.getItem('ctrl_admin_theme') || 'ctrl';
+
+function applyTheme(tema) {
+    // Quitar todas las clases de tema del html
+    Object.values(TEMAS).forEach(t => {
+        if (t.class) document.documentElement.classList.remove(t.class);
+    });
+    // Aplicar nuevo
+    if (TEMAS[tema] && TEMAS[tema].class) {
+        document.documentElement.classList.add(TEMAS[tema].class);
+    }
+}
+
+function selectTheme(tema) {
+    temaActual = tema;
+    applyTheme(tema);
+
+    // Actualizar UI de tarjetas
+    document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+    const card = document.getElementById('card-' + tema);
+    if (card) card.classList.add('active');
+
+    showToast('Tema "' + TEMAS[tema].label + '" aplicado');
+}
+
+function guardarAjustes() {
+    localStorage.setItem('ctrl_admin_theme', temaActual);
+
+    // Guardar preferencias de interfaz
+    const prefs = {
+        animations: document.getElementById('pref-animations').checked,
+        compact:    document.getElementById('pref-compact').checked,
+        badge:      document.getElementById('pref-badge').checked,
+        acento:     document.querySelector('input[name="acento"]:checked')?.value || 'azul'
+    };
+    localStorage.setItem('ctrl_admin_prefs', JSON.stringify(prefs));
+
+    showToast('✓ Ajustes guardados correctamente');
+}
+
+function resetAjustes() {
+    if (!confirm('¿Restablecer todos los ajustes al valor por defecto?')) return;
+    localStorage.removeItem('ctrl_admin_theme');
+    localStorage.removeItem('ctrl_admin_prefs');
+    temaActual = 'ctrl';
+    applyTheme('ctrl');
+    document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('card-ctrl').classList.add('active');
+    document.getElementById('pref-animations').checked = false;
+    document.getElementById('pref-compact').checked    = false;
+    document.getElementById('pref-badge').checked      = true;
+    document.querySelector('input[name="acento"][value="azul"]').checked = true;
+    showToast('Ajustes restablecidos');
+}
+
+function showToast(msg) {
+    const t = document.getElementById('theme-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('ctrl_admin') !== 'true') {
+        window.location.href = 'index.html';
+    }
+
+    // Aplicar tema guardado
+    applyTheme(temaActual);
+    const activeCard = document.getElementById('card-' + temaActual);
+    if (activeCard) activeCard.classList.add('active');
+
+    // Recuperar preferencias
+    const prefs = JSON.parse(localStorage.getItem('ctrl_admin_prefs') || '{}');
+    if (prefs.animations !== undefined) document.getElementById('pref-animations').checked = prefs.animations;
+    if (prefs.compact    !== undefined) document.getElementById('pref-compact').checked    = prefs.compact;
+    if (prefs.badge      !== undefined) document.getElementById('pref-badge').checked      = prefs.badge;
+    if (prefs.acento) {
+        const r = document.querySelector('input[name="acento"][value="' + prefs.acento + '"]');
+        if (r) r.checked = true;
+    }
+
+    // Keyboard navigation en tarjetas
+    document.querySelectorAll('.theme-card').forEach(card => {
+        card.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                card.click();
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>
