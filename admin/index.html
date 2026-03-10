@@ -7,6 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin-inline.css">
 </head>
 <body>
 
@@ -57,29 +58,29 @@
     </div>
 
     <div class="admin-content">
-        <div style="display: flex; justify-content: center; align-items: center; min-height: 60vh;">
-            <div class="form-card" style="max-width: 28rem;">
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">◆</div>
-                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Acceso Admin</h3>
-                    <p style="font-size: 0.85rem; color: var(--txt-muted); margin: 0;">Ingresa tus credenciales para continuar</p>
+        <div class="admin-login-container">
+            <div class="admin-login-card form-card">
+                <div class="admin-login-header">
+                    <div class="admin-login-icon">◆</div>
+                    <h3 class="admin-login-title">Acceso Admin</h3>
+                    <p class="admin-login-subtitle">Ingresa tus credenciales para continuar</p>
                 </div>
 
                 <form id="login-form">
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--txt);">Usuario o Email</label>
-                        <input type="text" id="usuario" placeholder="admin@ctrlstudio.es" required style="width: 100%; padding: 0.55rem 0.9rem; border: 1.5px solid var(--gris-mid); border-radius: var(--radius); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s;">
+                    <div class="admin-form-group">
+                        <label class="admin-form-label" for="usuario">Usuario o Email</label>
+                        <input type="text" id="usuario" class="admin-form-input" placeholder="admin@ctrlstudio.es" required>
                     </div>
 
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--txt);">Contraseña</label>
-                        <input type="password" id="password" placeholder="••••••••" required style="width: 100%; padding: 0.55rem 0.9rem; border: 1.5px solid var(--gris-mid); border-radius: var(--radius); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s;">
+                    <div class="admin-form-group">
+                        <label class="admin-form-label" for="password">Contraseña</label>
+                        <input type="password" id="password" class="admin-form-input" placeholder="••••••••" required>
                     </div>
 
-                    <button type="submit" style="width: 100%; padding: 0.6rem; background: var(--rojo); color: white; border: none; border-radius: var(--radius); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; cursor: pointer; transition: background 0.2s; margin-bottom: 1rem;">INICIAR SESIÓN</button>
+                    <button type="submit" class="admin-submit-btn">INICIAR SESIÓN</button>
 
-                    <div style="text-align: center; font-size: 0.75rem; color: var(--txt-muted);">
-                        ¿Olvidaste tu contraseña? <a href="#" style="color: var(--azul); text-decoration: none; font-weight: 700;">Recuperar acceso</a>
+                    <div class="admin-login-footer">
+                        ¿Olvidaste tu contraseña? <a href="#" class="admin-forgot-password">Recuperar acceso</a>
                     </div>
                 </form>
             </div>

@@ -3,380 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Empresa — CTRL Studio</title>
-    <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
+    <title>Portfolio — CTRL Studio</title>
+    <link rel="icon" type="image/png" href="img/favicon.png" sizes="64x64">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        .empresa-hero {
-            padding: 8rem 0 5rem;
-            background: var(--oscuro);
-            color: white;
-        }
-        .empresa-hero .section-label { color: var(--azul); }
-        .empresa-hero-title {
-            font-size: clamp(2.8rem, 7vw, 5rem);
-            font-weight: 700;
-            line-height: 1.0;
-            letter-spacing: -0.03em;
-        }
-        .empresa-hero-title em { font-style: italic; font-weight: 300; color: var(--azul); }
-
-        /* HISTORIA */
-        .historia-section { padding: 6rem 0; }
-        .year-marker {
-            font-size: 4rem;
-            font-weight: 700;
-            color: var(--gris-claro);
-            line-height: 1;
-            letter-spacing: -0.04em;
-        }
-        .timeline-item {
-            border-left: 2px solid var(--gris-mid);
-            padding-left: 2rem;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-        .timeline-item::before {
-            content: "";
-            position: absolute;
-            left: -0.45rem;
-            top: 0.3rem;
-            width: 0.8rem;
-            height: 0.8rem;
-            background: var(--rojo);
-            border-radius: 50%;
-        }
-        .timeline-year {
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            font-weight: 700;
-            color: var(--rojo);
-            margin-bottom: 0.5rem;
-        }
-        .timeline-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .timeline-text { font-size: 0.9rem; color: var(--txt-muted); line-height: 1.7; }
-
-        /* VALORES */
-        .valores-section { padding: 5rem 0; background: var(--gris-claro); }
-        .valor-card {
-            border-radius: var(--radius);
-            padding: 2rem;
-            background: white;
-            border: 1px solid var(--gris-mid);
-            height: 100%;
-            transition: box-shadow 0.2s, transform 0.2s;
-        }
-        .valor-card:hover { box-shadow: 0 1rem 2rem rgba(0,0,0,0.08); transform: translateY(-2px); }
-        .valor-num {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--gris-mid);
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-        .valor-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .valor-text { font-size: 0.88rem; color: var(--txt-muted); line-height: 1.7; }
-
-        /* EQUIPO */
-        .equipo-section { padding: 6rem 0; }
-        .team-card {
-            text-align: center;
-            padding: 2rem 1rem;
-        }
-        .team-avatar {
-            width: 7rem;
-            height: 7rem;
-            border-radius: 50%;
-            margin: 0 auto 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-        }
-        .av1 { background: linear-gradient(135deg, var(--oscuro), var(--azul)); }
-        .av2 { background: linear-gradient(135deg, var(--rojo), var(--rojo-dark)); }
-        .av3 { background: linear-gradient(135deg, var(--azul-dark), var(--oscuro)); }
-        .team-name { font-size: 1rem; font-weight: 600; }
-        .team-role { font-size: 0.78rem; color: var(--txt-muted); letter-spacing: 0.08em; }
-
-        /* PROCESO */
-        .proceso-section { padding: 5rem 0; background: var(--oscuro); color: white; }
-        .proceso-section .section-label { color: var(--azul); }
-        .proceso-step {
-            border-top: 1px solid rgba(255,255,255,0.15);
-            padding: 2rem 0;
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
-        }
-        .paso-num {
-            font-size: 3rem;
-            font-weight: 700;
-            color: rgba(255,255,255,0.12);
-            line-height: 1;
-            min-width: 3.5rem;
-        }
-        .paso-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
-        .paso-text { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
-
-        /* CALIDAD */
-        .calidad-section { padding: 5rem 0; }
-        .calidad-item {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            align-items: flex-start;
-        }
-        .calidad-icon {
-            width: 2.5rem;
-            height: 2.5rem;
-            background: rgba(165,1,54,0.1);
-            border-radius: 0.6rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            color: var(--rojo);
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-        .calidad-text h6 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; }
-        .calidad-text p { font-size: 0.82rem; color: var(--txt-muted); margin: 0; line-height: 1.6; }
-    </style>
+    <link rel="stylesheet" href="css/empresa.css">
+    <link rel="stylesheet" href="css/empresa-inline.css">
 </head>
 <body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
 <div class="bg-dots"></div>
 <mi-menu></mi-menu>
 
-<!-- HERO -->
-<section class="empresa-hero">
-    <div class="container">
-        <p class="section-label">Sobre CTRL Studio</p>
-        <h1 class="empresa-hero-title">
-            Diseño que<br>
-            <em>habla</em> por tu marca.
+<!-- ================================================================
+     HERO
+================================================================ -->
+<section class="port-hero">
+    <div class="port-hero-bg"></div>
+
+    <div class="hero-img-wrap">
+        <!-- Pon aquí tu foto: <img src="img/carla.png" alt=""> -->
+        <!-- Por defecto se muestra vacío, la foto flota encima del texto -->
+    </div>
+
+    <div class="container port-hero-content">
+        <div class="hero-tag">(Esta SÍ soy yo, espero)</div>
+
+        <h1 class="hero-hola reveal">
+            Hola.<br>
+            Soy <em>Carla.</em>
         </h1>
-        <p class="mt-4" style="font-size:1rem; color:rgba(255,255,255,0.6); max-width:30rem; line-height:1.7">
-            Somos un estudio de diseño gráfico y branding con sede en Valencia, España.
-            Transformamos conceptos en identidades visuales memorables.
+
+        <p class="hero-desc reveal reveal-delay-1">
+            Estudiante de <strong>Informática</strong> que<br>
+            además hace diseño gráfico<br>y marketing digital.
         </p>
+
+        <div class="scroll-hint reveal reveal-delay-2">Scroll para ver el trabajo</div>
     </div>
 </section>
 
-<!-- HISTORIA -->
-<section class="historia-section">
+<!-- ================================================================
+     MISIÓN
+================================================================ -->
+<section class="mision-section">
     <div class="container">
-        <div class="row gy-5">
-            <div class="col-lg-4">
-                <p class="section-label">Nuestra historia</p>
-                <p style="font-size:0.9rem; color:var(--txt-muted); line-height:1.8">
-                    CTRL Studio nació de la convicción de que el diseño no es decoración,
-                    sino una herramienta estratégica para construir marcas que conectan.
-                </p>
+        <p class="mision-pre reveal">Mi misión es hacer la vida mucho más</p>
+        <h2 class="mision-title reveal reveal-delay-1">
+            <em>cuqui.</em>
+        </h2>
+        <p class="mision-sub reveal reveal-delay-2">A costa de mi cordura y un portátil roñoso</p>
+
+        <div class="mision-grid reveal reveal-delay-3">
+            <div class="mision-pill">
+                <div class="mision-pill-num">+20</div>
+                <div class="mision-pill-label">Proyectos</div>
+                <div class="mision-pill-txt">Identidades, piezas gráficas y webs para clientes reales.</div>
             </div>
-            <div class="col-lg-7 offset-lg-1">
-                <div class="timeline-item">
-                    <div class="timeline-year">2022</div>
-                    <div class="timeline-title">El comienzo</div>
-                    <p class="timeline-text">
-                        CTRL Studio abre sus puertas en Valencia con un único objetivo: democratizar
-                        el diseño de alta calidad para marcas emergentes y creadores independientes.
-                    </p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2023</div>
-                    <div class="timeline-title">Primer crecimiento</div>
-                    <p class="timeline-text">
-                        Ampliamos el equipo y lanzamos nuestra primera línea de plantillas gráficas descargables,
-                        alcanzando más de 200 descargas en el primer mes.
-                    </p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2024</div>
-                    <div class="timeline-title">Planes de suscripción</div>
-                    <p class="timeline-text">
-                        Lanzamos nuestros planes mensuales de diseño recurrente, permitiendo a marcas
-                        pequeñas tener acceso a un estudio profesional sin coste de proyecto fijo.
-                    </p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2025 →</div>
-                    <div class="timeline-title">Hoy</div>
-                    <p class="timeline-text">
-                        Más de 80 proyectos completados, clientes en 5 países y un catálogo creciente
-                        de recursos para diseñadores y marcas.
-                    </p>
-                </div>
+            <div class="mision-pill">
+                <div class="mision-pill-num">2</div>
+                <div class="mision-pill-label">Disciplinas</div>
+                <div class="mision-pill-txt">Desarrollo web + diseño gráfico. Los dos a la vez, sin disculpas.</div>
+            </div>
+            <div class="mision-pill">
+                <div class="mision-pill-num">∞</div>
+                <div class="mision-pill-label">Cafés</div>
+                <div class="mision-pill-txt">Consumidos en el proceso. No voy a mentirte.</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- VALORES -->
-<section class="valores-section">
+<!-- ================================================================
+     TRABAJO / GALERÍA
+================================================================ -->
+<section class="trabajo-section" id="trabajo">
     <div class="container">
-        <p class="section-label">Nuestros valores</p>
-        <div class="row gy-4 mt-2">
-            <div class="col-md-6 col-lg-3">
-                <div class="valor-card">
-                    <div class="valor-num">01</div>
-                    <div class="valor-title">Honestidad visual</div>
-                    <p class="valor-text">Diseñamos lo que la marca es, no lo que cree que debería aparentar.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="valor-card">
-                    <div class="valor-num">02</div>
-                    <div class="valor-title">Precisión</div>
-                    <p class="valor-text">Cada pixel, cada tipografía, cada color tiene una razón de estar donde está.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="valor-card">
-                    <div class="valor-num">03</div>
-                    <div class="valor-title">Colaboración</div>
-                    <p class="valor-text">Tu marca eres tú. Trabajamos contigo, no para ti.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="valor-card">
-                    <div class="valor-num">04</div>
-                    <div class="valor-title">Permanencia</div>
-                    <p class="valor-text">Diseñamos identidades que resisten el tiempo y las tendencias.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- EQUIPO -->
-<section class="equipo-section" id="equipo">
-    <div class="container">
-        <p class="section-label">El equipo</p>
-        <div class="row gy-4 mt-2">
-            <div class="col-md-4">
-                <div class="team-card">
-                    <div class="team-avatar av1">KT</div>
-                    <div class="team-name">Kaia Tejedor</div>
-                    <div class="team-role mt-1">DIRECTORA CREATIVA</div>
-                    <p class="mt-2" style="font-size:0.82rem; color:var(--txt-muted)">
-                        Diseñadora gráfica con obsesión por la tipografía y la identidad de marca.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="team-card">
-                    <div class="team-avatar av2">MR</div>
-                    <div class="team-name">Marc Roca</div>
-                    <div class="team-role mt-1">DISEÑO DE PRODUCTO</div>
-                    <p class="mt-2" style="font-size:0.82rem; color:var(--txt-muted)">
-                        Especialista en UI/UX y diseño de sistemas visuales escalables.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="team-card">
-                    <div class="team-avatar av3">LV</div>
-                    <div class="team-name">Laura Vidal</div>
-                    <div class="team-role mt-1">ESTRATEGIA DE MARCA</div>
-                    <p class="mt-2" style="font-size:0.82rem; color:var(--txt-muted)">
-                        Consultora de branding con background en comunicación y marketing.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- PROCESO -->
-<section class="proceso-section" id="proceso">
-    <div class="container">
-        <p class="section-label">Cómo trabajamos</p>
-        <div class="proceso-step">
-            <div class="paso-num">01</div>
+        <div class="trabajo-header reveal">
             <div>
-                <div class="paso-title">Diagnóstico</div>
-                <p class="paso-text">Entendemos tu marca, tu mercado y tus objetivos antes de abrir cualquier programa de diseño.</p>
+                <p class="section-label">Portfolio</p>
+                <h2 class="trabajo-title">Mira qué monas<br>las cosas, por favor.</h2>
             </div>
+            <span class="trabajo-sub" id="proyecto-count">cargando...</span>
         </div>
-        <div class="proceso-step">
-            <div class="paso-num">02</div>
-            <div>
-                <div class="paso-title">Concepto</div>
-                <p class="paso-text">Desarrollamos la dirección creativa: paleta, tipografía, tono visual y referencias.</p>
-            </div>
-        </div>
-        <div class="proceso-step">
-            <div class="paso-num">03</div>
-            <div>
-                <div class="paso-title">Diseño</div>
-                <p class="paso-text">Creamos los entregables con revisiones iterativas y feedback continuo.</p>
-            </div>
-        </div>
-        <div class="proceso-step">
-            <div class="paso-num">04</div>
-            <div>
-                <div class="paso-title">Entrega</div>
-                <p class="paso-text">Archivos listos para usar en todos los formatos necesarios, con manual de marca incluido.</p>
-            </div>
-        </div>
+
+        <!-- GALERÍA — se genera por JS desde PROYECTOS[] -->
+        <div id="galeria-root"></div>
+
     </div>
 </section>
 
-<!-- CALIDAD -->
-<section class="calidad-section">
-    <div class="container">
-        <div class="row gy-5 align-items-center">
-            <div class="col-lg-5">
-                <p class="section-label">Control de calidad</p>
-                <h2 style="font-size:2.2rem; font-weight:700; letter-spacing:-0.02em;">
-                    Cada entrega pasa por nuestro filtro.
-                </h2>
-                <p class="mt-3" style="font-size:0.9rem; color:var(--txt-muted); line-height:1.8">
-                    Antes de enviarte cualquier pieza, pasa por un proceso interno de revisión
-                    que garantiza coherencia, funcionalidad y calidad profesional.
-                </p>
-            </div>
-            <div class="col-lg-6 offset-lg-1">
-                <div class="calidad-item">
-                    <div class="calidad-icon">✓</div>
-                    <div class="calidad-text">
-                        <h3>Revisión de coherencia visual</h3>
-                        <p>Comprobamos que todos los elementos siguen el sistema de diseño establecido.</p>
-                    </div>
-                </div>
-                <div class="calidad-item">
-                    <div class="calidad-icon">✓</div>
-                    <div class="calidad-text">
-                        <h3>Pruebas de adaptabilidad</h3>
-                        <p>Verificamos cómo funciona la identidad en diferentes soportes y tamaños.</p>
-                    </div>
-                </div>
-                <div class="calidad-item">
-                    <div class="calidad-icon">✓</div>
-                    <div class="calidad-text">
-                        <h3>Formatos completos</h3>
-                        <p>Entregamos en todos los formatos necesarios: RGB, CMYK, SVG, PNG, PDF.</p>
-                    </div>
-                </div>
-                <div class="calidad-item">
-                    <div class="calidad-icon">✓</div>
-                    <div class="calidad-text">
-                        <h3>Revisión del cliente</h3>
-                        <p>Mínimo dos rondas de revisión incluidas en cada proyecto.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- ================================================================
+     CTA FINAL
+================================================================ -->
+<section class="cta-section">
+    <div class="container port-main-content">
+        <div class="cta-pre reveal">Valencia, España</div>
+        <h2 class="cta-title reveal reveal-delay-1">
+            No tengo más cosas.<br>
+            A menos que me<br>
+            <em>contrates ;)</em>
+        </h2>
+        <p class="cta-sub reveal reveal-delay-2">Divinas de la muerte, lo sé.</p>
+        <a href="contacto.html" class="cta-btn reveal reveal-delay-3">
+            Así que hazlo ↗
+        </a>
     </div>
 </section>
 
+<!-- ================================================================
+     MODAL AÑADIR / EDITAR PROYECTO
+================================================================ -->
+<div class="modal fade" id="modal-proyecto" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-titulo">Añadir proyecto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-proyecto" class="modal-form" novalidate>
+                    <input type="hidden" id="p-id">
+
+                    <!-- Nombre -->
+                    <div class="mb-3">
+                        <label class="form-label" for="p-nombre">Nombre del proyecto *</label>
+                        <input type="text" class="form-control" id="p-nombre" required
+                            placeholder="Ej: Identidad Alonso Arquitectos">
+                    </div>
+
+                    <div class="row">
+                        <!-- Categoría -->
+                        <div class="col-7 mb-3">
+                            <label class="form-label" for="p-categoria">Categoría</label>
+                            <select class="form-select" id="p-categoria">
+                                <option value="Identidad de Marca">Identidad de Marca</option>
+                                <option value="Branding">Branding</option>
+                                <option value="Social Media">Social Media</option>
+                                <option value="Web Design">Web Design</option>
+                                <option value="Print">Print / Imprenta</option>
+                                <option value="Motion">Motion / Vídeo</option>
+                                <option value="Packaging">Packaging</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <!-- Año -->
+                        <div class="col-5 mb-3">
+                            <label class="form-label" for="p-anyo">Año</label>
+                            <input type="number" class="form-control" id="p-anyo"
+                                min="2020" max="2030" value="2025">
+                        </div>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="mb-3">
+                        <label class="form-label" for="p-desc">Descripción breve</label>
+                        <textarea class="form-control form-textarea-control" id="p-desc" rows="2"
+                            placeholder="Qué hiciste, para quién, qué mola de él..."></textarea>
+                    </div>
+
+                    <!-- Imagen -->
+                    <div class="mb-3">
+                        <label class="form-label">Imagen del proyecto</label>
+                        <div class="upload-zone" id="upload-zone">
+                            <input type="file" id="p-imagen" accept="image/*"
+                                onchange="previewImagen(this)">
+                            <div class="upload-zone-icon">📁</div>
+                            <div class="upload-zone-txt">
+                                Arrastra una imagen o haz clic para seleccionar<br>
+                                <span class="form-help-text">PNG, JPG, WEBP · Max recomendado 2MB</span>
+                            </div>
+                            <img id="p-preview" class="upload-preview" alt="">
+                        </div>
+                    </div>
+
+                    <!-- Color placeholder (si no hay imagen) -->
+                    <div class="mb-1">
+                        <label class="form-label">Color de fondo (si no hay imagen)</label>
+                        <div class="color-row" id="color-row">
+                            <div class="color-dot selected" data-color="#e0dbd0" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#0d0c1a" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#a50136" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#4e5174" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#f5f0e8" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#2d4a3e" onclick="selectColor(this)"></div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer contact-modal-footer">
+                <button type="button" class="btn-ctrl contact-submit-btn" id="btn-eliminar-proyecto"
+                    onclick="eliminarProyecto()">
+                    Eliminar
+                </button>
+                <button type="button" class="btn-ctrl btn-ctrl-outline" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn-ctrl btn-ctrl-primary" onclick="guardarProyecto()">
+                    Guardar proyecto
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ctrl-toast" id="toast"></div>
 <mi-pie></mi-pie>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/mis-etiquetas.js"></script>
 <script src="js/fondo.js"></script>
+<script src="js/proyectos.js"></script>
 </body>
 </html>

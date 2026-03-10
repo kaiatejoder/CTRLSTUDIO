@@ -7,6 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/carrito-inline.css">
     <style>
         .carrito-hero { padding: 8rem 0 3rem; }
         .carrito-hero-title {
@@ -163,7 +164,7 @@
                     <a href="productos.html" class="btn-ctrl btn-ctrl-outline w-100 mt-2 justify-content-center">
                         Seguir comprando
                     </a>
-                    <p class="mt-3 text-center" style="font-size:0.72rem; color:var(--txt-muted)">
+                    <p class="mt-3 text-center empty-cart-text">
                         Es necesario estar identificado para finalizar la compra.
                     </p>
                 </div>
@@ -177,13 +178,13 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-2">
             <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title" id="loginModalLabel" style="font-weight:700; font-size:1rem">
+                <h5 class="modal-title login-modal-title" id="loginModalLabel">
                     Identifícate para continuar
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
-                <p style="font-size:0.85rem; color:var(--txt-muted)">
+                <p class="login-modal-description">
                     Necesitas estar identificado para formalizar tu pedido.
                 </p>
                 <div class="d-flex gap-2 mt-3">
@@ -215,7 +216,7 @@ function renderCarrito() {
         contenido.innerHTML = `
             <div class="carrito-vacio">
                 <div class="carrito-vacio-icon">🛒</div>
-                <h3 style="font-size:1.2rem; font-weight:600; margin-bottom:0.5rem">Tu carrito está vacío</h3>
+                <h3 class="empty-cart-heading">Tu carrito está vacío</h3>
                 <p>Explora nuestros servicios y añade lo que necesites.</p>
                 <a href="productos.html" class="btn-ctrl btn-ctrl-primary mt-3 d-inline-flex">Ver servicios ↗</a>
             </div>`;

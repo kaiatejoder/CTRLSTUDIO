@@ -1,0 +1,216 @@
+/* ═══════════════════════════════════════════════════════════════
+   Admin Pages - Estilos inline extraídos
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+   Logo
+   ───────────────────────────────────────────────────────────── */
+
+.admin-logo {
+    height: 1.5rem;
+    width: auto;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Login Page Specific
+   ───────────────────────────────────────────────────────────── */
+
+.admin-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.admin-login-card {
+    max-width: 28rem;
+}
+
+.admin-login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.admin-login-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.admin-login-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.admin-login-subtitle {
+    font-size: 0.85rem;
+    color: var(--txt-muted);
+    margin: 0;
+}
+
+.admin-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.admin-form-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--txt);
+}
+
+.admin-form-input {
+    width: 100%;
+    padding: 0.55rem 0.9rem;
+    border: 1.5px solid var(--gris-mid);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.admin-form-input:focus {
+    border-color: var(--rojo);
+}
+
+.admin-submit-btn {
+    width: 100%;
+    padding: 0.6rem;
+    background: var(--rojo);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 1rem;
+}
+
+.admin-submit-btn:hover {
+    background: #8b0126;
+}
+
+.admin-login-footer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--txt-muted);
+}
+
+.admin-forgot-password {
+    color: var(--azul);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.admin-forgot-password:hover {
+    text-decoration: underline;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Pedidos Page
+   ───────────────────────────────────────────────────────────── */
+
+.admin-table-wrapper {
+    overflow-x: auto;
+}
+
+.admin-page-subtitle {
+    font-size: 0.78rem;
+    color: var(--txt-muted);
+}
+
+.admin-modal-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.admin-modal-table {
+    width: 100%;
+    font-size: 0.88rem;
+}
+
+.admin-modal-table td {
+    padding: 0.4rem 0;
+}
+
+.admin-table-label {
+    color: var(--txt-muted);
+    width: 40%;
+}
+
+.admin-table-label:first-column {
+    width: 40%;
+}
+
+.admin-table-value {
+    font-weight: 600;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Usuario Page
+   ───────────────────────────────────────────────────────────── */
+
+.admin-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+
+.admin-section-title.spaced {
+    margin: 2rem 0 1rem 0;
+}
+
+.admin-actions-card {
+    border-radius: var(--radius);
+    border: 1px solid var(--gris-mid);
+    background: white;
+    padding: 1.5rem;
+    position: sticky;
+    top: 7rem;
+}
+
+.admin-actions-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--txt-muted);
+    margin-bottom: 1rem;
+}
+
+.admin-delete-btn {
+    background: rgba(165, 1, 54, 0.08);
+    color: var(--rojo);
+    border: none;
+}
+
+.admin-delete-btn:hover {
+    background: rgba(165, 1, 54, 0.12);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Productos Page
+   ───────────────────────────────────────────────────────────── */
+
+.admin-producto-modal-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.admin-image-container {
+    text-align: center;
+}
+
+.admin-no-image {
+    font-size: 0.9rem;
+    color: var(--txt-muted);
+}
