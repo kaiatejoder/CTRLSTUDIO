@@ -6,7 +6,7 @@ class MiMenu extends HTMLElement {
   <div class="container-fluid px-0">
     <a class="navbar-brand ps-3" href="index.html"><img src="img/LOGO.svg" class="logo-svg" alt="CTRL Studio"></a>
 
-    <button class="navbar-toggler border-0 shadow-none me-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Abrir menú">
+    <button class="navbar-toggler border-0 shadow-none me-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav" data-bs-auto-close="false" aria-controls="mobileNav" aria-expanded="false" aria-label="Abrir menú">
       <span class="toggler-bar"></span>
       <span class="toggler-bar"></span>
     </button>
@@ -18,7 +18,12 @@ class MiMenu extends HTMLElement {
         <a class="nav-link" href="productos.html">SERVICIOS</a>
         <a class="nav-link" href="contacto.html">CONTACTO</a>
         <a class="nav-link" href="carrito.html">CARRITO</a>
-        <a class="nav-link" href="usuario.html">MI CUENTA</a>
+        <a class="nav-link d-flex align-items-center gap-2" href="usuario.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          PERFIL
+        </a>
       </div>
     </div>
 
@@ -46,10 +51,58 @@ class MiMenu extends HTMLElement {
         </svg>
         <span class="carrito-count" id="cart-count">0</span>
       </a>
-      <a href="usuario.html" class="btn btn-login">LOG IN ↗</a>
+      <a href="usuario.html" class="btn-carrito" aria-label="Perfil" title="Mi Perfil">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
     </div>
   </div>
 </nav>`;
+        this.connectedCallback();
+    }
+    
+    connectedCallback() {
+        setTimeout(() => {
+            // Dropdown desktop
+            const dropdownMenu = this.querySelector('.dropdown-menu');
+            if (dropdownMenu) {
+                dropdownMenu.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+            
+            // Menú mobile - mantener abierto
+            const mobileNav = this.querySelector('#mobileNav');
+            const toggler = this.querySelector('.navbar-toggler');
+            
+            if (mobileNav && toggler) {
+                // Evitar que se cierre al hacer click en los enlaces
+                mobileNav.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'A' && e.target.classList.contains('nav-link')) {
+                        // Permitir que se cierre solo si realmente va a otra página
+                        const href = e.target.getAttribute('href');
+                        if (href && href !== '#') {
+                            // Dejar que se cierre de forma natural
+                        }
+                    }
+                });
+                
+                // Cerrar solo al hacer click en el toggler
+                toggler.addEventListener('click', () => {
+                    if (mobileNav.classList.contains('show')) {
+                        mobileNav.classList.remove('show');
+                    } else {
+                        mobileNav.classList.add('show');
+                    }
+                });
+                
+                // No cerrar al hacer click dentro del menú
+                mobileNav.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+        }, 0);
     }
 }
 window.customElements.define('mi-menu', MiMenu);
