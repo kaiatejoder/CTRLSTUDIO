@@ -15,14 +15,14 @@ class MiMenu extends HTMLElement {
       <div class="navbar-nav flex-column gap-2 p-3">
         <a class="nav-link" href="index.html">INICIO</a>
         <a class="nav-link" href="empresa.html">EMPRESA</a>
-        <a class="nav-link" href="productos.html">SERVICIOS</a>
+        <a class="nav-link" href="productos.html">PRODUCTOS</a>
         <a class="nav-link" href="contacto.html">CONTACTO</a>
         <a class="nav-link" href="carrito.html">CARRITO</a>
         <a class="nav-link d-flex align-items-center gap-2" href="usuario.html">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" alt="Icono de perfil">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
           </svg>
-          PERFIL
+          USUARIO
         </a>
       </div>
     </div>
@@ -128,13 +128,13 @@ class MiPie extends HTMLElement {
         <p class="footer-heading">Nosotros</p>
         <ul class="footer-links">
           <li><a href="empresa.html">Nosotros</a></li>
-          <li><a href="empresa.html#equipo">Equipo</a></li>
-          <li><a href="empresa.html#proceso">Proceso</a></li>
+          <li><a href="empresa.html">Equipo</a></li>
+          <li><a href="empresa.html">Proceso</a></li>
           <li><a href="contacto.html">Contacto</a></li>
         </ul>
       </div>
       <div class="col-lg-2 col-6">
-        <p class="footer-heading">Servicios</p>
+        <p class="footer-heading">Productos</p>
         <ul class="footer-links">
           <li><a href="productos.html#branding">Branding</a></li>
           <li><a href="productos.html#plantillas">Plantillas</a></li>

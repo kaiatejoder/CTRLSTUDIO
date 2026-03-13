@@ -21,7 +21,7 @@ const PROYECTOS_DEFAULT = [
         cat: 'Identidad de Marca',
         anyo: 2025,
         desc: 'Identidad completa para estudio de arquitectura en Valencia. Logo, papelería, redes y web.',
-        img: null,
+        img: alt = "Proyecto Alonso Arquitectos",
         color: '#0d0c1a'
     },
     {
@@ -30,7 +30,7 @@ const PROYECTOS_DEFAULT = [
         cat: 'Social Media',
         anyo: 2025,
         desc: 'Pack de plantillas para Instagram y LinkedIn. 24 piezas adaptadas a la identidad del cliente.',
-        img: null,
+        img: alt = "Proyecto Kit Social Media",
         color: '#a50136'
     },
     {
@@ -39,7 +39,7 @@ const PROYECTOS_DEFAULT = [
         cat: 'Branding',
         anyo: 2024,
         desc: 'Naming, logo, packaging y señalética para cafetería de especialidad.',
-        img: null,
+        img: alt = "Cafe",
         color: '#4e5174'
     },
     {
@@ -48,7 +48,7 @@ const PROYECTOS_DEFAULT = [
         cat: 'Web Design',
         anyo: 2025,
         desc: 'Diseño y desarrollo de la web corporativa de CTRL Studio. HTML, CSS, Bootstrap.',
-        img: null,
+        img: alt = "Proyecto Web CTRL Studio",
         color: '#2d4a3e'
     },
 ];
