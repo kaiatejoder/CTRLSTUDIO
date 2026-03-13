@@ -3,8 +3,8 @@ document.addEventListener("mousemove", (e) => {
     if (!bg) return;
     const x = (e.clientX / window.innerWidth) * 100;
     const y = (e.clientY / window.innerHeight) * 100;
-    bg.style.setProperty("--mx", x + "%");
-    bg.style.setProperty("--my", y + "%");
+    bg.style.setProperty("--mouse-x", x + "%");
+    bg.style.setProperty("--mouse-y", y + "%");
 });
 
 // Actualizar contador del carrito desde localStorage
