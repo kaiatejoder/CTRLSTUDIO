@@ -17,11 +17,16 @@
 const PROYECTOS_DEFAULT = [
     {
         id: 1,
-        nombre: 'Alonso Arquitectos',
+        nombre: 'InmoArquitectos',
         cat: 'Identidad de Marca',
-        anyo: 2025,
-        desc: 'Identidad completa para estudio de arquitectura en Valencia. Logo, papelería, redes y web.',
-        img: alt = "Proyecto Alonso Arquitectos",
+        anyo: 2024,
+        desc: 'Resideño de marca para una Inmobiliaria-Constructora Valenciana. Logo, papelería, redes y web.',
+        descCompleta: null,
+        img: "img/proyectos/inmoarquitectos.png",
+        img2: null,
+        desc2: null,
+        img3: null,
+        desc3: null,
         color: '#0d0c1a'
     },
     {
@@ -30,7 +35,12 @@ const PROYECTOS_DEFAULT = [
         cat: 'Social Media',
         anyo: 2025,
         desc: 'Pack de plantillas para Instagram y LinkedIn. 24 piezas adaptadas a la identidad del cliente.',
-        img: alt = "Proyecto Kit Social Media",
+        descCompleta: null,
+        img: null,
+        img2: null,
+        desc2: null,
+        img3: null,
+        desc3: null,
         color: '#a50136'
     },
     {
@@ -39,7 +49,12 @@ const PROYECTOS_DEFAULT = [
         cat: 'Branding',
         anyo: 2024,
         desc: 'Naming, logo, packaging y señalética para cafetería de especialidad.',
-        img: alt = "Cafe",
+        descCompleta: null,
+        img: null,
+        img2: null,
+        desc2: null,
+        img3: null,
+        desc3: null,
         color: '#4e5174'
     },
     {
@@ -48,7 +63,12 @@ const PROYECTOS_DEFAULT = [
         cat: 'Web Design',
         anyo: 2025,
         desc: 'Diseño y desarrollo de la web corporativa de CTRL Studio. HTML, CSS, Bootstrap.',
-        img: alt = "Proyecto Web CTRL Studio",
+        descCompleta: null,
+        img: null,
+        img2: null,
+        desc2: null,
+        img3: null,
+        desc3: null,
         color: '#2d4a3e'
     },
 ];
@@ -63,6 +83,26 @@ function cargarProyectos() {
 
 function guardarProyectos(arr) {
     localStorage.setItem('ctrl_proyectos', JSON.stringify(arr));
+}
+
+/* ── RENDER DE CARRUSEL (homepage) ── */
+function renderCarrusel() {
+    const proyectos = cargarProyectos();
+    const root = document.getElementById('carousel-root');
+    if (!root) return; // Si no existe el elemento, salir
+
+    const colores = ['wc1', 'wc2', 'wc3', 'wc4', 'wc5'];
+    let html = '';
+
+    // Renderizar cada proyecto
+    proyectos.forEach((p, idx) => {
+        const colorClass = colores[idx % colores.length];
+        html += `<div class="work-card ${colorClass}">${p.nombre} — ${p.cat}</div>`;
+    });
+
+    // Duplicar para efecto infinito (necesario para la animación)
+    const htmlDuplicado = html;
+    root.innerHTML = htmlDuplicado + htmlDuplicado;
 }
 
 /* ── RENDER DE GALERÍA ── */
@@ -133,7 +173,7 @@ function renderProyectoCard(p, extraClass = '') {
 
     return `
     <div class="${extraClass}">
-        <div class="proyecto-card reveal" data-id="${p.id}" onclick="abrirEditar(${p.id})">
+        <div class="proyecto-card reveal" data-id="${p.id}" onclick="abrirVer(${p.id})">
             ${imgHtml}
             <div class="proyecto-overlay">
                 <div class="proyecto-nombre">${p.nombre}</div>
@@ -189,10 +229,72 @@ function initParallax() {
 }
 
 /* ================================================================
-   MODAL — AÑADIR / EDITAR
+   MODAL — VER PROYECTO (público)
+================================================================ */
+function abrirVer(id) {
+    const proyectos = cargarProyectos();
+    const p = proyectos.find(x => x.id === id);
+    if (!p) return;
+
+    document.getElementById('ver-proyecto-titulo').textContent = p.nombre;
+    document.getElementById('ver-proyecto-nombre').textContent = p.nombre;
+    document.getElementById('ver-proyecto-meta').textContent = `${p.cat} · ${p.anyo}`;
+    document.getElementById('ver-proyecto-desc').textContent = p.desc || '';
+
+    // Imagen principal
+    const imgWrap = document.getElementById('ver-proyecto-img-wrap');
+    if (p.img) {
+        document.getElementById('ver-proyecto-img').src = p.img;
+        document.getElementById('ver-proyecto-img').alt = p.nombre;
+        imgWrap.style.display = 'block';
+    } else {
+        imgWrap.style.display = 'none';
+    }
+
+    // Descripción completa (opcional)
+    const descCompletaWrap = document.getElementById('ver-proyecto-desc-completa-wrap');
+    if (p.descCompleta) {
+        document.getElementById('ver-proyecto-desc-completa').textContent = p.descCompleta;
+        descCompletaWrap.style.display = 'block';
+    } else {
+        descCompletaWrap.style.display = 'none';
+    }
+
+    // Imágenes adicionales (opcional)
+    const imgsWrap = document.getElementById('ver-proyecto-imgs-wrap');
+    const imgsContainer = document.getElementById('ver-proyecto-imgs-container');
+    imgsContainer.innerHTML = '';
+    
+    const imgs = [];
+    if (p.img2) imgs.push({ src: p.img2, desc: p.desc2 });
+    if (p.img3) imgs.push({ src: p.img3, desc: p.desc3 });
+
+    if (imgs.length > 0) {
+        imgs.forEach(img => {
+            const col = document.createElement('div');
+            col.className = 'col-md-6';
+            col.innerHTML = `
+                <figure class="figure">
+                    <img src="${img.src}" alt="${img.desc || 'Galería'}" class="figure-img img-fluid rounded">
+                    ${img.desc ? `<figcaption class="figure-caption text-center">${img.desc}</figcaption>` : ''}
+                </figure>`;
+            imgsContainer.appendChild(col);
+        });
+        imgsWrap.style.display = 'block';
+    } else {
+        imgsWrap.style.display = 'none';
+    }
+
+    new bootstrap.Modal(document.getElementById('modal-ver-proyecto')).show();
+}
+
+/* ================================================================
+   MODAL — AÑADIR / EDITAR PROYECTO (solo admin)
 ================================================================ */
 let colorSeleccionado = '#e0dbd0';
 let imagenBase64 = null;
+let imagenBase642 = null;
+let imagenBase643 = null;
 
 function abrirNuevo() {
     // Verificar que el usuario es administrador
@@ -207,7 +309,11 @@ function abrirNuevo() {
     document.getElementById('p-id').value = '';
     document.getElementById('p-anyo').value = new Date().getFullYear();
     document.getElementById('p-preview').style.display = 'none';
+    document.getElementById('p-preview-2').style.display = 'none';
+    document.getElementById('p-preview-3').style.display = 'none';
     imagenBase64 = null;
+    imagenBase642 = null;
+    imagenBase643 = null;
     colorSeleccionado = '#e0dbd0';
     document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
     document.querySelector('.color-dot').classList.add('selected');
@@ -232,12 +338,27 @@ function abrirEditar(id) {
     document.getElementById('p-categoria').value = p.cat;
     document.getElementById('p-anyo').value      = p.anyo;
     document.getElementById('p-desc').value      = p.desc || '';
+    document.getElementById('p-desc-completa').value = p.descCompleta || '';
 
-    // Imagen
+    // Imagen principal
     imagenBase64 = p.img || null;
     const preview = document.getElementById('p-preview');
     if (p.img) { preview.src = p.img; preview.style.display = 'block'; }
     else { preview.style.display = 'none'; }
+
+    // Imagen 2
+    imagenBase642 = p.img2 || null;
+    const preview2 = document.getElementById('p-preview-2');
+    if (p.img2) { preview2.src = p.img2; preview2.style.display = 'block'; }
+    else { preview2.style.display = 'none'; }
+    document.getElementById('p-desc-img-2').value = p.desc2 || '';
+
+    // Imagen 3
+    imagenBase643 = p.img3 || null;
+    const preview3 = document.getElementById('p-preview-3');
+    if (p.img3) { preview3.src = p.img3; preview3.style.display = 'block'; }
+    else { preview3.style.display = 'none'; }
+    document.getElementById('p-desc-img-3').value = p.desc3 || '';
 
     // Color
     colorSeleccionado = p.color || '#e0dbd0';
@@ -268,7 +389,12 @@ function guardarProyecto() {
         cat:    document.getElementById('p-categoria').value,
         anyo:   parseInt(document.getElementById('p-anyo').value) || 2025,
         desc:   document.getElementById('p-desc').value.trim(),
+        descCompleta: document.getElementById('p-desc-completa').value.trim() || null,
         img:    imagenBase64,
+        img2:   imagenBase642 || null,
+        desc2:  document.getElementById('p-desc-img-2').value.trim() || null,
+        img3:   imagenBase643 || null,
+        desc3:  document.getElementById('p-desc-img-3').value.trim() || null,
         color:  colorSeleccionado
     };
 
@@ -307,10 +433,22 @@ function previewImagen(input) {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = e => {
-        imagenBase64 = e.target.result;
-        const img = document.getElementById('p-preview');
-        img.src = imagenBase64;
-        img.style.display = 'block';
+        const result = e.target.result;
+        const inputId = input.id;
+        
+        if (inputId === 'p-imagen') {
+            imagenBase64 = result;
+            document.getElementById('p-preview').src = result;
+            document.getElementById('p-preview').style.display = 'block';
+        } else if (inputId === 'p-imagen-2') {
+            imagenBase642 = result;
+            document.getElementById('p-preview-2').src = result;
+            document.getElementById('p-preview-2').style.display = 'block';
+        } else if (inputId === 'p-imagen-3') {
+            imagenBase643 = result;
+            document.getElementById('p-preview-3').src = result;
+            document.getElementById('p-preview-3').style.display = 'block';
+        }
     };
     reader.readAsDataURL(file);
 }
@@ -322,20 +460,26 @@ function selectColor(el) {
     colorSeleccionado = el.dataset.color;
 }
 
-/* ── Drag & drop en upload zone ── */
-const uploadZone = document.getElementById('upload-zone');
-if (uploadZone) {
-    ['dragenter','dragover'].forEach(ev => uploadZone.addEventListener(ev, e => {
-        e.preventDefault(); uploadZone.classList.add('drag-over');
+/* ── Drag & drop en upload zones ── */
+function setupDragDrop(zoneId, inputId) {
+    const zone = document.getElementById(zoneId);
+    if (!zone) return;
+    
+    ['dragenter','dragover'].forEach(ev => zone.addEventListener(ev, e => {
+        e.preventDefault(); zone.classList.add('drag-over');
     }));
-    ['dragleave','drop'].forEach(ev => uploadZone.addEventListener(ev, e => {
-        e.preventDefault(); uploadZone.classList.remove('drag-over');
+    ['dragleave','drop'].forEach(ev => zone.addEventListener(ev, e => {
+        e.preventDefault(); zone.classList.remove('drag-over');
         if (ev === 'drop' && e.dataTransfer.files[0]) {
-            document.getElementById('p-imagen').files = e.dataTransfer.files;
-            previewImagen(document.getElementById('p-imagen'));
+            document.getElementById(inputId).files = e.dataTransfer.files;
+            previewImagen(document.getElementById(inputId));
         }
     }));
 }
+
+setupDragDrop('upload-zone', 'p-imagen');
+setupDragDrop('upload-zone-2', 'p-imagen-2');
+setupDragDrop('upload-zone-3', 'p-imagen-3');
 
 /* ================================================================
    CURSOR PERSONALIZADO
