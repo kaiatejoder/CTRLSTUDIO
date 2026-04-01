@@ -206,3 +206,414 @@
         grid-column: 1;
     }
 }
+/* ═══════════════════════════════════════════════════════════════
+   Usuario Panels - Estilos para paneles de usuario
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+   Download Items
+   ───────────────────────────────────────────────────────────── */
+
+.descarga-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--ut-frost-border);
+}
+
+.descarga-item:last-child {
+    border-bottom: none;
+}
+
+.descarga-item.locked {
+    opacity: 0.5;
+}
+
+.descarga-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ut-txt-muted);
+    flex-shrink: 0;
+}
+
+.descarga-item.locked .descarga-icon {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.descarga-nombre {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ut-txt);
+    margin-bottom: 0.2rem;
+}
+
+.descarga-meta {
+    font-size: 0.72rem;
+    color: var(--ut-txt-dim);
+}
+
+.descarga-btn {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: rgba(111, 207, 151, 0.15);
+    border: 1px solid rgba(111, 207, 151, 0.25);
+    border-radius: 0.4rem;
+    color: #6fcf97;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.descarga-btn:hover:not(:disabled) {
+    background: rgba(111, 207, 151, 0.25);
+    border-color: rgba(111, 207, 151, 0.4);
+}
+
+.descarga-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Notification Items  
+   ───────────────────────────────────────────────────────────── */
+
+.notif-item {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--ut-frost-border);
+    transition: background 0.2s ease;
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-item.unread {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.notif-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--ut-acento);
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.notif-dot.read {
+    background: var(--ut-frost-border);
+    opacity: 0.5;
+}
+
+.notif-titulo {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ut-txt);
+    margin-bottom: 0.3rem;
+}
+
+.notif-body {
+    font-size: 0.75rem;
+    color: var(--ut-txt-sub);
+    line-height: 1.5;
+    margin-bottom: 0.4rem;
+}
+
+.notif-time {
+    font-size: 0.68rem;
+    color: var(--ut-txt-dim);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Form Items (Formularios)
+   ───────────────────────────────────────────────────────────── */
+
+.form-pendiente {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--ut-frost-border);
+}
+
+.form-pendiente:last-child {
+    border-bottom: none;
+}
+
+.form-pend-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ut-txt);
+    margin-bottom: 0.2rem;
+}
+
+.form-pend-sub {
+    font-size: 0.72rem;
+    color: var(--ut-txt-dim);
+}
+
+.form-pend-badge {
+    padding: 0.2rem 0.65rem;
+    border-radius: 999rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border: 1px solid;
+    flex-shrink: 0;
+}
+
+.fpb-urgente {
+    background: rgba(235, 87, 87, 0.12);
+    color: #eb5757;
+    border-color: rgba(235, 87, 87, 0.2);
+}
+
+.fpb-pendiente {
+    background: rgba(242, 201, 76, 0.12);
+    color: #f2c94c;
+    border-color: rgba(242, 201, 76, 0.2);
+}
+
+.fpb-ok {
+    background: rgba(111, 207, 151, 0.12);
+    color: #6fcf97;
+    border-color: rgba(111, 207, 151, 0.2);
+}
+
+.form-pend-btn {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: var(--ut-acento-light);
+    border: 1px solid var(--ut-acento-border);
+    border-radius: 0.4rem;
+    color: var(--ut-acento);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.form-pend-btn:hover {
+    background: var(--ut-acento-medium);
+    border-color: var(--ut-acento);
+}
+
+.form-pend-btn.fpb-ok-btn {
+    background: rgba(111, 207, 151, 0.15);
+    border: 1px solid rgba(111, 207, 151, 0.25);
+    color: #6fcf97;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Order Items (Pedidos)
+   ───────────────────────────────────────────────────────────── */
+
+.pedido-ut {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--ut-frost-border);
+}
+
+.pedido-ut:last-child {
+    border-bottom: none;
+}
+
+.pedido-ut-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.pedido-ut-id {
+    font-weight: 700;
+    color: var(--ut-txt);
+    font-size: 0.82rem;
+}
+
+.pedido-status-badge {
+    padding: 0.2rem 0.65rem;
+    border-radius: 999rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid;
+    white-space: nowrap;
+}
+
+.status-en-curso {
+    background: rgba(242, 201, 76, 0.12);
+    color: #f2c94c;
+    border-color: rgba(242, 201, 76, 0.2);
+}
+
+.status-completado {
+    background: rgba(111, 207, 151, 0.12);
+    color: #6fcf97;
+    border-color: rgba(111, 207, 151, 0.2);
+}
+
+.pedido-ut-fecha {
+    font-size: 0.72rem;
+    color: var(--ut-txt-muted);
+    margin-left: auto;
+}
+
+.pedido-ut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    padding: 0.5rem 0;
+    color: var(--ut-txt);
+}
+
+.pedido-ut-item span:last-child {
+    font-weight: 600;
+}
+
+.pedido-ut-total {
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--ut-frost-border);
+    color: var(--ut-txt);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Section Labels & Headers
+   ───────────────────────────────────────────────────────────── */
+
+.ut-section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ut-txt-muted);
+    margin-bottom: 1.1rem;
+    display: block;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Appearance Panel Specific  
+   ───────────────────────────────────────────────────────────── */
+
+.apariencia-grid,
+.acento-grid,
+.textura-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.accent-card,
+.texture-card {
+    padding: 1.25rem 1.4rem;
+}
+
+.accent-description,
+.texture-description {
+    font-size: 0.72rem;
+    color: var(--ut-txt-muted);
+    margin-top: 0.75rem;
+}
+
+.texture-description {
+    line-height: 1.55;
+}
+
+.ap-preview-nombre {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ut-txt);
+    margin-bottom: 0.3rem;
+}
+
+.ap-preview-subtitle {
+    font-size: 0.72rem;
+    color: var(--ut-txt-muted);
+    margin-bottom: 1.2rem;
+}
+
+.ap-preview-text {
+    font-size: 0.72rem;
+    color: var(--ut-txt-muted);
+    line-height: 1.5;
+    margin-top: 1.2rem;
+}
+
+.ap-code {
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.07);
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.3rem;
+    font-family: 'Courier New', monospace;
+}
+
+.preview-card {
+    padding: 1.5rem;
+    position: sticky;
+    top: 7rem;
+}
+
+.ap-reset-section {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Account/Cuenta Panel
+   ───────────────────────────────────────────────────────────── */
+
+.cuenta-card {
+    padding: 1.5rem;
+}
+
+.cuenta-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.quick-actions {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Utility Spaces
+   ───────────────────────────────────────────────────────────── */
+
+.bottom-spacer {
+    height: 4rem;
+}

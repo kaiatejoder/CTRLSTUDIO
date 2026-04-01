@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.ctrl</groupId>
-  <artifactId>webapp</artifactId>
+  <artifactId>practica2</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>webapp Maven Webapp</name>
+  <name>practica2</name>
   <!-- FIXME change it to the project's website -->
   <url>http:/localhost:8080/practica2</url>
 
@@ -26,10 +26,38 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
-
+ 
+<dependency>
+    <groupId>jakarta.servlet</groupId>
+    <artifactId>jakarta.servlet-api</artifactId>
+    <version>6.0.0</version>
+    <scope>provided</scope>
+</dependency>
+ 
+<!-- 2. JSON-B API (serialización de objetos Java a JSON) -->
+<dependency>
+    <groupId>jakarta.json.bind</groupId>
+    <artifactId>jakarta.json.bind-api</artifactId>
+    <version>3.0.1</version>
+</dependency>
+ 
+<!-- 3. JSON-P API -->
+<dependency>
+    <groupId>jakarta.json</groupId>
+    <artifactId>jakarta.json-api</artifactId>
+    <version>2.1.2</version>
+</dependency>
+ 
+<!-- 4. Yasson — implementación de JSON-B (necesaria en runtime) -->
+<dependency>
+    <groupId>org.eclipse</groupId>
+    <artifactId>yasson</artifactId>
+    <version>3.0.4</version>
+    <scope>runtime</scope>
+</dependency>
+ </dependencies>
   <build>
-    <finalName>webapp</finalName>
+    <finalName>practica2</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>

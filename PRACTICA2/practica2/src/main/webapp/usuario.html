@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi Cuenta — CTRL Studio</title>
+     <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/usuario-dashboard.css">
+    <link rel="stylesheet" href="css/usuario-panels.css">
+    <!-- Aplicar tema ANTES de pintar la página -->
+    <script src="js/user-theme.js"></script>
+    <style>
+    /* ================================================================
+       VARIABLES DE TEMA (sobreescritas por user-theme.js en :root)
+    ================================================================ */
+    :root {
+        --ut-bg:           #0d0c1a;
+        --ut-txt:          #f0effa;
+        --ut-frost:        rgba(255,255,255,0.05);
+        --ut-frost-hover:  rgba(255,255,255,0.075);
+        --ut-frost-border: rgba(255,255,255,0.09);
+        --ut-txt-muted:    rgba(240,239,250,0.5);
+        --ut-txt-dim:      rgba(240,239,250,0.22);
+        --ut-acento:       #a50136;
+        --ut-acento-dark:  #710632;
+        --ut-radius:       1rem;
+        --ut-blur:         18px;
+    }
+
+    /* ================================================================
+       SECCIÓN PERFIL — layout y dashboard bento
+    ================================================================ */
+    .perfil-section { display: none; }
+
+    /* HERO DE PERFIL */
+    .perfil-hero {
+        padding: 7rem 0 2.5rem;
+        position: relative;
+    }
+    .perfil-hero-inner {
+        display: flex;
+        align-items: flex-end;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+    }
+    .perfil-avatar {
+        width: 5rem; height: 5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--ut-acento-dark), var(--ut-acento));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem; font-weight: 700; color: white;
+        border: 2px solid rgba(255,255,255,0.15);
+        flex-shrink: 0;
+    }
+    .perfil-nombre {
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--ut-txt);
+        line-height: 1;
+    }
+    .perfil-email {
+        font-size: 0.82rem;
+        color: var(--ut-txt-muted);
+        margin-top: 0.3rem;
+    }
+    .perfil-since {
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ut-txt-dim);
+        margin-top: 0.4rem;
+    }
+    .perfil-actions {
+        margin-left: auto;
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    /* NAVEGACIÓN DE TABS */
+    .perfil-tabs {
+        display: flex;
+        gap: 0.2rem;
+        margin: 1.5rem 0 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: var(--ut-frost-border) transparent;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 0.5rem;
+    }
+    .perfil-tabs::-webkit-scrollbar { 
+        height: 4px;
+    }
+    .perfil-tabs::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .perfil-tabs::-webkit-scrollbar-thumb {
+        background: var(--ut-frost-border);
+        border-radius: 2px;
+    }
+    .perfil-tabs::-webkit-scrollbar-thumb:hover {
+        background: var(--ut-acento);
+    }
+    .perfil-tab {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--ut-txt-muted);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+        margin-bottom: -1px;
+        font-family: inherit;
+    }
+    .perfil-tab:hover { color: var(--ut-txt); }
+    .perfil-tab.active {
+        color: var(--ut-acento);
+        border-bottom-color: var(--ut-acento);
+    }
+
+    /* PANEL de cada tab */
+    .perfil-panel { display: none; }
+    .perfil-panel.active { display: block; }
+
+    /* ── FROST CARD ── */
+    .ut-card {
+        background: var(--ut-frost);
+        backdrop-filter: blur(var(--ut-blur));
+        -webkit-backdrop-filter: blur(var(--ut-blur));
+        border: 1px solid var(--ut-frost-border);
+        border-radius: var(--ut-radius);
+        transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+        color: var(--ut-txt);
+    }
+    .ut-card:hover {
+        background: var(--ut-frost-hover);
+        box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.2);
+    }
+
+    /* ── BENTO GRID DASHBOARD ── */
+    .dash-bento {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    .db-wide  { grid-column: span 2; }
+    .db-full  { grid-column: span 3; }
+
+    /* Stat card pequeña */
+    .ut-stat {
+        padding: 1.4rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .ut-stat::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--ut-acento-dark), var(--ut-acento));
+        opacity: 0;
+        transition: opacity 0.25s;
+    }
+    .ut-stat:hover::before { opacity: 1; }
+    .ut-stat-num {
+        font-size: 2rem; font-weight: 700; letter-spacing: -0.03em;
+        line-height: 1; color: var(--ut-txt);
+    }
+    .ut-stat-label {
+        font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+        color: var(--ut-txt-muted); margin-top: 0.45rem;
+    }
+    .ut-stat-sub { font-size: 0.72rem; color: var(--ut-txt-dim); margin-top: 0.4rem; }
+    .ut-stat-icon {
+        position: absolute; bottom: 0.9rem; right: 1.1rem;
+        font-size: 2rem; opacity: 0.07; pointer-events: none;
+    }
+
+    /* Bienvenida card */
+    .welcome-card {
+        padding: 1.75rem;
+        background: linear-gradient(135deg,
+            rgba(var(--_r),var(--_g),var(--_b),0.35) 0%,
+            rgba(var(--_r),var(--_g),var(--_b),0.12) 100%);
+    }
+    .welcome-card-title { font-size: 1.1rem; font-weight: 700; color: var(--ut-txt); }
+    .welcome-card-sub   { font-size: 0.8rem; color: var(--ut-txt-muted); margin-top: 0.3rem; line-height: 1.5; }
+
+    /* ── PANEL: DESCARGAS ── */
+    .descarga-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+        transition: background 0.15s;
+    }
+    .descarga-item:last-child { border-bottom: none; }
+    .descarga-item:hover { background: var(--ut-frost-hover); }
+    .descarga-icon {
+        width: 2.5rem; height: 2.5rem;
+        border-radius: 0.5rem;
+        background: linear-gradient(135deg, var(--ut-acento-dark), var(--ut-acento));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.9rem; color: white; font-weight: 700;
+        flex-shrink: 0; opacity: 0.85;
+    }
+    .descarga-nombre { font-size: 0.88rem; font-weight: 600; color: var(--ut-txt); }
+    .descarga-meta   { font-size: 0.72rem; color: var(--ut-txt-muted); margin-top: 0.15rem; }
+    .descarga-btn {
+        margin-left: auto;
+        padding: 0.38rem 0.9rem;
+        border-radius: 999rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--ut-frost-border);
+        color: var(--ut-txt-muted);
+        cursor: pointer;
+        transition: all 0.15s;
+        font-family: inherit;
+        white-space: nowrap;
+    }
+    .descarga-btn:hover {
+        background: var(--ut-acento);
+        border-color: var(--ut-acento);
+        color: white;
+    }
+
+    /* ── PANEL: NOTIFICACIONES ── */
+    .notif-item {
+        display: flex;
+        gap: 0.9rem;
+        align-items: flex-start;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+        transition: background 0.15s;
+    }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item:hover { background: var(--ut-frost-hover); }
+    .notif-item.unread { background: rgba(165,1,54,0.04); }
+    .notif-dot {
+        width: 0.5rem; height: 0.5rem;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 0.4rem;
+        background: var(--ut-acento);
+        box-shadow: 0 0 5px var(--ut-acento);
+    }
+    .notif-dot.read { background: var(--ut-txt-dim); box-shadow: none; }
+    .notif-titulo { font-size: 0.85rem; font-weight: 600; color: var(--ut-txt); }
+    .notif-body   { font-size: 0.78rem; color: var(--ut-txt-muted); margin-top: 0.2rem; line-height: 1.45; }
+    .notif-time   { font-size: 0.65rem; color: var(--ut-txt-dim); margin-top: 0.35rem; }
+
+    /* ── PANEL: FORMULARIOS ── */
+    .form-pendiente {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.1rem 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+        flex-wrap: wrap;
+    }
+    .form-pendiente:last-child { border-bottom: none; }
+    .form-pend-title { font-size: 0.88rem; font-weight: 600; color: var(--ut-txt); }
+    .form-pend-sub   { font-size: 0.72rem; color: var(--ut-txt-muted); margin-top: 0.15rem; }
+    .form-pend-badge {
+        padding: 0.2rem 0.65rem;
+        border-radius: 999rem;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+    .fpb-urgente  { background: rgba(165,1,54,0.15); color: #f07; border: 1px solid rgba(165,1,54,0.25); }
+    .fpb-pendiente{ background: rgba(242,201,76,0.12); color: #f2c94c; border: 1px solid rgba(242,201,76,0.2); }
+    .fpb-ok       { background: rgba(111,207,151,0.12); color: #6fcf97; border: 1px solid rgba(111,207,151,0.2); }
+    .form-pend-btn {
+        margin-left: auto;
+        padding: 0.42rem 1rem;
+        border-radius: 999rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        background: var(--ut-acento);
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: opacity 0.15s;
+        font-family: inherit;
+        white-space: nowrap;
+    }
+    .form-pend-btn:hover { opacity: 0.85; }
+    .form-pend-btn:disabled {
+        background: rgba(255,255,255,0.07);
+        color: var(--ut-txt-dim);
+        cursor: default;
+    }
+
+    /* ── PANEL: APARIENCIA ── */
+    .apariencia-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.85rem;
+    }
+    .tema-card {
+        border-radius: 0.85rem;
+        border: 2px solid var(--ut-frost-border);
+        overflow: hidden;
+        cursor: pointer;
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        position: relative;
+        background: var(--ut-frost);
+    }
+    .tema-card:hover { transform: translateY(-2px); box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.3); }
+    .tema-card.active {
+        border-color: var(--ut-acento);
+        box-shadow: 0 0 0 1px var(--ut-acento);
+    }
+    .tema-check {
+        position: absolute; top: 0.6rem; right: 0.6rem;
+        width: 1.3rem; height: 1.3rem;
+        border-radius: 50%;
+        background: var(--ut-acento);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.6rem; color: white; font-weight: 700;
+        opacity: 0; transform: scale(0.5);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+    .tema-card.active .tema-check { opacity: 1; transform: scale(1); }
+
+    /* mini preview */
+    .tema-preview {
+        height: 6rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .prev-ctrl    { background: #0d0c1a; }
+    .prev-morphex { background: #f5f0e8; }
+    .prev-void    { background: #080808; }
+    .prev-ctrl::before {
+        content:''; position:absolute; inset:0;
+        background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(78,81,116,0.4) 0%, transparent 60%),
+                    radial-gradient(ellipse 50% 40% at 85% 85%, rgba(165,1,54,0.18) 0%, transparent 55%);
+    }
+    .prev-morphex::before {
+        content:''; position:absolute; inset:0;
+        background: radial-gradient(ellipse 80% 60% at 10% 0%, rgba(220,210,180,0.6) 0%, transparent 65%);
+    }
+    .prev-void::before {
+        content:''; position:absolute; inset:0;
+        background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
+    }
+    /* mini elementos del preview */
+    .pm-bar {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        height: 1.8rem;
+        display: flex; align-items: center; gap: 0.35rem;
+        padding: 0 0.5rem;
+    }
+    .pm-dot { width: 2rem; height: 0.65rem; border-radius: 99px; opacity: 0.35; }
+    .pm-dot2{ width: 3rem; height: 0.65rem; border-radius: 99px; opacity: 0.2; }
+    .prev-ctrl    .pm-dot { background: #989fcb; }
+    .prev-morphex .pm-dot { background: #8a7a50; }
+    .prev-void    .pm-dot { background: #e0e0e0; }
+    .prev-ctrl    .pm-dot2, .prev-morphex .pm-dot2, .prev-void .pm-dot2 { background: currentColor; }
+
+    .tema-info { padding: 0.75rem 0.9rem 0.85rem; }
+    .tema-nombre { font-size: 0.8rem; font-weight: 700; color: var(--ut-txt); }
+    .tema-desc   { font-size: 0.65rem; color: var(--ut-txt-muted); margin-top: 0.15rem; }
+
+    /* Selector de acento */
+    .acento-grid {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .acento-btn {
+        width: 2.2rem; height: 2.2rem;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: transform 0.15s, border-color 0.15s;
+        position: relative;
+    }
+    .acento-btn:hover { transform: scale(1.15); }
+    .acento-btn.active {
+        border-color: var(--ut-txt);
+        transform: scale(1.1);
+    }
+    .acento-btn::after {
+        content: '';
+        position: absolute; inset: 3px;
+        border-radius: 50%;
+        background: inherit;
+        filter: brightness(1.1);
+    }
+
+    /* Selector de textura */
+    .textura-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.6rem;
+    }
+    .textura-btn {
+        aspect-ratio: 1;
+        border-radius: 0.5rem;
+        border: 2px solid var(--ut-frost-border);
+        cursor: pointer;
+        transition: border-color 0.15s, transform 0.15s;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.55rem; font-weight: 700; letter-spacing: 0.05em;
+        text-align: center;
+        color: var(--ut-txt-muted);
+        background: var(--ut-frost);
+        line-height: 1.25;
+        text-transform: uppercase;
+        font-family: inherit;
+        padding: 0.25rem;
+    }
+    .textura-btn:hover { transform: scale(1.05); border-color: var(--ut-acento); }
+    .textura-btn.active { border-color: var(--ut-acento); color: var(--ut-acento); }
+
+    /* ── PANEL: MIS PEDIDOS ── */
+    .pedido-ut {
+        padding: 1.1rem 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+    }
+    .pedido-ut:last-child { border-bottom: none; }
+    .pedido-ut-head {
+        display: flex; justify-content: space-between;
+        align-items: center; gap: 0.5rem;
+        flex-wrap: wrap; margin-bottom: 0.6rem;
+    }
+    .pedido-ut-id   { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--ut-txt-muted); }
+    .pedido-ut-fecha{ font-size: 0.72rem; color: var(--ut-txt-dim); }
+    .pedido-ut-item {
+        font-size: 0.84rem;
+        display: flex; justify-content: space-between;
+        padding: 0.25rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+        color: var(--ut-txt);
+    }
+    .pedido-ut-total { font-weight: 700; font-size: 0.88rem; margin-top: 0.6rem; color: var(--ut-txt); }
+
+    /* ── PANEL: MI CUENTA ── */
+    .cuenta-form .form-label {
+        font-size: 0.62rem; font-weight: 700;
+        letter-spacing: 0.12em; text-transform: uppercase;
+        color: var(--ut-txt-muted); margin-bottom: 0.4rem; display: block;
+    }
+    .cuenta-form .form-control {
+        background: var(--ut-frost);
+        border: 1px solid var(--ut-frost-border);
+        border-radius: 0.55rem;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.86rem;
+        font-family: inherit;
+        color: var(--ut-txt);
+        width: 100%;
+        transition: border-color 0.2s, background 0.2s;
+    }
+    .cuenta-form .form-control::placeholder { color: var(--ut-txt-dim); }
+    .cuenta-form .form-control:focus {
+        outline: none;
+        border-color: var(--ut-acento);
+        background: var(--ut-frost-hover);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--ut-acento) 15%, transparent);
+    }
+
+    /* ── BOTONES ── */
+    .ut-btn {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        padding: 0.52rem 1.2rem;
+        border-radius: 999rem;
+        font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em;
+        font-family: inherit; cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.16s; white-space: nowrap;
+        text-decoration: none;
+    }
+    .ut-btn:active { transform: scale(0.96); }
+    .ut-btn-primary {
+        background: var(--ut-acento);
+        color: white; border-color: var(--ut-acento);
+    }
+    .ut-btn-primary:hover { opacity: 0.88; }
+    .ut-btn-ghost {
+        background: var(--ut-frost);
+        color: var(--ut-txt-muted);
+        border-color: var(--ut-frost-border);
+    }
+    .ut-btn-ghost:hover { background: var(--ut-frost-hover); color: var(--ut-txt); }
+    .ut-btn-danger {
+        background: rgba(235,87,87,0.1);
+        color: #eb5757; border-color: rgba(235,87,87,0.2);
+    }
+    .ut-btn-danger:hover { background: rgba(235,87,87,0.2); border-color: rgba(235,87,87,0.4); color: white; }
+
+    /* SECTION LABEL dentro de panel */
+    .ut-section-label {
+        font-size: 0.58rem; letter-spacing: 0.18em; font-weight: 700;
+        text-transform: uppercase; color: var(--ut-txt-dim);
+        margin: 1.5rem 0 0.65rem;
+    }
+    .ut-section-label:first-child { margin-top: 0; }
+
+    /* TOAST */
+    .ut-toast {
+        position: fixed; bottom: 1.5rem; right: 1.5rem;
+        background: var(--ut-frost);
+        backdrop-filter: blur(1rem);
+        border: 1px solid var(--ut-frost-border);
+        color: var(--ut-txt);
+        padding: 0.85rem 1.3rem;
+        border-radius: 1rem;
+        font-size: 0.8rem; font-weight: 600;
+        z-index: 9999;
+        opacity: 0; transform: translateY(0.5rem);
+        transition: all 0.25s; pointer-events: none;
+    }
+    .ut-toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── LOGIN SECTION ── */
+    .usuario-hero { padding: 8rem 0 3rem; }
+    .usuario-hero-title {
+        font-size: clamp(2.5rem, 5vw, 3.8rem);
+        font-weight: 700; letter-spacing: -0.03em;
+    }
+    .form-tabs {
+        display: flex; gap: 0;
+        border: 1.5px solid var(--gris-mid);
+        border-radius: 999rem; overflow: hidden;
+        width: fit-content; margin-bottom: 2rem;
+    }
+    .form-tab {
+        padding: 0.55rem 1.6rem;
+        font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+        border: none; background: transparent; cursor: pointer; transition: all 0.2s;
+        font-family: inherit;
+    }
+    .form-tab.active { background: var(--rojo); color: white; }
+    .form-card {
+        border-radius: var(--radius); border: 1px solid var(--gris-mid);
+        background: white; padding: 2.5rem; max-width: 36rem;
+    }
+    .radio-group { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .radio-option { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.88rem; font-weight: 600; }
+    .radio-option input { accent-color: var(--rojo); }
+    #campos-registro { display: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+        .perfil-hero {
+            padding: 5rem 0 2rem;
+        }
+        .perfil-nombre {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+        }
+        .dash-bento { grid-template-columns: repeat(2, 1fr); }
+        .db-wide  { grid-column: span 2; }
+        .db-full  { grid-column: span 2; }
+        .apariencia-grid { grid-template-columns: repeat(2, 1fr); }
+        .textura-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+        .perfil-hero {
+            padding: 4rem 0 1.5rem;
+        }
+        .perfil-hero-inner {
+            flex-direction: column;
+            align-items: flex-start;
+            border-bottom: none;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .perfil-avatar {
+            width: 4rem;
+            height: 4rem;
+            font-size: 1.2rem;
+        }
+        .perfil-nombre {
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+        }
+        .perfil-actions {
+            margin-left: 0;
+            width: 100%;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .perfil-actions .ut-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Tabs scrollable en móvil */
+        .perfil-tabs {
+            gap: 0.1rem;
+            margin: 1rem 0 1rem;
+        }
+        .perfil-tab {
+            padding: 0.5rem 1rem;
+            font-size: 0.65rem;
+        }
+
+        /* Dashboard grid */
+        .dash-bento { 
+            grid-template-columns: 1fr; 
+            gap: 0.8rem;
+        }
+        .db-wide  { grid-column: span 1; }
+        .db-full  { grid-column: span 1; }
+        .ut-stat {
+            padding: 1rem 1rem;
+        }
+        .ut-stat-num {
+            font-size: 1.6rem;
+        }
+
+        /* Descarga items */
+        .descarga-item {
+            flex-wrap: wrap;
+            padding: 0.9rem 1rem;
+        }
+        .descarga-icon {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.8rem;
+        }
+        .descarga-nombre {
+            font-size: 0.83rem;
+        }
+        .descarga-btn {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 0.6rem;
+        }
+
+        /* Notificaciones */
+        .notif-item {
+            padding: 0.85rem 1rem;
+            gap: 0.7rem;
+        }
+        .notif-titulo {
+            font-size: 0.81rem;
+        }
+
+        /* Formularios */
+        .form-pendiente {
+            flex-wrap: wrap;
+            padding: 0.9rem 1rem;
+        }
+        .form-pend-badge {
+            padding: 0.2rem 0.6rem;
+            font-size: 0.55rem;
+        }
+        .form-pend-btn {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 0.6rem;
+        }
+
+        /* Pedidos */
+        .pedido-ut {
+            padding: 0.9rem 1rem;
+        }
+        .pedido-ut-item {
+            font-size: 0.8rem;
+        }
+
+        /* Forms */
+        .cuenta-form .form-label {
+            font-size: 0.58rem;
+        }
+        .cuenta-form .form-control {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        /* Apariencia */
+        .apariencia-grid { 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 0.7rem;
+        }
+        .textura-grid { 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 0.5rem;
+        }
+        .tema-preview {
+            height: 5rem;
+        }
+        .tema-info {
+            padding: 0.65rem 0.8rem;
+        }
+        .tema-nombre {
+            font-size: 0.75rem;
+        }
+        .tema-desc {
+            font-size: 0.6rem;
+        }
+
+        /* Botones */
+        .ut-btn {
+            padding: 0.45rem 1rem;
+            font-size: 0.68rem;
+        }
+        .acento-btn {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .perfil-hero {
+            padding: 3rem 0 1rem;
+        }
+        .perfil-hero-inner {
+            margin-bottom: 0.8rem;
+        }
+        .perfil-avatar {
+            width: 3.5rem;
+            height: 3.5rem;
+            font-size: 1rem;
+        }
+        .perfil-nombre {
+            font-size: 1.3rem;
+        }
+        .perfil-email {
+            font-size: 0.75rem;
+        }
+        .perfil-since {
+            font-size: 0.62rem;
+        }
+
+        /* Tabs en móvil pequeño */
+        .perfil-tabs {
+            margin: 0.8rem 0;
+        }
+        .perfil-tab {
+            padding: 0.45rem 0.8rem;
+            font-size: 0.6rem;
+        }
+
+        /* Dashboard */
+        .dash-bento { 
+            grid-template-columns: 1fr;
+            gap: 0.7rem;
+        }
+        .ut-stat {
+            padding: 0.9rem 0.9rem;
+        }
+        .ut-stat-num {
+            font-size: 1.4rem;
+        }
+        .ut-stat-label {
+            font-size: 0.55rem;
+            margin-top: 0.3rem;
+        }
+
+        .welcome-card {
+            padding: 1.3rem;
+        }
+        .welcome-card-title {
+            font-size: 1rem;
+        }
+        .welcome-card-sub {
+            font-size: 0.75rem;
+        }
+
+        /* Descarga */
+        .descarga-item {
+            gap: 0.8rem;
+            padding: 0.8rem 0.9rem;
+        }
+        .descarga-icon {
+            width: 1.8rem;
+            height: 1.8rem;
+            font-size: 0.7rem;
+        }
+        .descarga-nombre {
+            font-size: 0.78rem;
+        }
+        .descarga-meta {
+            font-size: 0.65rem;
+        }
+
+        /* Notificaciones */
+        .notif-item {
+            gap: 0.7rem;
+            padding: 0.8rem 0.9rem;
+        }
+        .notif-titulo {
+            font-size: 0.78rem;
+        }
+        .notif-body {
+            font-size: 0.72rem;
+        }
+
+        /* Formularios */
+        .form-pendiente {
+            gap: 0.8rem;
+            padding: 0.8rem 0.9rem;
+        }
+        .form-pend-title {
+            font-size: 0.82rem;
+        }
+        .form-pend-sub {
+            font-size: 0.65rem;
+        }
+
+        /* Pedidos */
+        .pedido-ut {
+            padding: 0.8rem 0.9rem;
+        }
+        .pedido-ut-head {
+            gap: 0.3rem;
+        }
+        .pedido-ut-id {
+            font-size: 0.65rem;
+        }
+        .pedido-ut-item {
+            font-size: 0.76rem;
+        }
+
+        /* Forms */
+        .cuenta-form .form-label {
+            font-size: 0.55rem;
+            margin-bottom: 0.3rem;
+        }
+        .cuenta-form .form-control {
+            padding: 0.45rem 0.7rem;
+            font-size: 0.75rem;
+        }
+
+        /* Apariencia */
+        .apariencia-grid { 
+            grid-template-columns: 1fr;
+            gap: 0.65rem;
+        }
+        .tema-card {
+            border-radius: 0.7rem;
+        }
+        .tema-preview {
+            height: 4rem;
+        }
+        .tema-info {
+            padding: 0.6rem 0.7rem;
+        }
+        .tema-nombre {
+            font-size: 0.72rem;
+        }
+        .tema-desc {
+            font-size: 0.58rem;
+        }
+
+        .acento-grid {
+            gap: 0.6rem;
+        }
+        .acento-btn {
+            width: 1.8rem;
+            height: 1.8rem;
+        }
+
+        .textura-grid { 
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+        .textura-btn {
+            font-size: 0.5rem;
+            border-radius: 0.4rem;
+            padding: 0.2rem;
+        }
+
+        /* Botones */
+        .ut-btn {
+            padding: 0.4rem 0.9rem;
+            font-size: 0.64rem;
+        }
+
+        /* Sección login */
+        .usuario-hero {
+            padding: 3rem 0 1.5rem;
+        }
+        .usuario-hero-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        }
+
+        .form-tabs {
+            width: 100%;
+        }
+        .form-tab {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+        }
+        .form-card {
+            padding: 1.5rem;
+            max-width: 100%;
+        }
+
+        /* Toast */
+        .ut-toast {
+            bottom: 1rem;
+            right: 1rem;
+            left: 1rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.75rem;
+        }
+    }
+    </style>
+</head>
+<body>
+<div class="bg-dots"></div>
+<mi-menu></mi-menu>
+
+<!-- ================================================================
+     SECCIÓN LOGIN / REGISTRO
+================================================================ -->
+<div id="login-section">
+    <section class="usuario-hero">
+        <div class="container">
+            <p class="section-label">Mi cuenta</p>
+            <h1 class="usuario-hero-title">Bienvenido/a.</h1>
+        </div>
+    </section>
+
+    <section class="pb-5">
+        <div class="container">
+            <div class="form-tabs mb-0">
+                <button class="form-tab active" onclick="switchTab('acceso', event)">ACCESO</button>
+                <button class="form-tab" onclick="switchTab('registro', event)">REGISTRO</button>
+            </div>
+
+            <div class="form-card ctrl-form mt-0" style="border-top-left-radius:0">
+                <div class="radio-group" id="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="modo" value="acceso" checked onchange="toggleModo('acceso')">
+                        Acceso
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="modo" value="registro" onchange="toggleModo('registro')">
+                        Registro
+                    </label>
+                </div>
+
+                <form id="form-usuario" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" class="form-control" id="email"
+                            placeholder="hola@tudominio.com" required autocomplete="email">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="password"
+                            placeholder="••••••••" required minlength="8" autocomplete="current-password">
+                    </div>
+
+                    <div id="campos-registro">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label" for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre"
+                                    placeholder="Ana" autocomplete="given-name">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label" for="apellidos">Apellidos</label>
+                                <input type="text" class="form-control" id="apellidos"
+                                    placeholder="García López" autocomplete="family-name">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="telefono">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono"
+                                placeholder="+34 600 000 000"
+                                pattern="[\+]?[0-9\s\-]{9,15}" autocomplete="tel">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="password2">Confirmar contraseña</label>
+                            <input type="password" class="form-control" id="password2"
+                                placeholder="••••••••" minlength="8" autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-ctrl btn-ctrl-primary w-100" id="btn-submit">
+                        ENTRAR ↗
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ================================================================
+     SECCIÓN PERFIL / DASHBOARD
+================================================================ -->
+<section id="perfil-section" class="perfil-section">
+    <div class="container">
+
+        <!-- HERO -->
+        <div class="perfil-hero">
+            <div class="perfil-hero-inner">
+                <div class="perfil-avatar" id="perfil-avatar">U</div>
+                <div>
+                    <div class="perfil-nombre" id="perfil-nombre">Usuario</div>
+                    <div class="perfil-email"  id="perfil-email">usuario@email.com</div>
+                    <div class="perfil-since">Cliente desde enero 2026</div>
+                </div>
+                <div class="perfil-actions">
+                    <a href="carrito.html" class="ut-btn ut-btn-ghost">Ver carrito</a>
+                    <button class="ut-btn ut-btn-danger" onclick="cerrarSesion()">Cerrar sesión</button>
+                </div>
+            </div>
+
+            <!-- TABS -->
+            <nav class="perfil-tabs">
+                <button class="perfil-tab active" onclick="showPanel('dashboard', this)">Dashboard</button>
+                <button class="perfil-tab" onclick="showPanel('descargas', this)">Descargas</button>
+                <button class="perfil-tab" onclick="showPanel('notificaciones', this)">Notificaciones</button>
+                <button class="perfil-tab" onclick="showPanel('formularios', this)">Formularios</button>
+                <button class="perfil-tab" onclick="showPanel('pedidos', this)">Mis pedidos</button>
+                <button class="perfil-tab" onclick="showPanel('cuenta', this)">Mi cuenta</button>
+                <button class="perfil-tab" onclick="showPanel('apariencia', this)">Apariencia</button>
+            </nav>
+        </div>
+
+        <!-- ── PANEL: DASHBOARD ── -->
+        <div class="perfil-panel active" id="panel-dashboard">
+            <div class="dash-bento">
+
+                <!-- Bienvenida -->
+                <div class="ut-card db-wide welcome-card">
+                    <div class="welcome-card-title">Hola, <span id="dash-nombre">Usuario</span> 👋</div>
+                    <div class="welcome-card-sub">Tienes <strong>2 descargas</strong> disponibles, <strong>1 notificación</strong> sin leer y <strong>1 formulario</strong> pendiente.</div>
+                    <div class="welcome-buttons">
+                        <button class="ut-btn ut-btn-primary" onclick="showPanel('descargas', document.querySelectorAll('.perfil-tab')[1])">Descargas →</button>
+                        <button class="ut-btn ut-btn-ghost"   onclick="showPanel('formularios', document.querySelectorAll('.perfil-tab')[3])">Formularios pendientes</button>
+                    </div>
+                </div>
+
+                <!-- Stat: Pedidos -->
+                <div class="ut-card ut-stat">
+                    <div class="ut-stat-icon">◑</div>
+                    <div class="ut-stat-num">3</div>
+                    <div class="ut-stat-label">Pedidos totales</div>
+                    <div class="ut-stat-sub">Último: 03/03/2026</div>
+                </div>
+
+                <!-- Stat: Descargas -->
+                <div class="ut-card ut-stat">
+                    <div class="ut-stat-icon">↓</div>
+                    <div class="ut-stat-num">2</div>
+                    <div class="ut-stat-label">Descargas</div>
+                    <div class="ut-stat-sub">Kit Social + Guía</div>
+                </div>
+
+                <!-- Stat: Notificaciones -->
+                <div class="ut-card ut-stat">
+                    <div class="ut-stat-icon">◎</div>
+                    <div class="ut-stat-num">1</div>
+                    <div class="ut-stat-label">Sin leer</div>
+                    <div class="ut-stat-sub">1 nueva notificación</div>
+                </div>
+
+                <!-- Stat: Plan -->
+                <div class="ut-card ut-stat db-wide plan-stat">
+                    <div class="ut-stat-icon">★</div>
+                    <div class="ut-stat-num">Plan Starter</div>
+                    <div class="ut-stat-label">Suscripción activa</div>
+                    <div>
+                        <a href="productos.html" class="ut-btn ut-btn-primary plan-stat-button">Actualizar plan →</a>
+                    </div>
+                </div>
+
+                <!-- Actividad reciente -->
+                <div class="ut-card db-full">
+                    <div class="activity-header">
+                        <span class="activity-header-title">Actividad reciente</span>
+                        <button class="ut-btn ut-btn-ghost" style="font-size:0.65rem; padding:0.3rem 0.8rem"
+                            onclick="showPanel('pedidos', document.querySelectorAll('.perfil-tab')[4])">Ver pedidos →</button>
+                    </div>
+                    <div>
+                        <div class="activity-item">
+                            <div class="activity-dot success"></div>
+                            <div class="activity-content">Pedido <strong>#CTR-00141</strong> — Identidad de Marca en curso</div>
+                            <div class="activity-time">03/03/2026</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot success"></div>
+                            <div class="activity-content">Descarga disponible — <strong>Kit Social Media</strong></div>
+                            <div class="activity-time">28/02/2026</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot accent"></div>
+                            <div class="activity-content">Formulario de brief pendiente de rellenar</div>
+                            <div class="activity-time">25/02/2026</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── PANEL: DESCARGAS ── -->
+        <div class="perfil-panel" id="panel-descargas">
+            <div class="ut-card">
+                <div class="panel-header">
+                    <span class="panel-header-title">Recursos disponibles</span>
+                </div>
+                <div class="descarga-item">
+                    <div class="descarga-icon">ZIP</div>
+                    <div>
+                        <div class="descarga-nombre">Kit Social Media — Plantillas Instagram</div>
+                        <div class="descarga-meta">24 archivos · PSD + AI · 128 MB · Comprado el 28/02/2026</div>
+                    </div>
+                    <button class="descarga-btn" onclick="utToast('Descargando Kit Social Media...')">↓ Descargar</button>
+                </div>
+                <div class="descarga-item">
+                    <div class="descarga-icon">PDF</div>
+                    <div>
+                        <div class="descarga-nombre">Guía de Marca — Brief Creativo</div>
+                        <div class="descarga-meta">1 archivo · PDF · 4.2 MB · Incluido en tu plan</div>
+                    </div>
+                    <button class="descarga-btn" onclick="utToast('Descargando Guía de Marca...')">↓ Descargar</button>
+                </div>
+                <div class="descarga-item locked">
+                    <div class="descarga-icon">—</div>
+                    <div>
+                        <div class="descarga-nombre">Pack Tipografías CTRL — Uso Comercial</div>
+                        <div class="descarga-meta">Requiere Plan Pro o superior</div>
+                    </div>
+                    <button class="descarga-btn" disabled>Bloqueado</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PANEL: NOTIFICACIONES ── -->
+        <div class="perfil-panel" id="panel-notificaciones">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem">
+                <span style="font-size:0.72rem; color:var(--ut-txt-muted)">1 sin leer</span>
+                <button class="ut-btn ut-btn-ghost" style="font-size:0.65rem; padding:0.3rem 0.8rem"
+                    onclick="marcarTodasLeidas()">Marcar todas como leídas</button>
+            </div>
+            <div class="ut-card">
+                <div class="notif-item unread" id="notif-1">
+                    <div class="notif-dot" id="notif-dot-1"></div>
+                    <div>
+                        <div class="notif-titulo">Tu pedido #CTR-00141 está en curso</div>
+                        <div class="notif-body">Hemos comenzado a trabajar en tu proyecto de Identidad de Marca. Puedes hacer seguimiento desde la sección Mis Pedidos.</div>
+                        <div class="notif-time">Hace 2 días · 03/03/2026</div>
+                    </div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-dot read"></div>
+                    <div>
+                        <div class="notif-titulo">Nueva descarga disponible</div>
+                        <div class="notif-body">Tu Kit Social Media ya está disponible para descargar desde la sección Descargas.</div>
+                        <div class="notif-time">Hace 10 días · 28/02/2026</div>
+                    </div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-dot read"></div>
+                    <div>
+                        <div class="notif-titulo">Bienvenido/a a CTRL Studio</div>
+                        <div class="notif-body">Gracias por registrarte. Explora nuestros servicios y plantillas desde el catálogo.</div>
+                        <div class="notif-time">Hace 15 días · 23/02/2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PANEL: FORMULARIOS ── -->
+        <div class="perfil-panel" id="panel-formularios">
+            <div class="ut-card">
+                <div class="panel-header">
+                    <span class="panel-header-title">Formularios y documentos</span>
+                </div>
+
+                <div class="form-pendiente">
+                    <div>
+                        <div class="form-pend-title">Brief creativo — Identidad de Marca</div>
+                        <div class="form-pend-sub">Necesitamos esta información para comenzar tu proyecto. Plazo: 10/03/2026</div>
+                    </div>
+                    <span class="form-pend-badge fpb-urgente">Urgente</span>
+                    <button class="form-pend-btn" onclick="utToast('Abriendo formulario...')">Rellenar →</button>
+                </div>
+
+                <div class="form-pendiente">
+                    <div>
+                        <div class="form-pend-title">Encuesta de satisfacción — Kit Social</div>
+                        <div class="form-pend-sub">Cuéntanos tu experiencia con el kit descargado.</div>
+                    </div>
+                    <span class="form-pend-badge fpb-pendiente">Pendiente</span>
+                    <button class="form-pend-btn" onclick="utToast('Abriendo encuesta...')">Rellenar →</button>
+                </div>
+
+                <div class="form-pendiente">
+                    <div>
+                        <div class="form-pend-title">Contrato de servicios — Identidad de Marca</div>
+                        <div class="form-pend-sub">Firmado el 01/03/2026. Disponible para descarga.</div>
+                    </div>
+                    <span class="form-pend-badge fpb-ok">Firmado</span>
+                    <button class="form-pend-btn fpb-ok-btn" onclick="utToast('Descargando contrato...')">↓ Descargar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PANEL: PEDIDOS ── -->
+        <div class="perfil-panel" id="panel-pedidos">
+            <div class="ut-card">
+                <div class="panel-header">
+                    <span class="panel-header-title">Historial de pedidos</span>
+                </div>
+                <div class="pedido-ut">
+                    <div class="pedido-ut-head">
+                        <span class="pedido-ut-id">#CTR-00141</span>
+                        <span class="pedido-status-badge status-en-curso">EN CURSO</span>
+                        <span class="pedido-ut-fecha">03/03/2026</span>
+                    </div>
+                    <div class="pedido-ut-item"><span>Identidad de Marca Completa</span><span>890,00€</span></div>
+                    <div class="pedido-ut-total">Total: 1.077,90€ <span style="font-size:0.72rem; font-weight:400; color:var(--ut-txt-muted)">(IVA 21% incluido)</span></div>
+                </div>
+                <div class="pedido-ut">
+                    <div class="pedido-ut-head">
+                        <span class="pedido-ut-id">#CTR-00139</span>
+                        <span class="pedido-status-badge status-completado">COMPLETADO</span>
+                        <span class="pedido-ut-fecha">28/02/2026</span>
+                    </div>
+                    <div class="pedido-ut-item"><span>Kit Social Media — Pack Completo</span><span>29,00€</span></div>
+                    <div class="pedido-ut-total">Total: 35,09€ <span style="font-size:0.72rem; font-weight:400; color:var(--ut-txt-muted)">(IVA 21% incluido)</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PANEL: MI CUENTA ── -->
+        <div class="perfil-panel" id="panel-cuenta">
+            <div class="row gy-3">
+                <div class="col-lg-8">
+                    <div class="ut-section-label">Modificar datos personales</div>
+                    <div class="ut-card cuenta-card">
+                        <form id="form-modificar" class="cuenta-form" novalidate>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label class="form-label" for="mod-nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="mod-nombre" autocomplete="given-name">
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label" for="mod-apellidos">Apellidos</label>
+                                    <input type="text" class="form-control" id="mod-apellidos" autocomplete="family-name">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="mod-telefono">Teléfono</label>
+                                <input type="tel" class="form-control" id="mod-telefono"
+                                    pattern="[\+]?[0-9\s\-]{9,15}" autocomplete="tel">
+                            </div>
+                            <button type="submit" class="ut-btn ut-btn-primary">GUARDAR CAMBIOS</button>
+                        </form>
+                    </div>
+
+                    <div class="ut-section-label">Cambiar contraseña</div>
+                    <div class="ut-card cuenta-card">
+                        <form id="form-clave" class="cuenta-form" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label" for="clave-actual">Contraseña actual</label>
+                                <input type="password" class="form-control" id="clave-actual" required minlength="8" autocomplete="current-password">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="clave-nueva">Nueva contraseña</label>
+                                <input type="password" class="form-control" id="clave-nueva" required minlength="8" autocomplete="new-password">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="clave-nueva2">Confirmar nueva contraseña</label>
+                                <input type="password" class="form-control" id="clave-nueva2" required minlength="8" autocomplete="new-password">
+                            </div>
+                            <button type="submit" class="ut-btn ut-btn-ghost">CAMBIAR CONTRASEÑA</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="ut-section-label">Acciones rápidas</div>
+                    <div class="ut-card quick-actions">
+                        <a href="carrito.html" class="ut-btn ut-btn-ghost w-100 justify-content-center">Ver carrito</a>
+                        <a href="productos.html" class="ut-btn ut-btn-ghost w-100 justify-content-center">Catálogo</a>
+                        <button class="ut-btn ut-btn-danger w-100 justify-content-center" onclick="cerrarSesion()">CERRAR SESIÓN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PANEL: APARIENCIA ── -->
+        <div class="perfil-panel" id="panel-apariencia">
+            <div class="row gy-3">
+                <div class="col-lg-8">
+
+                    <!-- TEMAS -->
+                    <div class="ut-section-label">Tema de la interfaz</div>
+                    <div class="apariencia-grid" id="ap-temas"></div>
+
+                    <!-- ACENTO -->
+                    <div class="ut-section-label">Color de acento</div>
+                    <div class="ut-card accent-card">
+                        <div class="acento-grid" id="ap-acentos"></div>
+                        <div class="accent-description">
+                            El color de acento se aplica a botones, líneas activas y elementos interactivos.
+                        </div>
+                    </div>
+
+                    <!-- TEXTURAS -->
+                    <div class="ut-section-label">Textura de fondo</div>
+                    <div class="ut-card texture-card">
+                        <div class="textura-grid" id="ap-texturas"></div>
+                        <div class="texture-description">
+                            Coloca tus archivos en <code class="ap-code">web/img/textures/</code>
+                            con los nombres indicados. Formato PNG recomendado, 512×512 px, tileable.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="ut-section-label">Preview</div>
+                    <div class="ut-card preview-card">
+                        <div class="ap-preview-nombre" id="ap-preview-nombre">Ana G.</div>
+                        <div class="ap-preview-subtitle">Previsualización del tema</div>
+                        <button class="ut-btn ut-btn-primary w-100 justify-content-center mb-2" style="pointer-events:none">Botón primario</button>
+                        <button class="ut-btn ut-btn-ghost w-100 justify-content-center" style="pointer-events:none">Botón secundario</button>
+                        <div class="ap-preview-text">
+                            El tema se aplica instantáneamente y se guarda automáticamente.
+                        </div>
+                        <div class="ap-reset-section">
+                            <button class="ut-btn ut-btn-danger" style="font-size:0.65rem; padding:0.3rem 0.8rem" onclick="resetTema()">Restablecer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-spacer"></div>
+    </div><!-- /container -->
+</section>
+
+<div class="ut-toast" id="ut-toast"></div>
+<div class="ctrl-toast" id="toast"></div>
+<mi-pie></mi-pie>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/mis-etiquetas.js"></script>
+<script src="js/fondo.js"></script>
+<script src="js/carrito.js"></script>
+<!-- user-theme.js ya cargado en <head> -->
+<script>
+
+/* ================================================================
+   NAVEGACIÓN DE TABS
+================================================================ */
+function showPanel(id, btn) {
+    document.querySelectorAll('.perfil-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.perfil-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    if (btn) btn.classList.add('active');
+}
+
+/* ================================================================
+   LOGIN / REGISTRO
+================================================================ */
+let modoActual = 'acceso';
+
+function switchTab(modo, e) {
+    modoActual = modo;
+    document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+    if (e && e.target) e.target.classList.add('active');
+    toggleModo(modo);
+}
+
+function toggleModo(modo) {
+    modoActual = modo;
+    const campos = document.getElementById('campos-registro');
+    const btn    = document.getElementById('btn-submit');
+    const radios = document.querySelectorAll('input[name="modo"]');
+    if (modo === 'registro') {
+        campos.style.display = 'block';
+        btn.textContent = 'REGISTRARSE ↗';
+        radios[1].checked = true;
+        ['nombre','apellidos','telefono','password2'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.required = true;
+        });
+    } else {
+        campos.style.display = 'none';
+        btn.textContent = 'ENTRAR ↗';
+        radios[0].checked = true;
+        ['nombre','apellidos','telefono','password2'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.required = false;
+        });
+    }
+}
+
+document.getElementById('form-usuario').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email  = document.getElementById('email').value;
+    const pass   = document.getElementById('password').value;
+    if (modoActual === 'registro') {
+        const pass2 = document.getElementById('password2').value;
+        if (pass !== pass2) { showToast('Las contraseñas no coinciden'); return; }
+        const nombre = document.getElementById('nombre').value;
+        sessionStorage.setItem('ctrl_logged', 'true');
+        sessionStorage.setItem('ctrl_user', JSON.stringify({ nombre, email }));
+        showToast('Cuenta creada correctamente');
+    } else {
+        sessionStorage.setItem('ctrl_logged', 'true');
+        sessionStorage.setItem('ctrl_user', JSON.stringify({ nombre: 'Usuario', email }));
+    }
+    mostrarPerfil();
+});
+
+function mostrarPerfil() {
+    const user = JSON.parse(sessionStorage.getItem('ctrl_user') || '{}');
+    document.getElementById('login-section').style.display  = 'none';
+    document.getElementById('perfil-section').style.display = 'block';
+    document.getElementById('perfil-nombre').textContent    = user.nombre || 'Usuario';
+    document.getElementById('perfil-email').textContent     = user.email  || '';
+    document.getElementById('perfil-avatar').textContent    = (user.nombre || 'U')[0].toUpperCase();
+    document.getElementById('dash-nombre').textContent      = user.nombre || 'Usuario';
+    document.getElementById('ap-preview-nombre').textContent = user.nombre || 'Usuario';
+    document.getElementById('mod-nombre').value = user.nombre || '';
+
+    // Aplicar tema guardado al entrar al perfil
+    UserTheme.apply(UserTheme.load());
+}
+
+function cerrarSesion() {
+    sessionStorage.removeItem('ctrl_logged');
+    sessionStorage.removeItem('ctrl_user');
+    document.getElementById('login-section').style.display  = 'block';
+    document.getElementById('perfil-section').style.display = 'none';
+    showToast('Sesión cerrada');
+}
+
+/* ================================================================
+   PANEL APARIENCIA — render dinámico desde UserTheme
+================================================================ */
+function renderApariencia() {
+    const cfg = UserTheme.load();
+
+    /* ── TEMAS ── */
+    const temasCont = document.getElementById('ap-temas');
+    temasCont.innerHTML = '';
+    Object.entries(UserTheme.TEMAS).forEach(([key, t]) => {
+        const card = document.createElement('div');
+        card.className = 'tema-card' + (cfg.tema === key ? ' active' : '');
+        card.setAttribute('role', 'button'); card.tabIndex = 0;
+        card.innerHTML = `
+            <div class="tema-check">✓</div>
+            <div class="tema-preview prev-${key}">
+                <div class="pm-bar">
+                    <div class="pm-dot"></div>
+                    <div class="pm-dot2"></div>
+                    <div class="pm-dot2"></div>
+                </div>
+            </div>
+            <div class="tema-info">
+                <div class="tema-nombre">${t.label}</div>
+            </div>`;
+        card.addEventListener('click', () => {
+            UserTheme.set({ tema: key });
+            renderApariencia();
+            utToast('Tema "' + t.label + '" aplicado');
+        });
+        card.addEventListener('keydown', ev => { if (ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); card.click(); } });
+        temasCont.appendChild(card);
+    });
+
+    /* ── ACENTOS ── */
+    const acentosCont = document.getElementById('ap-acentos');
+    acentosCont.innerHTML = '';
+    Object.entries(UserTheme.ACENTOS).forEach(([key, a]) => {
+        const btn = document.createElement('button');
+        btn.className = 'acento-btn' + (cfg.acento === key ? ' active' : '');
+        btn.title = a.label;
+        btn.style.background = a.hex;
+        btn.setAttribute('aria-label', 'Acento ' + a.label);
+        // Etiqueta
+        const lbl = document.createElement('span');
+        lbl.textContent = a.label;
+        lbl.style.cssText = 'font-size:0.68rem;color:var(--ut-txt-muted);white-space:nowrap;align-self:center;';
+        btn.addEventListener('click', () => {
+            UserTheme.set({ acento: key });
+            renderApariencia();
+            utToast('Acento "' + a.label + '" aplicado');
+        });
+        acentosCont.appendChild(btn);
+        acentosCont.appendChild(lbl);
+    });
+
+    /* ── TEXTURAS ── */
+    const texCont = document.getElementById('ap-texturas');
+    texCont.innerHTML = '';
+    Object.entries(UserTheme.TEXTURAS).forEach(([key, tex]) => {
+        const btn = document.createElement('button');
+        btn.className = 'textura-btn' + (cfg.textura === key ? ' active' : '');
+        btn.textContent = tex.label;
+        btn.setAttribute('aria-label', 'Textura ' + tex.label);
+        if (tex.file) {
+            btn.style.backgroundImage   = `url('${tex.file}')`;
+            btn.style.backgroundSize    = 'cover';
+            btn.style.backgroundRepeat  = 'no-repeat';
+            btn.style.backgroundPosition= 'center';
+        }
+        btn.addEventListener('click', () => {
+            UserTheme.set({ textura: key });
+            renderApariencia();
+            utToast('Textura "' + tex.label + '" aplicada');
+        });
+        texCont.appendChild(btn);
+    });
+}
+
+function resetTema() {
+    UserTheme.reset();
+    renderApariencia();
+    utToast('Apariencia restablecida');
+}
+
+function cambiarTema(key) {
+    UserTheme.set({ tema: key });
+    renderApariencia();
+}
+
+function cambiarAcento(key) {
+    UserTheme.set({ acento: key });
+    renderApariencia();
+}
+
+function cambiarTextura(key) {
+    UserTheme.set({ textura: key });
+    renderApariencia();
+}
+
+/* ================================================================
+   NOTIFICACIONES
+================================================================ */
+function marcarTodasLeidas() {
+    document.querySelectorAll('.notif-dot').forEach(d => {
+        d.classList.remove(); d.classList.add('notif-dot', 'read');
+    });
+    document.querySelectorAll('.notif-item').forEach(i => i.classList.remove('unread'));
+    utToast('Todas las notificaciones marcadas como leídas');
+}
+
+/* ================================================================
+   FORMULARIOS
+================================================================ */
+document.getElementById('form-modificar').addEventListener('submit', function(e) {
+    e.preventDefault();
+    utToast('Datos actualizados correctamente');
+});
+document.getElementById('form-clave').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const n  = document.getElementById('clave-nueva').value;
+    const n2 = document.getElementById('clave-nueva2').value;
+    if (n !== n2) { utToast('Las contraseñas no coinciden'); return; }
+    utToast('Contraseña actualizada');
+    this.reset();
+});
+
+/* ================================================================
+   TOAST
+================================================================ */
+function utToast(msg) {
+    const t = document.getElementById('ut-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(utToast._t);
+    utToast._t = setTimeout(() => t.classList.remove('show'), 2500);
+}
+function showToast(msg) { utToast(msg); }
+
+/* ================================================================
+   INIT
+================================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('ctrl_logged') === 'true') {
+        mostrarPerfil();
+    }
+    if (window.location.hash === '#registro') switchTab('registro', null);
+
+    renderApariencia();
+});
+</script>
+</body>
+</html>
