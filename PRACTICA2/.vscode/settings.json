@@ -1,0 +1,9 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^git -v$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    },
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
