@@ -1,0 +1,102 @@
+/* ═══════════════════════════════════════════════════════════════
+   Empresa Page - Estilos inline extraídos
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+   Hero Section
+   ───────────────────────────────────────────────────────────── */
+
+.port-hero-content {
+    position: relative;
+}
+
+.port-main-content {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Form Elements
+   ───────────────────────────────────────────────────────────── */
+
+.form-textarea-control {
+    resize: none;
+}
+
+.form-help-text {
+    font-size: 0.68rem;
+    opacity: 0.6;
+    color: var(--txt-muted);
+    margin-top: 0.4rem;
+    display: block;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Color Picker - Data-driven styling with CSS variables
+   ───────────────────────────────────────────────────────────── */
+
+/* Use CSS to apply colors from data-color attribute using CSS variables */
+.color-dot[data-color="#e0dbd0"] { background: #e0dbd0; }
+.color-dot[data-color="#0d0c1a"] { background: #0d0c1a; }
+.color-dot[data-color="#a50136"] { background: #a50136; }
+.color-dot[data-color="#4e5174"] { background: #4e5174; }
+.color-dot[data-color="#f5f0e8"] { 
+    background: #f5f0e8;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+.color-dot[data-color="#2d4a3e"] { background: #2d4a3e; }
+
+.color-dot {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.color-dot:hover {
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.color-dot.selected {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.color-dot[data-color="#f5f0e8"] {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Modal Updates
+   ───────────────────────────────────────────────────────────── */
+
+.contact-modal-footer {
+    gap: 0.6rem;
+}
+
+.contact-submit-btn {
+    background: rgba(165, 1, 54, 0.07);
+    color: var(--rojo);
+    border: none;
+    display: none;
+}
+
+.contact-submit-btn:hover:not(:disabled) {
+    background: rgba(165, 1, 54, 0.12);
+}
+
+.contact-submit-btn:disabled,
+.contact-submit-btn[disabled] {
+    display: none;
+}
+
+/* Show button when form is valid */
+.contact-form.valid .contact-submit-btn {
+    display: inline-block;
+}

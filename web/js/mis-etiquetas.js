@@ -4,7 +4,7 @@ class MiMenu extends HTMLElement {
         this.innerHTML = `
 <nav class="navbar navbar-expand-lg ctrl-navbar">
   <div class="container-fluid px-0">
-    <a class="navbar-brand ps-3" href="index.html"><img src="img/LOGO.svg" class="logo-svg" alt="CTRL Studio"></a>
+    <a class="navbar-brand ps-3" href="index.html"><img src="img/LOGO.svg" class="logo-svg" alt="CTRL Studio" color="#000000"></a>
 
     <button class="navbar-toggler border-0 shadow-none me-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav" data-bs-auto-close="false" aria-controls="mobileNav" aria-expanded="false" aria-label="Abrir menú">
       <span class="toggler-bar"></span>

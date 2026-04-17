@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pedidos — CTRL Admin</title>
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .filter-row {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-select {
+            border: 1.5px solid var(--gris-mid);
+            border-radius: var(--radius-pill);
+            padding: 0.4rem 0.9rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            font-family: inherit;
+            background: white;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .filter-select:focus { border-color: var(--azul); }
+    </style>
+</head>
+<body>
+
+<aside class="admin-sidebar">
+    <div class="sidebar-logo">
+        <img src="img/LOGO.svg" alt="CTRL Studio" style="height: 1.5rem; width: auto;">
+        <div class="sidebar-label-admin">Administración</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="sidebar-section">Principal</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="icon">◈</span> Dashboard</a>
+        <div class="sidebar-section">Gestión</div>
+        <a href="usuarios.html" class="sidebar-link"><span class="icon">◎</span> Usuarios</a>
+        <a href="productos.html" class="sidebar-link"><span class="icon">◻</span> Productos</a>
+        <a href="pedidos.html" class="sidebar-link active"><span class="icon">◑</span> Pedidos</a>
+        <div class="sidebar-section">Sistema</div>
+        <a href="index.html" class="sidebar-link"><span class="icon">←</span> Cerrar sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="admin-user">
+            <div class="admin-avatar">A</div>
+            <div><div class="admin-user-name">admin</div><div class="admin-user-role">Administrador</div></div>
+        </div>
+    </div>
+</aside>
+
+<main class="admin-main">
+    <div class="admin-topbar">
+        <span class="topbar-title">Pedidos</span>
+        <div class="topbar-right">
+            <span style="font-size:0.78rem; color:var(--txt-muted)">17 pedidos este mes</span>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <div class="admin-table-wrap">
+            <div class="admin-table-header">
+                <span class="admin-table-title">Listado de pedidos</span>
+                <div class="filter-row">
+                    <select class="filter-select" id="filtro-estado" onchange="filtrarPedidos()">
+                        <option value="todos">Todos los estados</option>
+                        <option value="EN CURSO">En curso</option>
+                        <option value="COMPLETADO">Completados</option>
+                        <option value="CANCELADO">Cancelados</option>
+                    </select>
+                    <input type="search" class="admin-search" id="buscar-pedido" placeholder="Buscar pedido...">
+                </div>
+            </div>
+            <div style="overflow-x:auto">
+                <table class="ctrl-table" id="tabla-pedidos">
+                    <thead>
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Importe (IVA inc.)</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-estado="EN CURSO">
+                            <td>#CTR-00141</td>
+                            <td>Laura Martínez Ruiz</td>
+                            <td>Identidad de Marca Completa</td>
+                            <td>1.077,90€</td>
+                            <td>03/03/2026</td>
+                            <td><span class="badge-estado badge-pendiente">EN CURSO</span></td>
+                            <td>
+                                <button class="tbl-action tbl-edit" onclick="cambiarEstado(this, '#CTR-00141')">Cambiar estado</button>
+                                <button class="tbl-action tbl-edit" onclick="verDetalle('#CTR-00141','Laura Martínez Ruiz','Identidad de Marca Completa','1.077,90€','03/03/2026','EN CURSO')">Ver</button>
+                            </td>
+                        </tr>
+                        <tr data-estado="COMPLETADO">
+                            <td>#CTR-00140</td>
+                            <td>Carlos Vidal Pons</td>
+                            <td>Plan PRO — Mensual</td>
+                            <td>543,29€</td>
+                            <td>01/03/2026</td>
+                            <td><span class="badge-estado badge-completado">COMPLETADO</span></td>
+                            <td>
+                                <button class="tbl-action tbl-edit" onclick="cambiarEstado(this, '#CTR-00140')">Cambiar estado</button>
+                                <button class="tbl-action tbl-edit" onclick="verDetalle('#CTR-00140','Carlos Vidal Pons','Plan PRO — Mensual','543,29€','01/03/2026','COMPLETADO')">Ver</button>
+                            </td>
+                        </tr>
+                        <tr data-estado="COMPLETADO">
+                            <td>#CTR-00139</td>
+                            <td>Ana García López</td>
+                            <td>Kit Social Media — Minimal</td>
+                            <td>35,09€</td>
+                            <td>28/02/2026</td>
+                            <td><span class="badge-estado badge-completado">COMPLETADO</span></td>
+                            <td>
+                                <button class="tbl-action tbl-edit" onclick="cambiarEstado(this, '#CTR-00139')">Cambiar estado</button>
+                                <button class="tbl-action tbl-edit" onclick="verDetalle('#CTR-00139','Ana García López','Kit Social Media — Minimal','35,09€','28/02/2026','COMPLETADO')">Ver</button>
+                            </td>
+                        </tr>
+                        <tr data-estado="CANCELADO">
+                            <td>#CTR-00138</td>
+                            <td>Pau Ferrer Bosch</td>
+                            <td>Manual de Marca — Template</td>
+                            <td>71,39€</td>
+                            <td>25/02/2026</td>
+                            <td><span class="badge-estado badge-cancelado">CANCELADO</span></td>
+                            <td>
+                                <button class="tbl-action tbl-edit" onclick="cambiarEstado(this, '#CTR-00138')">Cambiar estado</button>
+                                <button class="tbl-action tbl-edit" onclick="verDetalle('#CTR-00138','Pau Ferrer Bosch','Manual de Marca — Template','71,39€','25/02/2026','CANCELADO')">Ver</button>
+                            </td>
+                        </tr>
+                        <tr data-estado="EN CURSO">
+                            <td>#CTR-00137</td>
+                            <td>Marta Soler Navarro</td>
+                            <td>Plan Starter — Mensual</td>
+                            <td>240,79€</td>
+                            <td>22/02/2026</td>
+                            <td><span class="badge-estado badge-pendiente">EN CURSO</span></td>
+                            <td>
+                                <button class="tbl-action tbl-edit" onclick="cambiarEstado(this, '#CTR-00137')">Cambiar estado</button>
+                                <button class="tbl-action tbl-edit" onclick="verDetalle('#CTR-00137','Marta Soler Navarro','Plan Starter — Mensual','240,79€','22/02/2026','EN CURSO')">Ver</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- MODAL DETALLE PEDIDO -->
+<div class="modal fade" id="modalPedido" tabindex="-1" aria-labelledby="modalPedidoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-2">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title" id="modalPedidoLabel" style="font-weight:700; font-size:1rem">Detalle del pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body admin-form">
+                <table style="width:100%; font-size:0.88rem">
+                    <tr><td style="color:var(--txt-muted); padding:0.4rem 0; width:40%">ID Pedido</td><td id="det-id" style="font-weight:600"></td></tr>
+                    <tr><td style="color:var(--txt-muted); padding:0.4rem 0">Cliente</td><td id="det-cliente" style="font-weight:600"></td></tr>
+                    <tr><td style="color:var(--txt-muted); padding:0.4rem 0">Servicio</td><td id="det-servicio" style="font-weight:600"></td></tr>
+                    <tr><td style="color:var(--txt-muted); padding:0.4rem 0">Importe</td><td id="det-importe" style="font-weight:600"></td></tr>
+                    <tr><td style="color:var(--txt-muted); padding:0.4rem 0">Fecha</td><td id="det-fecha" style="font-weight:600"></td></tr>
+                    <tr><td style="color:var(--txt-muted); padding:0.4rem 0">Estado</td><td id="det-estado"></td></tr>
+                </table>
+                <div class="mt-4">
+                    <label class="form-label" for="det-nuevo-estado">Cambiar estado</label>
+                    <select class="form-select" id="det-nuevo-estado">
+                        <option value="EN CURSO">En curso</option>
+                        <option value="COMPLETADO">Completado</option>
+                        <option value="CANCELADO">Cancelado</option>
+                    </select>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="topbar-btn topbar-btn-primary flex-grow-1" onclick="guardarEstadoModal()">GUARDAR</button>
+                    <button class="topbar-btn topbar-btn-ghost flex-grow-1" data-bs-dismiss="modal">CERRAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CAMBIAR ESTADO -->
+<div class="modal fade" id="modalEstado" tabindex="-1" aria-labelledby="modalEstadoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content p-2">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title" id="modalEstadoLabel" style="font-weight:700; font-size:1rem"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body admin-form">
+                <label class="form-label" for="nuevo-estado">Nuevo estado</label>
+                <select class="form-select mb-3" id="nuevo-estado">
+                    <option value="EN CURSO">En curso</option>
+                    <option value="COMPLETADO">Completado</option>
+                    <option value="CANCELADO">Cancelado</option>
+                </select>
+                <div class="d-flex gap-2">
+                    <button class="topbar-btn topbar-btn-primary flex-grow-1" onclick="aplicarEstado()">APLICAR</button>
+                    <button class="topbar-btn topbar-btn-ghost flex-grow-1" data-bs-dismiss="modal">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script>
+if (sessionStorage.getItem("ctrl_admin") !== "true") window.location.href = "index.html";
+setupSearch("buscar-pedido", "tabla-pedidos");
+
+// Filtrar por estado
+function filtrarPedidos() {
+    const val = document.getElementById("filtro-estado").value;
+    document.querySelectorAll("#tabla-pedidos tbody tr").forEach(row => {
+        row.style.display = (val === "todos" || row.dataset.estado === val) ? "" : "none";
+    });
+}
+
+// Cambiar estado rápido
+let filaActiva = null;
+function cambiarEstado(btn, id) {
+    filaActiva = btn.closest("tr");
+    document.getElementById("modalEstadoLabel").textContent = "Cambiar estado " + id;
+    new bootstrap.Modal(document.getElementById("modalEstado")).show();
+}
+
+function aplicarEstado() {
+    if (!filaActiva) return;
+    const nuevoEstado = document.getElementById("nuevo-estado").value;
+    const badge = filaActiva.querySelector(".badge-estado");
+    const estadoMap = {
+        "EN CURSO": ["badge-pendiente", "EN CURSO"],
+        "COMPLETADO": ["badge-completado", "COMPLETADO"],
+        "CANCELADO": ["badge-cancelado", "CANCELADO"]
+    };
+    badge.className = "badge-estado " + estadoMap[nuevoEstado][0];
+    badge.textContent = estadoMap[nuevoEstado][1];
+    filaActiva.dataset.estado = nuevoEstado;
+    bootstrap.Modal.getInstance(document.getElementById("modalEstado")).hide();
+    showAdminToast("Estado actualizado");
+}
+
+// Ver detalle
+function verDetalle(id, cliente, servicio, importe, fecha, estado) {
+    document.getElementById("det-id").textContent = id;
+    document.getElementById("det-cliente").textContent = cliente;
+    document.getElementById("det-servicio").textContent = servicio;
+    document.getElementById("det-importe").textContent = importe;
+    document.getElementById("det-fecha").textContent = fecha;
+    const estadoMap = {
+        "EN CURSO": "badge-pendiente",
+        "COMPLETADO": "badge-completado",
+        "CANCELADO": "badge-cancelado"
+    };
+    document.getElementById("det-estado").innerHTML = `<span class="badge-estado ${estadoMap[estado]}">${estado}</span>`;
+    document.getElementById("det-nuevo-estado").value = estado;
+    new bootstrap.Modal(document.getElementById("modalPedido")).show();
+}
+
+function guardarEstadoModal() {
+    bootstrap.Modal.getInstance(document.getElementById("modalPedido")).hide();
+    showAdminToast("Estado del pedido actualizado");
+}
+</script>
+</body>
+</html>

@@ -2,11 +2,12 @@ class MiMenu extends HTMLElement {
     constructor() {
         super();
         this.innerHTML = `
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 <nav class="navbar navbar-expand-lg ctrl-navbar">
   <div class="container-fluid px-0">
     <a class="navbar-brand ps-3" href="index.html"><img src="img/LOGO.svg" class="logo-svg" alt="CTRL Studio"></a>
 
-    <button class="navbar-toggler border-0 shadow-none me-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav" data-bs-auto-close="false" aria-controls="mobileNav" aria-expanded="false" aria-label="Abrir menú">
+    <button class="navbar-toggler border-0 shadow-none me-3" type="button" data-bs-target="#mobileNav" data-bs-auto-close="false" aria-controls="mobileNav" aria-expanded="false" aria-label="Abrir menú">
       <span class="toggler-bar"></span>
       <span class="toggler-bar"></span>
     </button>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard — CTRL Admin</title>
+    <link rel="icon" type="image/png" href="img/favicon.png" sizes="64x64">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles-user.css">
+    <style>
+        /* ===== FONDO MEJORADO ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 15% 50%, rgba(152,159,203,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 80%, rgba(78,81,116,0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 0%, rgba(165,1,54,0.08) 0%, transparent 70%);
+            backdrop-filter: blur(1px);
+        }
+
+        /* ===== BENTO LAYOUT DASHBOARD ===== */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto;
+            gap: 1rem;
+        }
+
+        /* STAT CARDS — fila 1 */
+        .cell-stat { grid-column: span 1; }
+
+        /* CARD GRANDE — facturación */
+        .cell-factura {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(41,39,76,0.55) 0%, rgba(78,81,116,0.3) 100%);
+            border-color: rgba(152,159,203,0.22);
+        }
+        .cell-factura .stat-card-num { font-size: 2.8rem; }
+
+        /* PEDIDOS RECIENTES — tabla ancha */
+        .cell-pedidos { grid-column: span 3; }
+
+        /* ACTIVIDAD — columna derecha */
+        .cell-actividad { grid-column: span 1; }
+
+        /* QUICK LINKS — fila inferior */
+        .cell-link { grid-column: span 1; }
+        .cell-link-wide { grid-column: span 2; }
+
+        /* MINI CHART BAR (decorativo) */
+        .mini-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 2.5rem;
+            margin-top: 1rem;
+        }
+        .mini-bar {
+            flex: 1;
+            border-radius: 3px 3px 0 0;
+            background: rgba(152,159,203,0.25);
+            transition: background 0.2s;
+        }
+        .mini-bar.hi { background: rgba(152,159,203,0.6); }
+        .mini-bar:last-child { background: var(--azul); }
+
+        /* ACTIVIDAD FEED */
+        .activity-item {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--frost-border);
+        }
+        .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .activity-dot {
+            width: 0.55rem; height: 0.55rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+        .dot-green  { background: #6fcf97; box-shadow: 0 0 6px rgba(111,207,151,0.5); }
+        .dot-yellow { background: #f2c94c; box-shadow: 0 0 6px rgba(242,201,76,0.4); }
+        .dot-red    { background: #eb5757; box-shadow: 0 0 6px rgba(235,87,87,0.4); }
+        .activity-text { font-size: 0.78rem; line-height: 1.4; color: var(--txt-muted); }
+        .activity-text strong { color: var(--txt); font-weight: 600; }
+        .activity-time { font-size: 0.65rem; color: var(--txt-dim); margin-top: 0.15rem; }
+
+        /* PROGRESS BARS */
+        .prog-wrap { margin-top: 0.5rem; }
+        .prog-row { margin-bottom: 0.75rem; }
+        .prog-label {
+            display: flex; justify-content: space-between;
+            font-size: 0.72rem; color: var(--txt-muted);
+            margin-bottom: 0.3rem;
+        }
+        .prog-label strong { color: var(--txt); font-weight: 600; }
+        .prog-track {
+            height: 4px; border-radius: 99px;
+            background: rgba(255,255,255,0.07);
+            overflow: hidden;
+        }
+        .prog-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, var(--azul-dark), var(--azul));
+            transition: width 0.8s ease;
+        }
+
+        /* BENTO LINK en DASH */
+        .dash-link {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--frost-bg);
+            backdrop-filter: blur(var(--frost-blur));
+            -webkit-backdrop-filter: blur(var(--frost-blur));
+            border: 1px solid var(--frost-border);
+            border-radius: var(--radius);
+            padding: 1.4rem 1.5rem;
+            transition: all 0.2s;
+            color: var(--txt);
+            position: relative;
+            overflow: hidden;
+            min-height: 9rem;
+            text-decoration: none;
+        }
+        .dash-link:hover {
+            background: var(--frost-hover);
+            border-color: rgba(152,159,203,0.22);
+            transform: translateY(-2px);
+            box-shadow: 0 1rem 2.5rem rgba(0,0,0,0.35);
+            color: var(--txt);
+        }
+        .dash-link-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .dash-link-icon { font-size: 1.2rem; opacity: 0.4; }
+        .dash-link-arrow { font-size: 0.8rem; color: var(--txt-dim); font-weight: 700; transition: all 0.2s; }
+        .dash-link:hover .dash-link-arrow { color: var(--azul); transform: translate(3px,-3px); }
+        .dash-link-bottom { }
+        .dash-link-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .dash-link-sub { font-size: 0.72rem; color: var(--txt-muted); }
+
+        .dash-link.v-purple {
+            background: linear-gradient(145deg, rgba(41,39,76,0.5), rgba(78,81,116,0.2));
+            border-color: rgba(152,159,203,0.2);
+        }
+        .dash-link.v-red {
+            background: linear-gradient(145deg, rgba(165,1,54,0.35), rgba(113,6,50,0.15));
+            border-color: rgba(165,1,54,0.2);
+        }
+        .dash-link.v-blue {
+            background: linear-gradient(145deg, rgba(78,81,116,0.4), rgba(152,159,203,0.12));
+            border-color: rgba(152,159,203,0.18);
+        }
+
+        /* CHIP FECHA */
+        .date-chip {
+            font-size: 0.7rem;
+            color: var(--txt-muted);
+            background: var(--frost-bg);
+            border: 1px solid var(--frost-border);
+            border-radius: var(--radius-pill);
+            padding: 0.3rem 0.9rem;
+        }
+
+        /* ===== PESTAÑA DE AJUSTES ===== */
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: var(--txt-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            margin-right: 0.5rem;
+        }
+        .tab-btn.active {
+            color: var(--txt);
+            border-bottom-color: var(--azul);
+        }
+        .tab-btn:hover { color: var(--txt); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ── GRID DE TEMAS ── */
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* TARJETA DE TEMA */
+        .theme-card {
+            border-radius: var(--radius);
+            border: 2px solid var(--frost-border);
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            background: var(--frost-bg);
+        }
+        .theme-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 1rem 2.5rem rgba(0,0,0,0.35);
+        }
+        .theme-card.active {
+            border-color: var(--azul);
+            box-shadow: 0 0 0 1px var(--azul), 0 1rem 2.5rem rgba(0,0,0,0.3);
+        }
+
+        /* CHECK de seleccionado */
+        .theme-card .check-badge {
+            position: absolute;
+            top: 0.7rem; right: 0.7rem;
+            width: 1.4rem; height: 1.4rem;
+            border-radius: 50%;
+            background: var(--azul);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.65rem;
+            color: white;
+            font-weight: 700;
+            opacity: 0;
+            transform: scale(0.6);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .theme-card.active .check-badge { opacity: 1; transform: scale(1); }
+
+        /* MINI PREVIEW */
+        .theme-preview {
+            width: 100%;
+            height: 10rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prev-ctrl { background: #0d0c1a; }
+        .prev-ctrl::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 70% 55% at 15% 5%, rgba(78,81,116,0.4) 0%, transparent 60%), 
+                        radial-gradient(ellipse 55% 45% at 85% 85%, rgba(165,1,54,0.2) 0%, transparent 55%);
+        }
+
+        .prev-morphex { background: #f5f0e8; }
+        .prev-morphex::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 70% 55% at 10% 0%, rgba(220,210,180,0.55) 0%, transparent 65%), 
+                        radial-gradient(ellipse 50% 40% at 90% 90%, rgba(200,190,160,0.35) 0%, transparent 55%);
+        }
+
+        .prev-void { background: #080808; }
+        .prev-void::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
+        }
+
+        .mini-sidebar {
+            position: absolute; top: 0; left: 0; bottom: 0;
+            width: 2.8rem;
+            display: flex; flex-direction: column; gap: 0.3rem;
+            padding: 0.6rem 0.45rem; z-index: 1;
+        }
+        .mini-sidebar-dot {
+            width: 100%; height: 0.35rem; border-radius: 99px; opacity: 0.25;
+        }
+        .mini-sidebar-dot.active-dot { opacity: 0.7; }
+
+        .mini-cards {
+            position: absolute;
+            top: 0.5rem; left: 3.3rem; right: 0.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.35rem;
+        }
+        .mini-card { height: 2.2rem; border-radius: 0.4rem; opacity: 0.5; }
+        .mini-row { position: absolute; left: 3.3rem; right: 0.5rem; height: 4rem; border-radius: 0.4rem; opacity: 0.3; top: 3.1rem; }
+        .mini-row2 { position: absolute; left: 3.3rem; right: 0.5rem; height: 2.8rem; border-radius: 0.4rem; opacity: 0.2; top: 7.3rem; }
+
+        .prev-ctrl    .mini-sidebar   { background: rgba(255,255,255,0.04); border-right: 1px solid rgba(255,255,255,0.07); }
+        .prev-ctrl    .mini-sidebar-dot { background: #989fcb; }
+        .prev-ctrl    .mini-card        { background: rgba(255,255,255,0.08); }
+        .prev-ctrl    .mini-row         { background: rgba(255,255,255,0.06); }
+        .prev-ctrl    .mini-row2        { background: rgba(255,255,255,0.04); }
+
+        .prev-morphex .mini-sidebar   { background: rgba(245,240,232,0.9); border-right: 1px solid rgba(0,0,0,0.07); }
+        .prev-morphex .mini-sidebar-dot { background: #8a7a50; }
+        .prev-morphex .mini-card        { background: rgba(255,255,255,0.75); }
+        .prev-morphex .mini-row         { background: rgba(255,255,255,0.7); }
+        .prev-morphex .mini-row2        { background: rgba(255,255,255,0.55); }
+
+        .prev-void .mini-sidebar   { background: rgba(255,255,255,0.02); border-right: 1px solid rgba(255,255,255,0.05); }
+        .prev-void .mini-sidebar-dot { background: #e0e0e0; }
+        .prev-void .mini-card        { background: rgba(255,255,255,0.05); }
+        .prev-void .mini-row         { background: rgba(255,255,255,0.04); }
+        .prev-void .mini-row2        { background: rgba(255,255,255,0.025); }
+
+        .theme-info { padding: 1rem 1.1rem 1.1rem; }
+        .theme-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .theme-desc { font-size: 0.72rem; color: var(--txt-muted); line-height: 1.45; }
+        .theme-chips { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.6rem; }
+        .theme-chip { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.07em; padding: 0.18rem 0.55rem; border-radius: 99px; border: 1px solid var(--frost-border); color: var(--txt-muted); text-transform: uppercase; }
+
+        /* TOAST */
+        #theme-toast {
+            position: fixed;
+            bottom: 1.5rem; right: 1.5rem;
+            background: rgba(152,159,203,0.2);
+            border: 1px solid rgba(152,159,203,0.4);
+            color: var(--azul);
+            padding: 0.8rem 1.2rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(2rem);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        #theme-toast.show { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 900px) { .themes-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .themes-grid { grid-template-columns: 1fr; } }
+    </style>
+<script>
+(function(){
+    var t = localStorage.getItem('ctrl_admin_theme');
+    if (t === 'morphex') document.documentElement.classList.add('theme-morphex');
+    else if (t === 'void') document.documentElement.classList.add('theme-void');
+})();
+</script>
+</head>
+<body>
+
+<aside class="admin-sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-text">CTRL<span class="logo-dot">.</span></div>
+        <div class="sidebar-label-admin">Administración</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="sidebar-section">Principal</div>
+        <a href="dashboard.html" class="sidebar-link active"><span class="icon">◈</span> Dashboard</a>
+        <div class="sidebar-section">Gestión</div>
+        <a href="usuarios.html" class="sidebar-link"><span class="icon">◎</span> Usuarios</a>
+        <a href="productos.html" class="sidebar-link"><span class="icon">◻</span> Productos</a>
+        <a href="pedidos.html" class="sidebar-link"><span class="icon">◑</span> Pedidos</a>
+        <div class="sidebar-section">Cuenta</div>
+        <a href="ajustes.html" class="sidebar-link"><span class="icon">&#9737;</span> Ajustes</a>
+        <div class="sidebar-section">Sistema</div>
+        <a href="index.html" class="sidebar-link"><span class="icon">←</span> Cerrar sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="admin-user">
+            <div class="admin-avatar">A</div>
+            <div>
+                <div class="admin-user-name">admin</div>
+                <div class="admin-user-role">Administrador</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main class="admin-main">
+    <div class="admin-topbar">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 0;">
+                <button class="tab-btn active" onclick="switchTab('dashboard')">◈ Dashboard</button>
+                <button class="tab-btn" onclick="switchTab('settings')">⊙ Ajustes</button>
+            </div>
+            <span class="date-chip" id="fecha-hoy"></span>
+        </div>
+    </div>
+
+    <div class="admin-content">
+
+        <!-- TAB: DASHBOARD -->
+        <div id="tab-dashboard" class="tab-content active">
+        <!-- ===== BENTO GRID ===== -->
+        <div class="dash-grid">
+
+            <!-- STAT 1: Usuarios -->
+            <div class="stat-card cell-stat">
+                <div class="stat-card-icon">◎</div>
+                <div class="stat-card-num">42</div>
+                <div class="stat-card-label">Usuarios</div>
+                <div class="stat-card-delta delta-up">↑ 8 este mes</div>
+            </div>
+
+            <!-- STAT 2: Productos -->
+            <div class="stat-card cell-stat">
+                <div class="stat-card-icon">◻</div>
+                <div class="stat-card-num">9</div>
+                <div class="stat-card-label">Productos activos</div>
+                <div class="stat-card-delta delta-up">↑ 2 nuevos</div>
+            </div>
+
+            <!-- STAT 3: Pedidos -->
+            <div class="stat-card cell-stat">
+                <div class="stat-card-icon">◑</div>
+                <div class="stat-card-num">17</div>
+                <div class="stat-card-label">Pedidos este mes</div>
+                <div class="stat-card-delta delta-up">↑ 5 vs anterior</div>
+            </div>
+
+            <!-- STAT 4: Facturación GRANDE -->
+            <div class="stat-card cell-stat cell-factura">
+                <div class="stat-card-num">12.840€</div>
+                <div class="stat-card-label">Facturación mensual</div>
+                <div class="stat-card-delta delta-up">↑ +18% vs mes anterior</div>
+                <div class="mini-bars">
+                    <div class="mini-bar" style="height:35%"></div>
+                    <div class="mini-bar" style="height:55%"></div>
+                    <div class="mini-bar" style="height:40%"></div>
+                    <div class="mini-bar hi" style="height:70%"></div>
+                    <div class="mini-bar" style="height:50%"></div>
+                    <div class="mini-bar hi" style="height:80%"></div>
+                    <div class="mini-bar" style="height:60%"></div>
+                    <div class="mini-bar" style="height:100%"></div>
+                </div>
+            </div>
+
+            <!-- PEDIDOS RECIENTES -->
+            <div class="admin-table-wrap cell-pedidos">
+                <div class="admin-table-header">
+                    <span class="admin-table-title">Pedidos recientes</span>
+                    <a href="pedidos.html" style="font-size:0.72rem; font-weight:700; color:var(--azul); opacity:0.8; transition:opacity 0.15s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">Ver todos →</a>
+                </div>
+                <table class="ctrl-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Importe</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:0.72rem; color:var(--txt-muted)">#CTR-00141</td>
+                            <td>Laura Martínez</td>
+                            <td>Identidad de Marca</td>
+                            <td style="font-weight:600">1.077,90€</td>
+                            <td><span class="badge-estado badge-pendiente">EN CURSO</span></td>
+                            <td style="color:var(--txt-muted)">03/03/2026</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:0.72rem; color:var(--txt-muted)">#CTR-00140</td>
+                            <td>Carlos Vidal</td>
+                            <td>Plan Pro — Mensual</td>
+                            <td style="font-weight:600">543,29€</td>
+                            <td><span class="badge-estado badge-completado">COMPLETADO</span></td>
+                            <td style="color:var(--txt-muted)">01/03/2026</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:0.72rem; color:var(--txt-muted)">#CTR-00139</td>
+                            <td>Ana Soler</td>
+                            <td>Kit Social Media</td>
+                            <td style="font-weight:600">35,09€</td>
+                            <td><span class="badge-estado badge-completado">COMPLETADO</span></td>
+                            <td style="color:var(--txt-muted)">28/02/2026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- FEED DE ACTIVIDAD -->
+            <div class="stat-card cell-actividad" style="padding:1.25rem 1.35rem">
+                <div style="font-size:0.6rem; letter-spacing:0.15em; font-weight:700; text-transform:uppercase; color:var(--txt-dim); margin-bottom:0.9rem">Actividad reciente</div>
+                <div class="activity-item">
+                    <div class="activity-dot dot-green"></div>
+                    <div>
+                        <div class="activity-text"><strong>Ana García</strong> completó su registro</div>
+                        <div class="activity-time">hace 12 min</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot dot-yellow"></div>
+                    <div>
+                        <div class="activity-text">Pedido <strong>#CTR-00141</strong> actualizado</div>
+                        <div class="activity-time">hace 38 min</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot dot-green"></div>
+                    <div>
+                        <div class="activity-text"><strong>Plan PRO</strong> nueva suscripción</div>
+                        <div class="activity-time">hace 1 h</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot dot-red"></div>
+                    <div>
+                        <div class="activity-text">Pedido <strong>#CTR-00138</strong> cancelado</div>
+                        <div class="activity-time">hace 3 h</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍAS MÁS VENDIDAS -->
+            <div class="stat-card cell-stat" style="grid-column:span 2; padding:1.4rem 1.5rem">
+                <div style="font-size:0.6rem; letter-spacing:0.15em; font-weight:700; text-transform:uppercase; color:var(--txt-dim); margin-bottom:1.1rem">Ventas por categoría</div>
+                <div class="prog-wrap">
+                    <div class="prog-row">
+                        <div class="prog-label"><span>Branding</span><strong>58%</strong></div>
+                        <div class="prog-track"><div class="prog-fill" style="width:58%"></div></div>
+                    </div>
+                    <div class="prog-row">
+                        <div class="prog-label"><span>Planes mensuales</span><strong>30%</strong></div>
+                        <div class="prog-track"><div class="prog-fill" style="width:30%; background: linear-gradient(90deg,#a50136,#710632)"></div></div>
+                    </div>
+                    <div class="prog-row" style="margin-bottom:0">
+                        <div class="prog-label"><span>Plantillas</span><strong>12%</strong></div>
+                        <div class="prog-track"><div class="prog-fill" style="width:12%; background: linear-gradient(90deg,#4e5174,#989fcb)"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESUMEN RÁPIDO -->
+            <div class="stat-card cell-stat" style="grid-column:span 2; padding:1.4rem 1.5rem">
+                <div style="font-size:0.6rem; letter-spacing:0.15em; font-weight:700; text-transform:uppercase; color:var(--txt-dim); margin-bottom:1.1rem">Estado general</div>
+                <div style="display:flex; flex-direction:column; gap:0.6rem">
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; padding:0.5rem 0; border-bottom:1px solid var(--frost-border)">
+                        <span style="color:var(--txt-muted)">Pedidos en curso</span>
+                        <span class="badge-estado badge-pendiente">2</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; padding:0.5rem 0; border-bottom:1px solid var(--frost-border)">
+                        <span style="color:var(--txt-muted)">Usuarios activos</span>
+                        <span class="badge-estado badge-activo">38</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; padding:0.5rem 0">
+                        <span style="color:var(--txt-muted)">Productos inactivos</span>
+                        <span class="badge-estado badge-inactivo">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK LINKS -->
+            <a href="usuarios.html" class="dash-link v-purple">
+                <div class="dash-link-top">
+                    <div class="dash-link-icon">◎</div>
+                    <div class="dash-link-arrow">↗</div>
+                </div>
+                <div class="dash-link-bottom">
+                    <div class="dash-link-title">Usuarios</div>
+                    <div class="dash-link-sub">Activar, desactivar, editar</div>
+                </div>
+            </a>
+
+            <a href="productos.html" class="dash-link v-blue">
+                <div class="dash-link-top">
+                    <div class="dash-link-icon">◻</div>
+                    <div class="dash-link-arrow">↗</div>
+                </div>
+                <div class="dash-link-bottom">
+                    <div class="dash-link-title">Productos</div>
+                    <div class="dash-link-sub">Añadir, editar, eliminar</div>
+                </div>
+            </a>
+
+            <a href="pedidos.html" class="dash-link v-red">
+                <div class="dash-link-top">
+                    <div class="dash-link-icon">◑</div>
+                    <div class="dash-link-arrow">↗</div>
+                </div>
+                <div class="dash-link-bottom">
+                    <div class="dash-link-title">Pedidos</div>
+                    <div class="dash-link-sub">Ver, buscar, gestionar</div>
+                </div>
+            </a>
+
+            <a href="index.html" class="dash-link" style="border-color:rgba(235,87,87,0.12)">
+                <div class="dash-link-top">
+                    <div class="dash-link-icon" style="opacity:0.25">←</div>
+                    <div class="dash-link-arrow" style="font-size:0.72rem; color:var(--txt-dim)">salir</div>
+                </div>
+                <div class="dash-link-bottom">
+                    <div class="dash-link-title" style="color:var(--txt-muted)">Cerrar sesión</div>
+                    <div class="dash-link-sub">Volver al login</div>
+                </div>
+            </a>
+
+        </div><!-- /dash-grid -->
+        </div><!-- /tab-dashboard -->
+
+        <!-- TAB: AJUSTES -->
+        <div id="tab-settings" class="tab-content">
+            <div style="margin-top: 1.5rem;">
+                <div style="font-size:0.75rem; letter-spacing:0.15em; font-weight:700; text-transform:uppercase; color:var(--txt-dim); margin-bottom:1.2rem">Tema de la interfaz</div>
+                <p style="font-size:0.78rem; color:var(--txt-muted); margin-bottom:1.5rem; line-height:1.55">
+                    Elige tu tema preferido. Los cambios se aplicarán inmediatamente y se guardarán en tu navegador.
+                </p>
+
+                <div class="themes-grid" id="themes-grid">
+                    <!-- CTRL Dark -->
+                    <div class="theme-card" id="card-ctrl" onclick="selectTheme('ctrl')">
+                        <div class="check-badge">✓</div>
+                        <div class="theme-preview prev-ctrl">
+                            <div class="mini-sidebar">
+                                <div class="mini-sidebar-dot active-dot"></div>
+                                <div class="mini-sidebar-dot"></div>
+                                <div class="mini-sidebar-dot"></div>
+                                <div class="mini-sidebar-dot"></div>
+                            </div>
+                            <div class="mini-cards">
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                            </div>
+                            <div class="mini-row"></div>
+                            <div class="mini-row2"></div>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">CTRL Dark</div>
+                            <div class="theme-desc">Oscuro elegante con gradientes suaves y acentos azules. Perfecto para largas sesiones.</div>
+                            <div class="theme-chips">
+                                <span class="theme-chip">Oscuro</span>
+                                <span class="theme-chip">Moderno</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Morphex -->
+                    <div class="theme-card" id="card-morphex" onclick="selectTheme('morphex')">
+                        <div class="check-badge">✓</div>
+                        <div class="theme-preview prev-morphex">
+                            <div class="mini-sidebar">
+                                <div class="mini-sidebar-dot"></div>
+                                <div class="mini-sidebar-dot active-dot"></div>
+                                <div class="mini-sidebar-dot"></div>
+                                <div class="mini-sidebar-dot"></div>
+                            </div>
+                            <div class="mini-cards">
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                            </div>
+                            <div class="mini-row"></div>
+                            <div class="mini-row2"></div>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">Morphex</div>
+                            <div class="theme-desc">Claro y cálido con tonos crema. Inspirado en diseño orgánico y natural.</div>
+                            <div class="theme-chips">
+                                <span class="theme-chip">Claro</span>
+                                <span class="theme-chip">Cálido</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Void -->
+                    <div class="theme-card" id="card-void" onclick="selectTheme('void')">
+                        <div class="check-badge">✓</div>
+                        <div class="theme-preview prev-void">
+                            <div class="mini-sidebar">
+                                <div class="mini-sidebar-dot"></div>
+                                <div class="mini-sidebar-dot"></div>
+                                <div class="mini-sidebar-dot active-dot"></div>
+                                <div class="mini-sidebar-dot"></div>
+                            </div>
+                            <div class="mini-cards">
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                            </div>
+                            <div class="mini-row"></div>
+                            <div class="mini-row2"></div>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">Void</div>
+                            <div class="theme-desc">Negro puro minimalista. Máximo contraste para los datos críticos.</div>
+                            <div class="theme-chips">
+                                <span class="theme-chip">Minimalista</span>
+                                <span class="theme-chip">Alto contraste</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /tab-settings -->
+    </div>
+</main>
+
+<div id="theme-toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script>
+// ============================================================
+// SISTEMA DE TEMAS
+// ============================================================
+const TEMAS = {
+    ctrl:    { label: 'CTRL Dark',  class: '' },
+    morphex: { label: 'Morphex',    class: 'theme-morphex' },
+    void:    { label: 'Void',       class: 'theme-void' }
+};
+
+let temaActual = localStorage.getItem('ctrl_admin_theme') || 'ctrl';
+
+function applyTheme(tema) {
+    // Quitar todas las clases de tema del html
+    Object.values(TEMAS).forEach(t => {
+        if (t.class) document.documentElement.classList.remove(t.class);
+    });
+    // Aplicar nuevo
+    if (TEMAS[tema] && TEMAS[tema].class) {
+        document.documentElement.classList.add(TEMAS[tema].class);
+    }
+}
+
+function selectTheme(tema) {
+    temaActual = tema;
+    applyTheme(tema);
+    localStorage.setItem('ctrl_admin_theme', tema);
+
+    // Actualizar UI de tarjetas
+    document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+    const card = document.getElementById('card-' + tema);
+    if (card) card.classList.add('active');
+
+    showToast('✓ Tema "' + TEMAS[tema].label + '" aplicado');
+}
+
+function switchTab(tabName) {
+    // Ocultar todos los tabs
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    
+    // Mostrar el tab seleccionado
+    document.getElementById('tab-' + tabName).classList.add('active');
+    document.querySelector('[onclick="switchTab(\'' + tabName + '\')"]').classList.add('active');
+}
+
+function showToast(msg) {
+    const t = document.getElementById('theme-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem("ctrl_admin") !== "true") {
+        window.location.href = "index.html";
+    }
+
+    // Aplicar tema guardado
+    applyTheme(temaActual);
+    const activeCard = document.getElementById('card-' + temaActual);
+    if (activeCard) activeCard.classList.add('active');
+
+    // Determinar tabs activos
+    const btns = document.querySelectorAll('.tab-btn');
+    if (btns.length > 0) {
+        btns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabName = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+                switchTab(tabName);
+            });
+        });
+    }
+});
+
+// Mostrar fecha
+document.addEventListener('DOMContentLoaded', () => {
+    const fechaEl = document.getElementById("fecha-hoy");
+    if (fechaEl) {
+        fechaEl.textContent = new Date().toLocaleDateString("es-ES", {day:"2-digit", month:"long", year:"numeric"});
+    }
+});
+</script>
+</body>
+</html>
