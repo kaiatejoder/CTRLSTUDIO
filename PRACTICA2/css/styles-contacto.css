@@ -1,0 +1,97 @@
+        .contacto-hero {
+            padding: 8rem 0 4rem;
+            background: var(--oscuro);
+            color: white;
+        }
+        .contacto-hero .section-label { color: var(--azul); }
+        .contacto-hero-title {
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.0;
+        }
+        .contacto-hero-title em { font-style: italic; font-weight: 300; color: var(--azul); }
+
+        /* INFO CARDS */
+        .info-card {
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 1.5rem;
+            height: 100%;
+        }
+        .info-card-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 0.5rem;
+        }
+        .info-card-value { font-size: 1rem; font-weight: 600; color: white; }
+        .info-card-value a { color: white; text-decoration: none; }
+        .info-card-value a:hover { color: var(--azul); }
+
+        /* FORM SECTION */
+        .form-section { padding: 6rem 0; }
+        .form-card-big {
+            border-radius: var(--radius);
+            border: 1px solid var(--gris-mid);
+            background: white;
+            padding: 3rem;
+        }
+
+        /* MAPA */
+        .mapa-wrapper {
+            border-radius: var(--radius);
+            overflow: hidden;
+            height: 100%;
+            max-height: 14rem;
+            border: 1px solid var(--gris-mid);
+        }
+        .mapa-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            min-height: 14rem;
+        }
+
+        /* REDES SOCIALES */
+        .social-grid { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+        .social-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1.2rem;
+            border-radius: 0.8rem;
+            border: 1.5px solid var(--gris-mid);
+            transition: all 0.2s;
+        }
+        .social-item:hover { border-color: var(--rojo); background: rgba(165,1,54,0.04); }
+        .social-name { font-size: 0.85rem; font-weight: 600; }
+        .social-handle { font-size: 0.78rem; color: var(--txt-muted); }
+        .social-arrow { color: var(--txt-muted); transition: color 0.2s; }
+        .social-item:hover .social-arrow { color: var(--rojo); }
+
+        /* HORARIO */
+        .horario-table { width: 100%; }
+        .horario-table td { padding: 0.5rem 0; font-size: 0.88rem; border-bottom: 1px solid var(--gris-claro); }
+        .horario-table td:last-child { text-align: right; font-weight: 600; }
+        .cerrado { color: var(--txt-muted); font-weight: 400 !important; }
+
+        /* TOAST */
+        .ctrl-toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--oscuro);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(1rem);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+        .ctrl-toast.show { opacity: 1; transform: translateY(0); }
