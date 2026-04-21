@@ -24,7 +24,6 @@ public final class AccesoBD {
     private AccesoBD() {
         abrirConexionBD();
     }
-
     // ── Conexión ───────────────────────────────────────────────────────────────
     public void abrirConexionBD() {
         if (conexionBD == null) {
