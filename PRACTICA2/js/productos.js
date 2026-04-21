@@ -6,7 +6,8 @@
  *
  * Se carga como módulo: <script type="module" src="js/productos.js"></script>
  */
-
+const LibServlet = require('./libservlet.js');
+const LibCarrito  = require('./libcarrito.js');
 import * as LibServlet from './libservlet.js';
 import * as LibCarrito from './libcarrito.js';
 

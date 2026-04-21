@@ -3,6 +3,7 @@ package tienda;
 import java.sql.*;
 import java.util.ArrayList;
 
+
 /**
  * AccesoBD - Clase factoría Singleton para acceso a MariaDB.
  * Gestiona la conexión y todas las consultas a la base de datos 'daw'.

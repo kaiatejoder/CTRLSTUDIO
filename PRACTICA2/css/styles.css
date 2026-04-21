@@ -192,24 +192,20 @@ italic {
     transition: color 0.2s;
 }
 
+/* Mostrar siempre el botón en móvil */
 .ctrl-navbar .navbar-toggler {
     display: block;
 }
 
-.ctrl-navbar .collapse.navbar-collapse {
-    display: none !important;
-}
-
+/* Desktop */
 @media (min-width: 992px) {
     .ctrl-navbar .navbar-toggler {
-        display: none !important;
-    }
-
-    .ctrl-navbar .collapse.navbar-collapse {
-        display: none !important;
+        display: none;
     }
 }
-
+.ctrl-navbar .collapsing {
+    transition: height 0.3s ease;
+}
 .carrito-count {
     position: absolute;
     top: -0.25rem;
@@ -563,6 +559,12 @@ italic {
     max-width: 26rem;
     line-height: 1.6;
     margin-top: 1.5rem;
+}
+.hero-logo{
+
+    color: var(--rojo);
+    width: min(100%, 5rem);
+    display: inline-block;
 }
 
 .hero-ctas {
