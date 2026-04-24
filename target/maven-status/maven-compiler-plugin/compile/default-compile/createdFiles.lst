@@ -1,0 +1,8 @@
+tienda\AccesoBD.class
+tienda\ProductoBD.class
+tienda\LoginTienda.class
+tienda\RegistrarUsuario.class
+tienda\UsuarioBD.class
+tienda\CategoriaBD.class
+tienda\ObtenerProductos.class
+tienda\ObtenerCategorias.class

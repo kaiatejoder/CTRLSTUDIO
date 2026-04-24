@@ -1,0 +1,915 @@
+:root {
+        --ut-bg:           #0d0c1a;
+        --ut-txt:          #f0effa;
+        --ut-frost:        rgba(255,255,255,0.05);
+        --ut-frost-hover:  rgba(255,255,255,0.075);
+        --ut-frost-border: rgba(255,255,255,0.09);
+        --ut-txt-muted:    rgba(240,239,250,0.5);
+        --ut-txt-dim:      rgba(240,239,250,0.22);
+        --ut-acento:       #a50136;
+        --ut-acento-dark:  #710632;
+        --ut-radius:       1rem;
+        --ut-blur:         18px;
+    }
+
+    /* ================================================================
+       SECCIÓN PERFIL — layout y dashboard bento
+    ================================================================ */
+    .perfil-section { display: none; }
+
+    /* HERO DE PERFIL */
+    .perfil-hero {
+        padding: 7rem 0 2.5rem;
+        position: relative;
+    }
+    .perfil-hero-inner {
+        display: flex;
+        align-items: flex-end;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+    }
+    .perfil-avatar {
+        width: 5rem; height: 5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--ut-acento-dark), var(--ut-acento));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem; font-weight: 700; color: white;
+        border: 2px solid rgba(255,255,255,0.15);
+        flex-shrink: 0;
+    }
+    .perfil-nombre {
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--ut-txt);
+        line-height: 1;
+    }
+    .perfil-email {
+        font-size: 0.82rem;
+        color: var(--ut-txt-muted);
+        margin-top: 0.3rem;
+    }
+    .perfil-since {
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ut-txt-dim);
+        margin-top: 0.4rem;
+    }
+    .perfil-actions {
+        margin-left: auto;
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    /* NAVEGACIÓN DE TABS */
+    .perfil-tabs {
+        display: flex;
+        gap: 0.2rem;
+        margin: 1.5rem 0 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: var(--ut-frost-border) transparent;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 0.5rem;
+    }
+    .perfil-tabs::-webkit-scrollbar { 
+        height: 4px;
+    }
+    .perfil-tabs::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .perfil-tabs::-webkit-scrollbar-thumb {
+        background: var(--ut-frost-border);
+        border-radius: 2px;
+    }
+    .perfil-tabs::-webkit-scrollbar-thumb:hover {
+        background: var(--ut-acento);
+    }
+    .perfil-tab {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--ut-txt-muted);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+        margin-bottom: -1px;
+        font-family: inherit;
+    }
+    .perfil-tab:hover { color: var(--ut-txt); }
+    .perfil-tab.active {
+        color: var(--ut-acento);
+        border-bottom-color: var(--ut-acento);
+    }
+
+    /* PANEL de cada tab */
+    .perfil-panel { display: none; }
+    .perfil-panel.active { display: block; }
+
+    /* ── FROST CARD ── */
+    .ut-card {
+        background: var(--ut-frost);
+        backdrop-filter: blur(var(--ut-blur));
+        -webkit-backdrop-filter: blur(var(--ut-blur));
+        border: 1px solid var(--ut-frost-border);
+        border-radius: var(--ut-radius);
+        transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+        color: var(--ut-txt);
+    }
+    .ut-card:hover {
+        background: var(--ut-frost-hover);
+        box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.2);
+    }
+
+    /* ── BENTO GRID DASHBOARD ── */
+    .dash-bento {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    .db-wide  { grid-column: span 2; }
+    .db-full  { grid-column: span 3; }
+
+    /* Stat card pequeña */
+    .ut-stat {
+        padding: 1.4rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .ut-stat::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--ut-acento-dark), var(--ut-acento));
+        opacity: 0;
+        transition: opacity 0.25s;
+    }
+    .ut-stat:hover::before { opacity: 1; }
+    .ut-stat-num {
+        font-size: 2rem; font-weight: 700; letter-spacing: -0.03em;
+        line-height: 1; color: var(--ut-txt);
+    }
+    .ut-stat-label {
+        font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+        color: var(--ut-txt-muted); margin-top: 0.45rem;
+    }
+    .ut-stat-sub { font-size: 0.72rem; color: var(--ut-txt-dim); margin-top: 0.4rem; }
+    .ut-stat-icon {
+        position: absolute; bottom: 0.9rem; right: 1.1rem;
+        font-size: 2rem; opacity: 0.07; pointer-events: none;
+    }
+
+    /* Bienvenida card */
+    .welcome-card {
+        padding: 1.75rem;
+        background: linear-gradient(135deg,
+            rgba(var(--_r),var(--_g),var(--_b),0.35) 0%,
+            rgba(var(--_r),var(--_g),var(--_b),0.12) 100%);
+    }
+    .welcome-card-title { font-size: 1.1rem; font-weight: 700; color: var(--ut-txt); }
+    .welcome-card-sub   { font-size: 0.8rem; color: var(--ut-txt-muted); margin-top: 0.3rem; line-height: 1.5; }
+
+    /* ── PANEL: DESCARGAS ── */
+    .descarga-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+        transition: background 0.15s;
+    }
+    .descarga-item:last-child { border-bottom: none; }
+    .descarga-item:hover { background: var(--ut-frost-hover); }
+    .descarga-icon {
+        width: 2.5rem; height: 2.5rem;
+        border-radius: 0.5rem;
+        background: linear-gradient(135deg, var(--ut-acento-dark), var(--ut-acento));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.9rem; color: white; font-weight: 700;
+        flex-shrink: 0; opacity: 0.85;
+    }
+    .descarga-nombre { font-size: 0.88rem; font-weight: 600; color: var(--ut-txt); }
+    .descarga-meta   { font-size: 0.72rem; color: var(--ut-txt-muted); margin-top: 0.15rem; }
+    .descarga-btn {
+        margin-left: auto;
+        padding: 0.38rem 0.9rem;
+        border-radius: 999rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--ut-frost-border);
+        color: var(--ut-txt-muted);
+        cursor: pointer;
+        transition: all 0.15s;
+        font-family: inherit;
+        white-space: nowrap;
+    }
+    .descarga-btn:hover {
+        background: var(--ut-acento);
+        border-color: var(--ut-acento);
+        color: white;
+    }
+
+    /* ── PANEL: NOTIFICACIONES ── */
+    .notif-item {
+        display: flex;
+        gap: 0.9rem;
+        align-items: flex-start;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+        transition: background 0.15s;
+    }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item:hover { background: var(--ut-frost-hover); }
+    .notif-item.unread { background: rgba(165,1,54,0.04); }
+    .notif-dot {
+        width: 0.5rem; height: 0.5rem;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 0.4rem;
+        background: var(--ut-acento);
+        box-shadow: 0 0 5px var(--ut-acento);
+    }
+    .notif-dot.read { background: var(--ut-txt-dim); box-shadow: none; }
+    .notif-titulo { font-size: 0.85rem; font-weight: 600; color: var(--ut-txt); }
+    .notif-body   { font-size: 0.78rem; color: var(--ut-txt-muted); margin-top: 0.2rem; line-height: 1.45; }
+    .notif-time   { font-size: 0.65rem; color: var(--ut-txt-dim); margin-top: 0.35rem; }
+
+    /* ── PANEL: FORMULARIOS ── */
+    .form-pendiente {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.1rem 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+        flex-wrap: wrap;
+    }
+    .form-pendiente:last-child { border-bottom: none; }
+    .form-pend-title { font-size: 0.88rem; font-weight: 600; color: var(--ut-txt); }
+    .form-pend-sub   { font-size: 0.72rem; color: var(--ut-txt-muted); margin-top: 0.15rem; }
+    .form-pend-badge {
+        padding: 0.2rem 0.65rem;
+        border-radius: 999rem;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+    .fpb-urgente  { background: rgba(165,1,54,0.15); color: #f07; border: 1px solid rgba(165,1,54,0.25); }
+    .fpb-pendiente{ background: rgba(242,201,76,0.12); color: #f2c94c; border: 1px solid rgba(242,201,76,0.2); }
+    .fpb-ok       { background: rgba(111,207,151,0.12); color: #6fcf97; border: 1px solid rgba(111,207,151,0.2); }
+    .form-pend-btn {
+        margin-left: auto;
+        padding: 0.42rem 1rem;
+        border-radius: 999rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        background: var(--ut-acento);
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: opacity 0.15s;
+        font-family: inherit;
+        white-space: nowrap;
+    }
+    .form-pend-btn:hover { opacity: 0.85; }
+    .form-pend-btn:disabled {
+        background: rgba(255,255,255,0.07);
+        color: var(--ut-txt-dim);
+        cursor: default;
+    }
+
+    /* ── PANEL: APARIENCIA ── */
+    .apariencia-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.85rem;
+    }
+    .tema-card {
+        border-radius: 0.85rem;
+        border: 2px solid var(--ut-frost-border);
+        overflow: hidden;
+        cursor: pointer;
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        position: relative;
+        background: var(--ut-frost);
+    }
+    .tema-card:hover { transform: translateY(-2px); box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.3); }
+    .tema-card.active {
+        border-color: var(--ut-acento);
+        box-shadow: 0 0 0 1px var(--ut-acento);
+    }
+    .tema-check {
+        position: absolute; top: 0.6rem; right: 0.6rem;
+        width: 1.3rem; height: 1.3rem;
+        border-radius: 50%;
+        background: var(--ut-acento);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.6rem; color: white; font-weight: 700;
+        opacity: 0; transform: scale(0.5);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+    .tema-card.active .tema-check { opacity: 1; transform: scale(1); }
+
+    /* mini preview */
+    .tema-preview {
+        height: 6rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .prev-ctrl    { background: #0d0c1a; }
+    .prev-morphex { background: #f5f0e8; }
+    .prev-void    { background: #080808; }
+    .prev-ctrl::before {
+        content:''; position:absolute; inset:0;
+        background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(78,81,116,0.4) 0%, transparent 60%),
+                    radial-gradient(ellipse 50% 40% at 85% 85%, rgba(165,1,54,0.18) 0%, transparent 55%);
+    }
+    .prev-morphex::before {
+        content:''; position:absolute; inset:0;
+        background: radial-gradient(ellipse 80% 60% at 10% 0%, rgba(220,210,180,0.6) 0%, transparent 65%);
+    }
+    .prev-void::before {
+        content:''; position:absolute; inset:0;
+        background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
+    }
+    /* mini elementos del preview */
+    .pm-bar {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        height: 1.8rem;
+        display: flex; align-items: center; gap: 0.35rem;
+        padding: 0 0.5rem;
+    }
+    .pm-dot { width: 2rem; height: 0.65rem; border-radius: 99px; opacity: 0.35; }
+    .pm-dot2{ width: 3rem; height: 0.65rem; border-radius: 99px; opacity: 0.2; }
+    .prev-ctrl    .pm-dot { background: #989fcb; }
+    .prev-morphex .pm-dot { background: #8a7a50; }
+    .prev-void    .pm-dot { background: #e0e0e0; }
+    .prev-ctrl    .pm-dot2, .prev-morphex .pm-dot2, .prev-void .pm-dot2 { background: currentColor; }
+
+    .tema-info { padding: 0.75rem 0.9rem 0.85rem; }
+    .tema-nombre { font-size: 0.8rem; font-weight: 700; color: var(--ut-txt); }
+    .tema-desc   { font-size: 0.65rem; color: var(--ut-txt-muted); margin-top: 0.15rem; }
+
+    /* Selector de acento */
+    .acento-grid {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .acento-btn {
+        width: 2.2rem; height: 2.2rem;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: transform 0.15s, border-color 0.15s;
+        position: relative;
+    }
+    .acento-btn:hover { transform: scale(1.15); }
+    .acento-btn.active {
+        border-color: var(--ut-txt);
+        transform: scale(1.1);
+    }
+    .acento-btn::after {
+        content: '';
+        position: absolute; inset: 3px;
+        border-radius: 50%;
+        background: inherit;
+        filter: brightness(1.1);
+    }
+
+    /* Selector de textura */
+    .textura-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.6rem;
+    }
+    .textura-btn {
+        aspect-ratio: 1;
+        border-radius: 0.5rem;
+        border: 2px solid var(--ut-frost-border);
+        cursor: pointer;
+        transition: border-color 0.15s, transform 0.15s;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.55rem; font-weight: 700; letter-spacing: 0.05em;
+        text-align: center;
+        color: var(--ut-txt-muted);
+        background: var(--ut-frost);
+        line-height: 1.25;
+        text-transform: uppercase;
+        font-family: inherit;
+        padding: 0.25rem;
+    }
+    .textura-btn:hover { transform: scale(1.05); border-color: var(--ut-acento); }
+    .textura-btn.active { border-color: var(--ut-acento); color: var(--ut-acento); }
+
+    /* ── PANEL: MIS PEDIDOS ── */
+    .pedido-ut {
+        padding: 1.1rem 1.25rem;
+        border-bottom: 1px solid var(--ut-frost-border);
+    }
+    .pedido-ut:last-child { border-bottom: none; }
+    .pedido-ut-head {
+        display: flex; justify-content: space-between;
+        align-items: center; gap: 0.5rem;
+        flex-wrap: wrap; margin-bottom: 0.6rem;
+    }
+    .pedido-ut-id   { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--ut-txt-muted); }
+    .pedido-ut-fecha{ font-size: 0.72rem; color: var(--ut-txt-dim); }
+    .pedido-ut-item {
+        font-size: 0.84rem;
+        display: flex; justify-content: space-between;
+        padding: 0.25rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+        color: var(--ut-txt);
+    }
+    .pedido-ut-total { font-weight: 700; font-size: 0.88rem; margin-top: 0.6rem; color: var(--ut-txt); }
+
+    /* ── PANEL: MI CUENTA ── */
+    .cuenta-form .form-label {
+        font-size: 0.62rem; font-weight: 700;
+        letter-spacing: 0.12em; text-transform: uppercase;
+        color: var(--ut-txt-muted); margin-bottom: 0.4rem; display: block;
+    }
+    .cuenta-form .form-control {
+        background: var(--ut-frost);
+        border: 1px solid var(--ut-frost-border);
+        border-radius: 0.55rem;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.86rem;
+        font-family: inherit;
+        color: var(--ut-txt);
+        width: 100%;
+        transition: border-color 0.2s, background 0.2s;
+    }
+    .cuenta-form .form-control::placeholder { color: var(--ut-txt-dim); }
+    .cuenta-form .form-control:focus {
+        outline: none;
+        border-color: var(--ut-acento);
+        background: var(--ut-frost-hover);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--ut-acento) 15%, transparent);
+    }
+
+    /* ── BOTONES ── */
+    .ut-btn {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        padding: 0.52rem 1.2rem;
+        border-radius: 999rem;
+        font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em;
+        font-family: inherit; cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.16s; white-space: nowrap;
+        text-decoration: none;
+    }
+    .ut-btn:active { transform: scale(0.96); }
+    .ut-btn-primary {
+        background: var(--ut-acento);
+        color: white; border-color: var(--ut-acento);
+    }
+    .ut-btn-primary:hover { opacity: 0.88; }
+    .ut-btn-ghost {
+        background: var(--ut-frost);
+        color: var(--ut-txt-muted);
+        border-color: var(--ut-frost-border);
+    }
+    .ut-btn-ghost:hover { background: var(--ut-frost-hover); color: var(--ut-txt); }
+    .ut-btn-danger {
+        background: rgba(235,87,87,0.1);
+        color: #eb5757; border-color: rgba(235,87,87,0.2);
+    }
+    .ut-btn-danger:hover { background: rgba(235,87,87,0.2); border-color: rgba(235,87,87,0.4); color: white; }
+
+    /* SECTION LABEL dentro de panel */
+    .ut-section-label {
+        font-size: 0.58rem; letter-spacing: 0.18em; font-weight: 700;
+        text-transform: uppercase; color: var(--ut-txt-dim);
+        margin: 1.5rem 0 0.65rem;
+    }
+    .ut-section-label:first-child { margin-top: 0; }
+
+    /* TOAST */
+    .ut-toast {
+        position: fixed; bottom: 1.5rem; right: 1.5rem;
+        background: var(--ut-frost);
+        backdrop-filter: blur(1rem);
+        border: 1px solid var(--ut-frost-border);
+        color: var(--ut-txt);
+        padding: 0.85rem 1.3rem;
+        border-radius: 1rem;
+        font-size: 0.8rem; font-weight: 600;
+        z-index: 9999;
+        opacity: 0; transform: translateY(0.5rem);
+        transition: all 0.25s; pointer-events: none;
+    }
+    .ut-toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── LOGIN SECTION ── */
+    .usuario-hero { padding: 8rem 0 3rem; }
+    .usuario-hero-title {
+        font-size: clamp(2.5rem, 5vw, 3.8rem);
+        font-weight: 700; letter-spacing: -0.03em;
+    }
+    .form-tabs {
+        display: flex; gap: 0;
+        border: 1.5px solid var(--gris-mid);
+        border-radius: 999rem; overflow: hidden;
+        width: fit-content; margin-bottom: 2rem;
+    }
+    .form-tab {
+        padding: 0.55rem 1.6rem;
+        font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+        border: none; background: transparent; cursor: pointer; transition: all 0.2s;
+        font-family: inherit;
+    }
+    .form-tab.active { background: var(--rojo); color: white; }
+    .form-card {
+        border-radius: var(--radius); border: 1px solid var(--gris-mid);
+        background: white; padding: 2.5rem; max-width: 36rem;
+    }
+    .radio-group { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .radio-option { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.88rem; font-weight: 600; }
+    .radio-option input { accent-color: var(--rojo); }
+    #campos-registro { display: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+        .perfil-hero {
+            padding: 5rem 0 2rem;
+        }
+        .perfil-nombre {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+        }
+        .dash-bento { grid-template-columns: repeat(2, 1fr); }
+        .db-wide  { grid-column: span 2; }
+        .db-full  { grid-column: span 2; }
+        .apariencia-grid { grid-template-columns: repeat(2, 1fr); }
+        .textura-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+        .perfil-hero {
+            padding: 4rem 0 1.5rem;
+        }
+        .perfil-hero-inner {
+            flex-direction: column;
+            align-items: flex-start;
+            border-bottom: none;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .perfil-avatar {
+            width: 4rem;
+            height: 4rem;
+            font-size: 1.2rem;
+        }
+        .perfil-nombre {
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+        }
+        .perfil-actions {
+            margin-left: 0;
+            width: 100%;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .perfil-actions .ut-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Tabs scrollable en móvil */
+        .perfil-tabs {
+            gap: 0.1rem;
+            margin: 1rem 0 1rem;
+        }
+        .perfil-tab {
+            padding: 0.5rem 1rem;
+            font-size: 0.65rem;
+        }
+
+        /* Dashboard grid */
+        .dash-bento { 
+            grid-template-columns: 1fr; 
+            gap: 0.8rem;
+        }
+        .db-wide  { grid-column: span 1; }
+        .db-full  { grid-column: span 1; }
+        .ut-stat {
+            padding: 1rem 1rem;
+        }
+        .ut-stat-num {
+            font-size: 1.6rem;
+        }
+
+        /* Descarga items */
+        .descarga-item {
+            flex-wrap: wrap;
+            padding: 0.9rem 1rem;
+        }
+        .descarga-icon {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.8rem;
+        }
+        .descarga-nombre {
+            font-size: 0.83rem;
+        }
+        .descarga-btn {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 0.6rem;
+        }
+
+        /* Notificaciones */
+        .notif-item {
+            padding: 0.85rem 1rem;
+            gap: 0.7rem;
+        }
+        .notif-titulo {
+            font-size: 0.81rem;
+        }
+
+        /* Formularios */
+        .form-pendiente {
+            flex-wrap: wrap;
+            padding: 0.9rem 1rem;
+        }
+        .form-pend-badge {
+            padding: 0.2rem 0.6rem;
+            font-size: 0.55rem;
+        }
+        .form-pend-btn {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 0.6rem;
+        }
+
+        /* Pedidos */
+        .pedido-ut {
+            padding: 0.9rem 1rem;
+        }
+        .pedido-ut-item {
+            font-size: 0.8rem;
+        }
+
+        /* Forms */
+        .cuenta-form .form-label {
+            font-size: 0.58rem;
+        }
+        .cuenta-form .form-control {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        /* Apariencia */
+        .apariencia-grid { 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 0.7rem;
+        }
+        .textura-grid { 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 0.5rem;
+        }
+        .tema-preview {
+            height: 5rem;
+        }
+        .tema-info {
+            padding: 0.65rem 0.8rem;
+        }
+        .tema-nombre {
+            font-size: 0.75rem;
+        }
+        .tema-desc {
+            font-size: 0.6rem;
+        }
+
+        /* Botones */
+        .ut-btn {
+            padding: 0.45rem 1rem;
+            font-size: 0.68rem;
+        }
+        .acento-btn {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .perfil-hero {
+            padding: 3rem 0 1rem;
+        }
+        .perfil-hero-inner {
+            margin-bottom: 0.8rem;
+        }
+        .perfil-avatar {
+            width: 3.5rem;
+            height: 3.5rem;
+            font-size: 1rem;
+        }
+        .perfil-nombre {
+            font-size: 1.3rem;
+        }
+        .perfil-email {
+            font-size: 0.75rem;
+        }
+        .perfil-since {
+            font-size: 0.62rem;
+        }
+
+        /* Tabs en móvil pequeño */
+        .perfil-tabs {
+            margin: 0.8rem 0;
+        }
+        .perfil-tab {
+            padding: 0.45rem 0.8rem;
+            font-size: 0.6rem;
+        }
+
+        /* Dashboard */
+        .dash-bento { 
+            grid-template-columns: 1fr;
+            gap: 0.7rem;
+        }
+        .ut-stat {
+            padding: 0.9rem 0.9rem;
+        }
+        .ut-stat-num {
+            font-size: 1.4rem;
+        }
+        .ut-stat-label {
+            font-size: 0.55rem;
+            margin-top: 0.3rem;
+        }
+
+        .welcome-card {
+            padding: 1.3rem;
+        }
+        .welcome-card-title {
+            font-size: 1rem;
+        }
+        .welcome-card-sub {
+            font-size: 0.75rem;
+        }
+
+        /* Descarga */
+        .descarga-item {
+            gap: 0.8rem;
+            padding: 0.8rem 0.9rem;
+        }
+        .descarga-icon {
+            width: 1.8rem;
+            height: 1.8rem;
+            font-size: 0.7rem;
+        }
+        .descarga-nombre {
+            font-size: 0.78rem;
+        }
+        .descarga-meta {
+            font-size: 0.65rem;
+        }
+
+        /* Notificaciones */
+        .notif-item {
+            gap: 0.7rem;
+            padding: 0.8rem 0.9rem;
+        }
+        .notif-titulo {
+            font-size: 0.78rem;
+        }
+        .notif-body {
+            font-size: 0.72rem;
+        }
+
+        /* Formularios */
+        .form-pendiente {
+            gap: 0.8rem;
+            padding: 0.8rem 0.9rem;
+        }
+        .form-pend-title {
+            font-size: 0.82rem;
+        }
+        .form-pend-sub {
+            font-size: 0.65rem;
+        }
+
+        /* Pedidos */
+        .pedido-ut {
+            padding: 0.8rem 0.9rem;
+        }
+        .pedido-ut-head {
+            gap: 0.3rem;
+        }
+        .pedido-ut-id {
+            font-size: 0.65rem;
+        }
+        .pedido-ut-item {
+            font-size: 0.76rem;
+        }
+
+        /* Forms */
+        .cuenta-form .form-label {
+            font-size: 0.55rem;
+            margin-bottom: 0.3rem;
+        }
+        .cuenta-form .form-control {
+            padding: 0.45rem 0.7rem;
+            font-size: 0.75rem;
+        }
+
+        /* Apariencia */
+        .apariencia-grid { 
+            grid-template-columns: 1fr;
+            gap: 0.65rem;
+        }
+        .tema-card {
+            border-radius: 0.7rem;
+        }
+        .tema-preview {
+            height: 4rem;
+        }
+        .tema-info {
+            padding: 0.6rem 0.7rem;
+        }
+        .tema-nombre {
+            font-size: 0.72rem;
+        }
+        .tema-desc {
+            font-size: 0.58rem;
+        }
+
+        .acento-grid {
+            gap: 0.6rem;
+        }
+        .acento-btn {
+            width: 1.8rem;
+            height: 1.8rem;
+        }
+
+        .textura-grid { 
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+        .textura-btn {
+            font-size: 0.5rem;
+            border-radius: 0.4rem;
+            padding: 0.2rem;
+        }
+
+        /* Botones */
+        .ut-btn {
+            padding: 0.4rem 0.9rem;
+            font-size: 0.64rem;
+        }
+
+        /* Sección login */
+        .usuario-hero {
+            padding: 3rem 0 1.5rem;
+        }
+        .usuario-hero-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        }
+
+        .form-tabs {
+            width: 100%;
+        }
+        .form-tab {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+        }
+        .form-card {
+            padding: 1.5rem;
+            max-width: 100%;
+        }
+
+        /* Toast */
+        .ut-toast {
+            bottom: 1rem;
+            right: 1rem;
+            left: 1rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.75rem;
+        }
+    }
+    

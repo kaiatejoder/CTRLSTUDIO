@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portfolio — CTRL Studio</title>
+     <link rel="icon" type="image/svg+xml" href="img/favicon.svg" sizes="64x64">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/empresa.css">
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="bg-dots"></div>
+<mi-menu></mi-menu>
+
+<!-- ================================================================
+     HERO
+================================================================ -->
+<section class="port-hero">
+    <div class="port-hero-bg"></div>
+
+    <div class="hero-img-wrap">
+        <!-- Por defecto se muestra vacío, la foto flota encima del texto -->
+    </div>
+
+    <div class="container port-hero-content">
+        <div class="hero-tag">(Esta NO soy yo)</div>
+
+        <h1 class="hero-hola reveal">
+            Hola.<br>
+            Soy <em>Carla.</em>
+        </h1>
+
+        <p class="hero-desc reveal reveal-delay-1">
+            Estudiante de <strong>Informática</strong> que<br>
+            además hace diseño gráfico<br>y marketing digital.
+        </p>
+
+        <div class="scroll-hint reveal reveal-delay-2">Scroll para ver el trabajo</div>
+    </div>
+</section>
+
+<!-- ================================================================
+     MISIÓN
+================================================================ -->
+<section class="mision-section">
+    <div class="container">
+        <p class="mision-pre reveal">Mi misión es hacer la vida mucho más</p>
+        <h2 class="mision-title reveal reveal-delay-1">
+            <em>cuqui.</em>
+        </h2>
+        <p class="mision-sub reveal reveal-delay-2">A costa de mi cordura y un portátil roñoso</p>
+
+        <div class="mision-grid reveal reveal-delay-3">
+            <div class="mision-pill">
+                <div class="mision-pill-num">+20</div>
+                <div class="mision-pill-label">Proyectos</div>
+                <div class="mision-pill-txt">Identidades, piezas gráficas y webs para clientes reales.</div>
+            </div>
+            <div class="mision-pill">
+                <div class="mision-pill-num">2</div>
+                <div class="mision-pill-label">Disciplinas</div>
+                <div class="mision-pill-txt"> Informática + diseño gráfico. Los dos a la vez, sin disculpas.</div>
+            </div>
+            <div class="mision-pill">
+                <div class="mision-pill-num">∞</div>
+                <div class="mision-pill-label">Energéticas</div>
+                <div class="mision-pill-txt">Consumidas en el proceso. Pa qué mentirte.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     TRABAJO / GALERÍA
+================================================================ -->
+<section class="trabajo-section" id="trabajo">
+    <div class="container">
+        <div class="trabajo-header reveal">
+            <div>
+                <p class="section-label">Portfolio</p>
+                <h2 class="trabajo-title">Mira qué monas<br>las cosas, por favor.</h2>
+            </div>
+            <span class="trabajo-sub" id="proyecto-count">cargando...</span>
+        </div>
+
+        <!-- GALERÍA — se genera por JS desde PROYECTOS[] -->
+        <div id="galeria-root"></div>
+
+    </div>
+</section>
+
+<!-- ================================================================
+     CTA FINAL
+================================================================ -->
+<section class="cta-section">
+    <div class="container port-main-content">
+        <div class="cta-pre reveal">Valencia, España</div>
+        <h2 class="cta-title reveal reveal-delay-1">
+            No tengo más cosas.<br>
+            A menos que me<br>
+            <em>contrates ;)</em>
+        </h2>
+        <p class="cta-sub reveal reveal-delay-2">¿A que diseño fenomenal?</p>
+        <a href="contacto.html" class="cta-btn reveal reveal-delay-3">
+            Así que hazlo ↗
+        </a>
+    </div>
+</section>
+
+<!-- ================================================================
+     MODAL VER PROYECTO (para todos)
+================================================================ -->
+<div class="modal fade" id="modal-ver-proyecto" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="ver-proyecto-titulo">Proyecto</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Imagen principal -->
+                <div id="ver-proyecto-img-wrap" class="mb-4">
+                    <img src= "img/placeholder.png" id="ver-proyecto-img" class="img-fluid rounded" alt="Proyecto" style="width: 100%; max-height: 400px; object-fit: cover;">
+                </div>
+
+                <!-- Información -->
+                <h4 id="ver-proyecto-nombre" class="mb-1"></h4>
+                <p id="ver-proyecto-meta" class="text-muted mb-3"></p>
+
+                <!-- Descripción breve -->
+                <p id="ver-proyecto-desc" class="mb-4"></p>
+
+                <!-- Descripción completa (opcional) -->
+                <div id="ver-proyecto-desc-completa-wrap">
+                    <h5>Detalles</h5>
+                    <p id="ver-proyecto-desc-completa" class="text-secondary"></p>
+                </div>
+
+                <!-- Imágenes adicionales (opcional) -->
+                <div id="ver-proyecto-imgs-wrap" class="mt-4">
+                    <h6>Galería</h6>
+                    <div class="row g-3" id="ver-proyecto-imgs-container"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     MODAL AÑADIR / EDITAR PROYECTO (solo admin)
+================================================================ -->
+<div class="modal fade" id="modal-proyecto" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-titulo">Añadir proyecto</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-proyecto" class="modal-form" novalidate>
+                    <input type="hidden" id="p-id">
+
+                    <!-- Nombre -->
+                    <div class="mb-3">
+                        <label class="form-label" for="p-nombre">Nombre del proyecto *</label>
+                        <input type="text" class="form-control" id="p-nombre" required
+                            placeholder="Ej: Identidad Alonso Arquitectos">
+                    </div>
+
+                    <div class="row">
+                        <!-- Categoría -->
+                        <div class="col-7 mb-3">
+                            <label class="form-label" for="p-categoria">Categoría</label>
+                            <select class="form-select" id="p-categoria">
+                                <option value="Identidad de Marca">Identidad de Marca</option>
+                                <option value="Branding">Branding</option>
+                                <option value="Social Media">Social Media</option>
+                                <option value="Web Design">Web Design</option>
+                                <option value="Print">Print / Imprenta</option>
+                                <option value="Motion">Motion / Vídeo</option>
+                                <option value="Packaging">Packaging</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <!-- Año -->
+                        <div class="col-5 mb-3">
+                            <label class="form-label" for="p-anyo">Año</label>
+                            <input type="number" class="form-control" id="p-anyo"
+                                min="2020" max="2030" value="2025">
+                        </div>
+                    </div>
+
+                    <!-- Descripción breve -->
+                    <div class="mb-3">
+                        <label class="form-label" for="p-desc">Descripción breve</label>
+                        <textarea class="form-control form-textarea-control" id="p-desc" rows="2"
+                            placeholder="Qué hiciste, para quién, qué mola de él..."></textarea>
+                    </div>
+
+                    <!-- Descripción completa (opcional) -->
+                    <div class="mb-3">
+                        <label class="form-label" for="p-desc-completa">Descripción detallada (opcional)</label>
+                        <textarea class="form-control form-textarea-control" id="p-desc-completa" rows="3"
+                            placeholder="Información más detallada sobre el proyecto..."></textarea>
+                    </div>
+
+                    <!-- Imagen principal -->
+                    <div class="mb-3">
+                        <label class="form-label">Imagen principal del proyecto</label>
+                        <div class="upload-zone" id="upload-zone">
+                            <input type="file" id="p-imagen" accept="image/*"
+                                onchange="previewImagen(this)">
+                            <div class="upload-zone-icon">📁</div>
+                            <div class="upload-zone-txt">
+                                Arrastra una imagen o haz clic para seleccionar<br>
+                                <span class="form-help-text">PNG, JPG, WEBP · Max recomendado 2MB</span>
+                            </div>
+                            <img id="p-preview" class="upload-preview" alt="Preview" src="null">
+                        </div>
+                    </div>
+
+                    <!-- Imágenes adicionales -->
+                    <div class="mb-3">
+                        <label class="form-label">Imágenes adicionales (hasta 2)</label>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="upload-zone upload-zone-sm" id="upload-zone-2">
+                                    <input type="file" id="p-imagen-2" accept="image/*"
+                                        onchange="previewImagen(this)">
+                                    <div class="upload-zone-icon">📁</div>
+                                    <div class="upload-zone-txt small">Imagen 2</div>
+                                    <img id="p-preview-2" class="upload-preview" alt="Preview 2" src="null">
+                                </div>
+                                <input type="text" class="form-control form-control-sm mt-2" id="p-desc-img-2"
+                                    placeholder="Descripción de la imagen (opcional)">
+                            </div>
+                            <div class="col-6">
+                                <div class="upload-zone upload-zone-sm" id="upload-zone-3">
+                                    <input type="file" id="p-imagen-3" accept="image/*"
+                                        onchange="previewImagen(this)">
+                                    <div class="upload-zone-icon">📁</div>
+                                    <div class="upload-zone-txt small">Imagen 3</div>
+                                    <img id="p-preview-3" class="upload-preview" alt="Preview 3" src="null">
+                                </div>
+                                <input type="text" class="form-control form-control-sm mt-2" id="p-desc-img-3"
+                                    placeholder="Descripción de la imagen (opcional)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Color placeholder (si no hay imagen) -->
+                    <div class="mb-3">
+                        <label class="form-label">Color de fondo (si no hay imagen)</label>
+                        <div class="color-row" id="color-row">
+                            <div class="color-dot selected" data-color="#e0dbd0" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#0d0c1a" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#a50136" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#4e5174" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#f5f0e8" onclick="selectColor(this)"></div>
+                            <div class="color-dot" data-color="#2d4a3e" onclick="selectColor(this)"></div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer contact-modal-footer">
+                <button type="button" class="btn-ctrl contact-submit-btn" id="btn-eliminar-proyecto"
+                    onclick="eliminarProyecto()">
+                    Eliminar
+                </button>
+                <button type="button" class="btn-ctrl btn-ctrl-outline" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn-ctrl btn-ctrl-primary" onclick="guardarProyecto()">
+                    Guardar proyecto
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ctrl-toast" id="toast"></div>
+<mi-pie></mi-pie>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/mis-etiquetas.js"></script>
+<script src="js/fondo.js"></script>
+<script src="js/proyectos.js"></script>
+</body>
+</html>
